@@ -31,8 +31,16 @@ DEBUG = True
 #OJO CAMBIAR CUANDO SE ACABEN LAS PRUEBAS DE TPV
 #ALLOWED_HOSTS = []
 
-#para quitar cuando se haya probado el TPV
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok-free.dev', '.onrender.com']
+
+
+# Configuración de hosts permitidos
+if os.environ.get('RENDER'):
+    ALLOWED_HOSTS = ['.onrender.com']
+else:
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok-free.dev']
+
+
+
 CSRF_TRUSTED_ORIGINS = ["https://uncascaded-arturo-delightsomely.ngrok-free.dev"]
 
 # Application definition
