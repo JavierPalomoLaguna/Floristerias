@@ -6,3 +6,5 @@ sqlparse==0.4.4
 tzdata==2024.1
 dj-database-url==3.0.1
 pyngrok==7.0.0
+django-crispy-forms==2.4
+crispy-bootstrap4==2025.6
