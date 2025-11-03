@@ -9,4 +9,4 @@ pyngrok==7.0.0
 django-crispy-forms==2.4
 crispy-bootstrap4==2025.6
 reportlab==4.2.0
-pycryptodome==3.23.0
+pycrypto==2.6.1
