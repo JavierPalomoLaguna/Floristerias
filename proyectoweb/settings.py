@@ -192,3 +192,7 @@ UMBRAL_ENVIO_GRATIS = 300.00  # Envío gratis a partir de este importe
 # Configuración para producción
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://uncascaded-arturo-delightsomely.ngrok-free.dev",
+    "https://proyectoweb-ptzo.onrender.com"
+]
