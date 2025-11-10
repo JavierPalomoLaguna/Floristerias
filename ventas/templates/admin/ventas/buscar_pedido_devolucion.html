@@ -1,0 +1,118 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="module">
+    <h1>🔍 Buscar Pedido para Devolución</h1>
+    
+    <div class="form-row">
+        <form method="get" style="display: flex; gap: 10px; align-items: center;">
+            <input type="text" name="q" value="{{ query }}" placeholder="Buscar por número de pedido, nombre o email del cliente..." 
+                   style="flex: 1; padding: 8px; background: var(--body-bg); color: var(--body-fg); border: 1px solid var(--border-color);">
+            <button type="submit" class="button">🔍 Buscar</button>
+            <a href="{% url 'admin:ventas_devolucion_changelist' %}" class="button">← Volver a Devoluciones</a>
+        </form>
+    </div>
+
+    {% if query %}
+    <div class="results">
+        <h2>Resultados para "{{ query }}"</h2>
+        
+        {% if pedidos %}
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th>Nº Pedido</th>
+                        <th>Cliente</th>
+                        <th>Email</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                        <th>Estado Pago</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pedido in pedidos %}
+                    <tr>
+                        <td><strong>#{{ pedido.id }}</strong></td>
+                        <td>{{ pedido.cliente.nombre }} {{ pedido.cliente.apellidos }}</td>
+                        <td>{{ pedido.cliente.email }}</td>
+                        <td>{{ pedido.fecha|date:"d/m/Y H:i" }}</td>
+                        <td><strong>{{ pedido.total }}€</strong></td>
+                        <td>
+                            {% if pedido.pagado %}
+                                <span style="color: var(--success);">✅ Pagado</span>
+                            {% else %}
+                                <span style="color: var(--error);">❌ Pendiente</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'admin:ventas_devolucion_crear_pedido' pedido.id %}" class="button">
+                                📦 Seleccionar
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div style="padding: 20px; text-align: center; background: var(--message-warning-bg); border: 1px solid var(--message-warning-border); color: var(--message-warning-fg);">
+            <p style="margin: 0; font-size: 16px;">❌ No se encontraron pedidos para "{{ query }}"</p>
+            <p style="margin: 10px 0 0 0; color: var(--body-quiet-color);">Prueba con otro término de búsqueda</p>
+        </div>
+        {% endif %}
+    </div>
+    {% else %}
+    <div class="help" style="margin-top: 20px; padding: 20px; background: var(--darkened-bg); border-radius: 5px;">
+        <h3>💡 Cómo buscar pedidos:</h3>
+        <ul style="line-height: 1.6;">
+            <li><strong>Por número de pedido:</strong> Escribe el número completo o parcial (ej: "12345")</li>
+            <li><strong>Por nombre del cliente:</strong> Escribe el nombre o apellidos (ej: "María", "García")</li>
+            <li><strong>Por email:</strong> Escribe el email del cliente (ej: "cliente@email.com")</li>
+        </ul>
+        <p style="margin-top: 15px; font-style: italic; color: var(--body-quiet-color);">Se mostrarán hasta 50 resultados. Escribe en el buscador para empezar.</p>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .module table {
+        border-collapse: collapse;
+        width: 100%;
+        background: var(--body-bg);
+        color: var(--body-fg);
+    }
+    .module th {
+        background: var(--darkened-bg);
+        padding: 12px;
+        text-align: left;
+        border-bottom: 2px solid var(--border-color);
+    }
+    .module td {
+        padding: 12px;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .module tr:hover {
+        background: var(--darkened-bg);
+    }
+    .button {
+        padding: 8px 16px;
+        background: var(--button-bg);
+        color: var(--button-fg);
+        text-decoration: none;
+        border-radius: 4px;
+        border: 1px solid var(--border-color);
+        cursor: pointer;
+    }
+    .button:hover {
+        background: var(--button-hover-bg);
+    }
+    input[type="text"] {
+        background: var(--body-bg);
+        color: var(--body-fg);
+        border: 1px solid var(--border-color);
+    }
+</style>
+{% endblock %}

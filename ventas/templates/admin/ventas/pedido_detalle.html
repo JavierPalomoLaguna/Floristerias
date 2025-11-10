@@ -1,0 +1,115 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="module">
+    <h1>📋 Detalles del Pedido #{{ pedido.id }}</h1>
+    
+    <div class="form-row">
+        <h2>👤 Información del Cliente</h2>
+        <div class="readonly-field">
+            <strong>Nombre:</strong> {{ cliente.nombre }} {{ cliente.apellidos }}
+        </div>
+        <div class="readonly-field">
+            <strong>CIF/DNI:</strong> {{ cliente.cif|default:"No especificado" }}
+        </div>
+        <div class="readonly-field">
+            <strong>Email:</strong> {{ cliente.email }}
+        </div>
+        <div class="readonly-field">
+            <strong>Teléfono:</strong> {{ cliente.telefono }}
+        </div>
+        <div class="readonly-field">
+            <strong>Dirección:</strong> {{ cliente.direccion }}, {{ cliente.ciudad }} {{ cliente.codigo_postal }}
+        </div>
+    </div>
+
+    <div class="module">
+        <h2>📦 Artículos Comprados</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio sin IVA</th>
+                    <th>IVA 21%</th>
+                    <th>Precio con IVA</th>
+                    <th>Total línea</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for linea in lineas_pedido %}
+                <tr>
+                    <td>{{ linea.producto.nombre }}</td>
+                    <td>{{ linea.cantidad }}</td>
+                    <td>{{ linea.precio_sin_iva|floatformat:2 }}€</td>
+                    <td>{{ linea.iva|floatformat:2 }}€</td>
+                    <td>{{ linea.producto.precio|floatformat:2 }}€</td>
+                    <td>{{ linea.total_con_iva|floatformat:2 }}€</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No hay artículos en este pedido</td>
+                </tr>
+                {% endfor %}
+                
+                <!-- Gastos de envío -->
+                <tr style="border-top: 2px solid #ccc;">
+                    <td colspan="2"><strong>Gastos de envío</strong></td>
+                    <td>{{ pedido.gastos_envio_sin_iva|floatformat:2 }}€</td>
+                    <td>{{ pedido.iva_envio|floatformat:2 }}€</td>
+                    <td>{{ pedido.gastos_envio|floatformat:2 }}€</td>
+                    <td>{{ pedido.gastos_envio|floatformat:2 }}€</td>
+                </tr>
+                
+                <!-- Totales -->
+                <tr style="border-top: 2px solid #ccc;">
+                    <td colspan="2" style="text-align: right;"><strong>SUBTOTAL:</strong></td>
+                    <td><strong>{{ pedido.base_imponible|floatformat:2 }}€</strong></td>
+                    <td><strong>{{ pedido.iva_total|floatformat:2 }}€</strong></td>
+                    <td></td>
+                    <td><strong>{{ pedido.total|floatformat:2 }}€</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-row">
+        <h2>💳 Información del Pedido</h2>
+        <div class="readonly-field">
+            <strong>Fecha:</strong> {{ pedido.fecha }}
+        </div>
+        <div class="readonly-field">
+            <strong>Método de pago:</strong> {{ pedido.get_metodo_pago_display }}
+        </div>
+        <div class="readonly-field">
+            <strong>Estado pago:</strong> {% if pedido.pagado %}✅ Pagado{% else %}❌ Pendiente{% endif %}
+        </div>
+        <div class="readonly-field">
+            <strong>Estado envío:</strong> 
+            {% if pedido.enviado %} 
+                ✅ Enviado ({{ pedido.fecha_envio|default:"" }})
+            {% else %}
+                ❌ Pendiente de enviar
+            {% endif %}
+        </div>
+        <div class="readonly-field">
+            <strong>Envío gratis:</strong> {% if pedido.envio_gratis %}✅ Sí{% else %}❌ No{% endif %}
+        </div>
+        {% if pedido.pagado %}
+        <div class="readonly-field">
+            <strong>Código autorización:</strong> {{ pedido.codigo_autorizacion }}
+        </div>
+        <div class="readonly-field">
+            <strong>Fecha pago:</strong> {{ pedido.fecha_pago }} {{ pedido.hora_pago }}
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="submit-row">
+        <a href="{% url 'admin:ventas_pedido_changelist' %}" class="button">← Volver a Pedidos</a>
+        <a href="{% url 'admin:ventas_pedido_change' pedido.id %}" class="button">📝 Editar Pedido</a>
+        <a href="{% url 'ver_factura' pedido.id %}" class="button" target="_blank">📄 Ver Factura</a>
+    </div>
+</div>
+{% endblock %}

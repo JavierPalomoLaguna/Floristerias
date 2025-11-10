@@ -1,0 +1,258 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="module">
+    <h1>📦 Crear Devolución - Pedido #{{ pedido.id }}</h1>
+    
+    <div class="form-row" style="background: var(--darkened-bg); padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+        <h2>📋 Información del Pedido</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div>
+                <strong>Cliente:</strong> {{ pedido.cliente.nombre }} {{ pedido.cliente.apellidos }}<br>
+                <strong>Email:</strong> {{ pedido.cliente.email }}<br>
+                <strong>Fecha:</strong> {{ pedido.fecha|date:"d/m/Y H:i" }}
+            </div>
+            <div>
+                <strong>Total Pedido:</strong> <span style="font-size: 1.2em; font-weight: bold;">{{ pedido.total }}€</span><br>
+                <strong>Estado Pago:</strong> 
+                {% if pedido.pagado %}
+                    <span style="color: var(--success);">✅ Pagado</span>
+                {% else %}
+                    <span style="color: var(--error);">❌ Pendiente</span>
+                {% endif %}<br>
+                <strong>Enviado:</strong> 
+                {% if pedido.enviado %}
+                    <span style="color: var(--success);">✅ Sí</span>
+                {% else %}
+                    <span style="color: var(--warning);">⏳ No</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="module">
+            <h2>🔄 Productos a Devolver</h2>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%; text-align: center;">Devolver</th>
+                            <th style="width: 35%;">Producto</th>
+                            <th style="width: 15%; text-align: center;">Precio Unitario</th>
+                            <th style="width: 15%; text-align: center;">Cantidad Comprada</th>
+                            <th style="width: 20%; text-align: center;">Cantidad a Devolver</th>
+                            <th style="width: 10%; text-align: center;">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for linea in lineas_pedido %}
+                        <tr>
+                            <td style="text-align: center;">
+                                <input type="checkbox" 
+                                       id="check_{{ linea.id }}" 
+                                       onchange="toggleCantidad('{{ linea.id }}')"
+                                       class="devolver-checkbox">
+                            </td>
+                            <td>{{ linea.producto.nombre }}</td>
+                            <td style="text-align: center;" class="precio-unitario" data-precio="{{ linea.producto.precio }}">
+                                {{ linea.producto.precio }}€
+                            </td>
+                            <td style="text-align: center;">{{ linea.cantidad }}</td>
+                            <td style="text-align: center;">
+                                <input type="number" 
+                                       id="cantidad_{{ linea.id }}" 
+                                       name="cantidad_{{ linea.id }}" 
+                                       value="0" 
+                                       min="0" 
+                                       max="{{ linea.cantidad }}"
+                                       style="width: 70px; padding: 4px; text-align: center;"
+                                       disabled
+                                       onchange="calcularSubtotal('{{ linea.id }}')">
+                                <div style="font-size: 11px; color: var(--body-quiet-color); margin-top: 2px;">
+                                    Máx: {{ linea.cantidad }}
+                                </div>
+                            </td>
+                            <td id="subtotal_{{ linea.id }}" style="text-align: center; font-weight: bold;">0.00€</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 20px;">
+                                No hay productos en este pedido
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin: 15px 0;">
+                <button type="button" class="button" onclick="seleccionarTodo()">
+                    ✅ Seleccionar Todo
+                </button>
+                <button type="button" class="button" onclick="deseleccionarTodo()">
+                    ❌ Deseleccionar Todo
+                </button>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <h2>📝 Información de la Devolución</h2>
+            
+            <div style="margin-bottom: 20px;">
+                <label for="razon" style="display: block; margin-bottom: 5px; font-weight: bold;">
+                    Razón de la devolución:
+                </label>
+                <select name="razon" id="razon" style="width: 200px; padding: 12px 15px; height: 42px; font-size: 14px; background: var(--body-bg); color: var(--body-fg); border: 1px solid var(--border-color);">
+                    <option value="" disabled selected>-- Seleccione opción --</option>
+                    <option value="defectuoso">Producto defectuoso</option>
+                    <option value="no_satisfaccion">No satisface expectativas</option>
+                    <option value="error_envio">Error en el envío</option>
+                    <option value="cambio_talla">Cambio de talla</option>
+                    <option value="otro">Otro motivo</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label for="motivo" style="display: block; margin-bottom: 5px; font-weight: bold;">
+                    Motivo de la devolución:
+                </label>
+                <textarea name="motivo" id="motivo" rows="3" style="width: 100%; max-width: 600px; padding: 8px; background: var(--body-bg); color: var(--body-fg); border: 1px solid var(--border-color);" 
+                        placeholder="Describe el motivo de la devolución..."></textarea>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label for="notas_internas" style="display: block; margin-bottom: 5px; font-weight: bold;">
+                    Notas internas (opcional):
+                </label>
+                <textarea name="notas_internas" id="notas_internas" rows="2" style="width: 100%; max-width: 600px; padding: 8px; background: var(--body-bg); color: var(--body-fg); border: 1px solid var(--border-color);" 
+                        placeholder="Notas para uso interno..."></textarea>
+            </div>
+        </div>
+
+                <div class="submit-row" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+                    <a href="{% url 'admin:ventas_devolucion_crear' %}" class="button">← Volver a Búsqueda</a>
+                    <a href="{% url 'admin:ventas_devolucion_changelist' %}" class="button">← Volver a Devoluciones</a>
+                    <button type="submit" class="button default">
+                        ✅ Crear Devolución
+                    </button>
+                </div>
+            </form>
+        </div>
+
+<script>
+    function toggleCantidad(lineaId) {
+        const checkbox = document.getElementById('check_' + lineaId);
+        const cantidadInput = document.getElementById('cantidad_' + lineaId);
+        
+        if (checkbox.checked) {
+            cantidadInput.disabled = false;
+            cantidadInput.value = cantidadInput.max;
+            calcularSubtotal(lineaId);
+        } else {
+            cantidadInput.disabled = true;
+            cantidadInput.value = 0;
+            calcularSubtotal(lineaId);
+        }
+    }
+
+    function calcularSubtotal(lineaId) {
+        const cantidadInput = document.getElementById('cantidad_' + lineaId);
+        const precioElement = document.querySelector('#check_' + lineaId).closest('tr').querySelector('.precio-unitario');
+        
+        // Obtener el precio del data attribute
+        const precioTexto = precioElement.getAttribute('data-precio');
+        const precio = parseFloat(precioTexto.replace(',', '.')) || 0;    
+        const cantidad = parseInt(cantidadInput.value) || 0;
+        const subtotal = precio * cantidad;
+        
+        document.getElementById('subtotal_' + lineaId).textContent = subtotal.toFixed(2) + '€';
+    }
+
+    function seleccionarTodo() {
+        document.querySelectorAll('.devolver-checkbox').forEach(checkbox => {
+            checkbox.checked = true;
+            const lineaId = checkbox.id.replace('check_', '');
+            toggleCantidad(lineaId);
+        });
+    }
+
+    function deseleccionarTodo() {
+        document.querySelectorAll('.devolver-checkbox').forEach(checkbox => {
+            checkbox.checked = false;
+            const lineaId = checkbox.id.replace('check_', '');
+            toggleCantidad(lineaId);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.devolver-checkbox').forEach(checkbox => {
+            const lineaId = checkbox.id.replace('check_', '');
+            calcularSubtotal(lineaId);
+        });
+    });
+</script>
+
+<style>
+    .module table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-bottom: 20px;
+        background: var(--body-bg);
+        color: var(--body-fg);
+    }
+    .module th {
+        background: var(--darkened-bg);
+        padding: 12px;
+        text-align: left;
+        border-bottom: 2px solid var(--border-color);
+        font-weight: bold;
+    }
+    .module td {
+        padding: 12px;
+        border-bottom: 1px solid var(--border-color);
+        vertical-align: top;
+    }
+    .module tr:hover {
+        background: var(--darkened-bg);
+    }
+    .button {
+        padding: 8px 16px;
+        background: var(--button-bg);
+        color: var(--button-fg);
+        text-decoration: none;
+        border-radius: 4px;
+        border: 1px solid var(--border-color);
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    .button:hover {
+        background: var(--button-hover-bg);
+    }
+    .button.default {
+        background: var(--default-button-bg);
+        color: var(--default-button-fg);
+    }
+    .button.default:hover {
+        background: var(--default-button-hover-bg);
+    }
+    input[type="number"]:disabled {
+        background: var(--darkened-bg);
+        color: var(--body-quiet-color);
+        border-color: var(--border-color);
+    }
+    input[type="number"] {
+        background: var(--body-bg);
+        color: var(--body-fg);
+        border: 1px solid var(--border-color);
+    }
+    select, textarea {
+        background: var(--body-bg);
+        color: var(--body-fg);
+        border: 1px solid var(--border-color);
+    }
+</style>
+{% endblock %}

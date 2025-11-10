@@ -5,12 +5,17 @@ from .models import Pedido, LineaPedido, ConfiguracionEnvio
 import base64, hashlib, hmac, json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-from .utils import generar_factura_pdf
+from .utils import generar_factura_pdf, enviar_email_pedido_confirmado
 from datetime import datetime
 from Crypto.Cipher import DES3
 import hmac
 import hashlib
 import base64
+
+# ✅ DATOS DE PRUEBA REDSYS (AGREGADOS AL PRINCIPIO)
+clave = "sq7HjrUOBfKmC576ILgskD5srU870gJ7"
+merchant_code = "999008881"
+terminal = "049"
 
 # ✅ AGREGAR ESTA FUNCIÓN SI NO EXISTE
 def create_signature(clave, encoded_params, order):
@@ -113,7 +118,7 @@ def notificacion_redsys(request):
     if request.method != 'POST':
         return HttpResponse(status=405)
 
-    clave = "sq7HjrUOBfKmC576ILgskD5srU870gJ7"
+    # ✅ AHORA USA LA VARIABLE 'clave' DEFINIDA AL PRINCIPIO
     firma_recibida = request.POST.get('Ds_Signature')
     parametros_codificados = request.POST.get('Ds_MerchantParameters')
     
@@ -225,6 +230,13 @@ def notificacion_redsys(request):
             print(f"✅ País tarjeta: {pedido.pais_tarjeta}")
             print(f"✅ ID Comercio: {pedido.identificador_comercio}")
             
+            # ✅ NUEVO: ENVIAR EMAIL DE CONFIRMACIÓN CON FACTURA
+            try:
+                enviar_email_pedido_confirmado(pedido)
+                print(f"✅ Email de confirmación enviado a {pedido.cliente.email}")
+            except Exception as e:
+                print(f"⚠️ Error enviando email: {e}")
+            
         except Pedido.DoesNotExist:
             print(f"❌ Pedido {codigo_pedido} no encontrado")
             return HttpResponse(status=404)
@@ -299,25 +311,25 @@ def pago_redsys(request):
     except Pedido.DoesNotExist:
         return redirect('checkout')
 
-    # Calcular importe total en céntimos
+    # Calcular importe total en céntimos (INCLUYENDO GASTOS DE ENVÍO)
     lineas = LineaPedido.objects.filter(pedido=pedido)
-    total_euros = sum(lp.producto.precio * lp.cantidad for lp in lineas)
+    total_euros = sum(float(lp.producto.precio) * lp.cantidad for lp in lineas)
+    total_euros += float(pedido.gastos_envio)  # INCLUIR GASTOS DE ENVÍO
     total_centimos = int(total_euros * 100)
 
     merchant_params = {
         "Ds_Merchant_Amount": str(total_centimos),
         "Ds_Merchant_Order": str(pedido.id).zfill(8),
-        "Ds_Merchant_MerchantCode": "263100000",
+        "Ds_Merchant_MerchantCode": merchant_code,
         "Ds_Merchant_Currency": "978",
         "Ds_Merchant_TransactionType": "0",
-        "Ds_Merchant_Terminal": "6",
+        "Ds_Merchant_Terminal": terminal,
         "Ds_Merchant_MerchantURL": "https://uncascaded-arturo-delightsomely.ngrok-free.dev/ventas/notificacion/",
         "Ds_Merchant_UrlOK": "https://uncascaded-arturo-delightsomely.ngrok-free.dev/ventas/exito/",
         "Ds_Merchant_UrlKO": "https://uncascaded-arturo-delightsomely.ngrok-free.dev/ventas/error/",
         "Ds_Merchant_ConsumerLanguage": "001"
     }
     
-    clave = "sq7HjrUOBfKmC576ILgskD5srU870gJ7"
     encoded_params = base64.b64encode(json.dumps(merchant_params).encode()).decode()
     signature = create_signature(clave, encoded_params, merchant_params["Ds_Merchant_Order"])
     

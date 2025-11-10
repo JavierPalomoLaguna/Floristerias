@@ -1,0 +1,89 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="module">
+    <h1>📦 Detalles de Devolución #{{ devolucion.id }}</h1>
+    
+    <div class="form-row">
+        <h2>📋 Información General</h2>
+        <div class="readonly-field">
+            <strong>Pedido original:</strong> #{{ devolucion.pedido.id }}
+        </div>
+        <div class="readonly-field">
+            <strong>Cliente:</strong> {{ devolucion.pedido.cliente.nombre }} {{ devolucion.pedido.cliente.apellidos }}
+        </div>
+        <div class="readonly-field">
+            <strong>Estado:</strong> {{ devolucion.get_estado_display }}
+        </div>
+        <div class="readonly-field">
+            <strong>Fecha solicitud:</strong> {{ devolucion.fecha_solicitud }}
+        </div>
+        {% if devolucion.fecha_procesamiento %}
+        <div class="readonly-field">
+            <strong>Fecha procesamiento:</strong> {{ devolucion.fecha_procesamiento }}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="module">
+        <h2>🔄 Productos Devueltos</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad Devuelta</th>
+                    <th>Precio Unitario</th>
+                    <th>Importe Total</th>
+                    <th>Razón</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for linea in devolucion.lineas.all %}
+                <tr>
+                    <td>{{ linea.linea_pedido_original.producto.nombre }}</td>
+                    <td>{{ linea.cantidad_devuelta }}</td>
+                    <td>{{ linea.precio_unitario_devolucion }}€</td>
+                    <td>{{ linea.importe_devolucion }}€</td>
+                    <td>{{ linea.get_razon_display }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No hay productos en esta devolución</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-row">
+        <h2>💰 Resumen Financiero</h2>
+        <div class="readonly-field">
+            <strong>Base imponible devolución:</strong> {{ devolucion.base_imponible_devolucion }}€
+        </div>
+        <div class="readonly-field">
+            <strong>IVA devolución:</strong> {{ devolucion.iva_devolucion }}€
+        </div>
+        <div class="readonly-field">
+            <strong>Gastos envío devolución:</strong> {{ devolucion.gastos_envio_devolucion }}€
+        </div>
+        <div class="readonly-field">
+            <strong>Total devolución:</strong> <strong>{{ devolucion.importe_total_devolucion }}€</strong>
+        </div>
+    </div>
+
+    {% if devolucion.motivo %}
+    <div class="form-row">
+        <h2>📝 Motivo de la Devolución</h2>
+        <div class="readonly-field">
+            {{ devolucion.motivo }}
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="submit-row">
+        <a href="{% url 'admin:ventas_devolucion_changelist' %}" class="button">← Volver a Devoluciones</a>
+        <a href="{% url 'admin:ventas_devolucion_change' devolucion.id %}" class="button">📝 Editar Devolución</a>
+    </div>
+</div>
+{% endblock %}

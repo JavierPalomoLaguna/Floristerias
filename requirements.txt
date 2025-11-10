@@ -4,9 +4,8 @@ python-decouple==3.8
 psycopg2-binary==2.9.9
 sqlparse==0.4.4
 tzdata==2024.1
-dj-database-url==3.0.1
-pyngrok==7.0.0
 django-crispy-forms==2.4
 crispy-bootstrap4==2025.6
 reportlab==4.2.0
 pycryptodome==3.23.0
+gunicorn==21.2.0
