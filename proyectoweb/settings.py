@@ -206,15 +206,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = 'd^czxedced*yn8mz7-nhrf7w234!d#&sn5unmoz!_4x^lv+$o+'
 
-DEBUG = not os.environ.get('DJANGO_PRODUCTION')
+ENV = config('DJANGO_ENV', default='local')
 
-# Hosts permitidos
-if os.environ.get('DJANGO_PRODUCTION'):
-    ALLOWED_HOSTS = ['tudominio.com', 'www.tudominio.com']
-    CSRF_TRUSTED_ORIGINS = ['https://tudominio.com', 'https://www.tudominio.com']
+if ENV == 'production':
+    DEBUG = False
+    ALLOWED_HOSTS = ['codigovivostudio.cloud', 'www.codigovivostudio.cloud', '72.61.94.146']
+    CSRF_TRUSTED_ORIGINS = ['https://codigovivostudio.cloud', 'https://www.codigovivostudio.cloud']
 else:
+    DEBUG = True
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.ngrok-free.dev']
-    CSRF_TRUSTED_ORIGINS = ['https://uncascaded-arturo-delightsomely.ngrok-free.dev']
+    CSRF_TRUSTED_ORIGINS = ['https://*.ngrok-free.dev']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
