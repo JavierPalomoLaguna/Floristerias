@@ -5,6 +5,8 @@ from tienda.models import Productos, CategoriaProducto
 
 # Create your views here.
 
+def index_demo(request):
+    return render(request, 'ProyectoWebApp/home.html')
 
 def home(request):
     categorias = CategoriaProducto.objects.all()[:5]  # Limita a 5 categorías
@@ -15,7 +17,7 @@ def home(request):
         if producto:
             productos_por_categoria.append(producto)
 
-    return render(request, 'ProyectoWebApp/home.html', {
+    return render(request, 'ProyectoWebApp/index.html', {
         'productos_por_categoria': productos_por_categoria
     })
 
