@@ -24,3 +24,6 @@ __pycache__/
 
 # Archivos de entorno virtual (si está dentro del proyecto)
 venv/
+
+staticfiles/
+/migrations/
