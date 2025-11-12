@@ -1,15 +1,59 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Desarrollo de tiendas online, sistemas de gestión y automatización empresarial adaptados a tu negocio.">
-  <meta name="robots" content="index, follow">
-  <meta name="author" content="Código Vivo Studio">
+  
+  <!-- METADATOS SEO -->
   <title>Soluciones web personalizadas para restaurantes y comercios | Código Vivo Studio</title>
+  <meta name="description" content="Desarrollo de tiendas online, sistemas de gestión y automatización empresarial adaptados a tu negocio.">
+  <meta name="keywords" content="desarrollo web, tienda online, restaurantes, comercios, automatización, gestión empresarial">
+  <meta name="author" content="Código Vivo Studio">
+  <meta name="robots" content="index, follow">
+  
+  <!-- OPEN GRAPH -->
+  <meta property="og:title" content="Soluciones web personalizadas para restaurantes y comercios">
+  <meta property="og:description" content="Desarrollo de tiendas online, sistemas de gestión y automatización empresarial adaptados a tu negocio.">
+  <meta property="og:url" content="https://codigovivostudio.cloud">
+  <meta property="og:image" content="https://codigovivostudio.cloud{% static 'ProyectoWebApp/img/og-image.jpg' %}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Código Vivo Studio">
+  
+  <!-- TWITTER CARD -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Soluciones web personalizadas para restaurantes y comercios">
+  <meta name="twitter:description" content="Desarrollo de tiendas online, sistemas de gestión y automatización empresarial.">
+  <meta name="twitter:image" content="https://codigovivostudio.cloud{% static 'ProyectoWebApp/img/twitter-image.jpg' %}">
+  
+  <!-- SCHEMA MARKUP -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Código Vivo Studio",
+    "url": "https://codigovivostudio.cloud",
+    "logo": "https://codigovivostudio.cloud{% static 'ProyectoWebApp/img/logo.png' %}",
+    "description": "Desarrollo web profesional y soluciones digitales para empresas",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Tu Ciudad",
+      "addressCountry": "ES"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+34-XXX-XXX-XXX",
+      "contactType": "customer service"
+    }
+  }
+  </script>
+
+  <!-- ESTILOS -->
   <link href="{% static 'ProyectoWebApp/css/gestion.css' %}" rel="stylesheet">
+  <link href="{% static 'ProyectoWebApp/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  
+  <!-- FAVICON -->
+  <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
 </head>
 <body class="index-layout">
   <header> 

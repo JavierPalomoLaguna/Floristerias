@@ -214,18 +214,26 @@ if ENV == 'production':
     CSRF_TRUSTED_ORIGINS = ['https://codigovivostudio.cloud', 'https://www.codigovivostudio.cloud']
 else:
     DEBUG = True
+    # CORREGIDO: Añade estas opciones para desarrollo
     ALLOWED_HOSTS = [
         'localhost',
         '127.0.0.1',
         '.ngrok-free.dev',
         'codigovivostudio.cloud',
-        'www.codigovivostudio.cloud'
+        'www.codigovivostudio.cloud',
+        '.localhost',  # ← AÑADIDO
+        '0.0.0.0',     # ← AÑADIDO
+        'testserver',  # ← AÑADIDO
     ]
     CSRF_TRUSTED_ORIGINS = [
         'https://*.ngrok-free.dev',
         'https://codigovivostudio.cloud',
-        'https://www.codigovivostudio.cloud'
+        'https://www.codigovivostudio.cloud',
+        'http://localhost:8000',  # ← AÑADIDO
+        'http://127.0.0.1:8000',  # ← AÑADIDO
     ]
+
+# ... el resto del código se mantiene igual ...
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -233,6 +241,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',      
+    'django.contrib.sitemaps',   
     'ProyectoWebApp',
     'servicios',
     'blog',
@@ -308,10 +318,21 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+# Archivos estáticos
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'ProyectoWebApp/static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+if ENV == 'production':
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'static'),
+    ]
+else:
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'static'),
+        os.path.join(BASE_DIR, 'ProyectoWebApp/static'),
+    ]
+
+# Archivos multimedia
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
