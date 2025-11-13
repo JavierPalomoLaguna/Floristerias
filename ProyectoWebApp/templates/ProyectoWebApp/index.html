@@ -56,25 +56,40 @@
   <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
 </head>
 <body class="index-layout">
-  <header> 
-    <div class="container"> 
-        <nav> 
-          <div class="logo">Código Vivo Studio</div> 
-            <div class="menu-toggle" id="menuToggle">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-            <div class="nav-links" id="navLinks"> 
-              <a href="/">Inicio</a> 
-              <a href="/servicios/">Servicios</a> 
-              <a href="/tienda/">Tienda</a> 
-              <a href="/contacto/">Contacto</a> 
-              <a href="/blog/">Blog</a> 
-            </div> 
-          </nav> 
-        </div> 
-  </header> 
+
+  <!-- NAVBAR DE BOOTSTRAP FUNCIONAL -->
+  <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" style="background-color: rgba(17, 17, 17, 0.95);">
+    <div class="container">
+      <a class="navbar-brand text-uppercase text-expanded font-weight-bold" href="/" style="font-size: 1.5rem;">
+        Código Vivo Studio
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarIndex" aria-controls="navbarIndex" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarIndex">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item px-lg-3">
+            <a class="nav-link text-uppercase text-expanded" href="/">Inicio</a>
+          </li>
+          <li class="nav-item px-lg-3">
+            <a class="nav-link text-uppercase text-expanded" href="/servicios/">Servicios</a>
+          </li>
+          <li class="nav-item px-lg-3">
+            <a class="nav-link text-uppercase text-expanded" href="/tienda/">Tienda</a>
+          </li>
+          <li class="nav-item px-lg-3">
+            <a class="nav-link text-uppercase text-expanded" href="/contacto/">Contacto</a>
+          </li>
+          <li class="nav-item px-lg-3">
+            <a class="nav-link text-uppercase text-expanded" href="/blog/">Blog</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- EL RESTO DE TU CONTENIDO ORIGINAL -->
   <section class="container" style="text-align: center; padding: 80px 0;"> 
     <div style="max-width: 900px; margin: 0 auto;"> 
       <h2 style="font-size: 2.2rem; color: #0a1a2f; margin-bottom: 30px;"> Ejemplos funcionales adaptables a tu negocio </h2> 
@@ -90,86 +105,74 @@
     </p> 
   </div> 
 </section> 
+
 <section class="hero"> 
   <div class="container"> 
     <div class="hero-content"> 
       <h1>Soluciones web a medida para negocios que exigen resultados reales</h1> 
       <p>En Código Vivo Studio desarrollamos sistemas funcionales, adaptables y pensados para evolucionar contigo.</p> 
-      <a href="/contacto/" class="btn">Más información</a> </div> </div> </section> <section class="servicios"> 
-        <div class="container"> 
-          <h2 class="section-title">Nuestros servicios</h2> 
-          <div class="servicio-boxes"> <div class="servicio-box"> 
-            <h3>Tiendas online y sistemas de venta</h3> 
-            <p>Gestión completa de productos, pagos, pedidos y paneles administrativos. Todo integrado y listo para funcionar desde el primer día.</p> 
-          </div> <div class="servicio-box"> 
-            <h3>Automatización de procesos empresariales</h3> 
-            <p>Conexión con servicios externos para facturación, contabilidad o gestión documental, adaptando la lógica a tu flujo operativo.</p>
-          </div> 
-          <div class="servicio-box"> 
-            <h3>Interfaces administrativas claras</h3> 
-            <p>Paneles visuales alineados, filtros por fecha, formularios horizontales y navegación intuitiva para facilitar el trabajo diario.</p> 
-          </div> 
-          <div class="servicio-box"> 
-            <h3>Integraciones API y conectores personalizados</h3> 
-            <p>Desarrollo de enlaces entre plataformas, con control total sobre accesos, permisos y trazabilidad.</p> 
-          </div> 
-          <div class="servicio-box"> 
-            <h3>Proyectos escalables sin cuotas mensuales</h3> 
-            <p>Pagas una sola vez por el desarrollo. No hay suscripciones ni pagos recurrentes. Y eso no te deja sin asistencia: puedes solicitar mejoras, ajustes o nuevas funcionalidades cuando lo necesites.</p> 
-          </div> 
-        </div> 
+      <a href="/contacto/" class="btn">Más información</a> 
+    </div> 
+  </div> 
+</section> 
+
+<section class="servicios"> 
+  <div class="container"> 
+    <h2 class="section-title">Nuestros servicios</h2> 
+    <div class="servicio-boxes"> 
+      <div class="servicio-box"> 
+        <h3>Tiendas online y sistemas de venta</h3> 
+        <p>Gestión completa de productos, pagos, pedidos y paneles administrativos. Todo integrado y listo para funcionar desde el primer día.</p> 
       </div> 
-    </section> 
-    <section class="testimonio"> 
-      <div class="container"> 
-        <div class="testimonio-content"> 
-          <h2 class="section-title">Opinión de clientes</h2> 
-          <p>"El sistema que nos entregó nos permitió tener control total sobre nuestros procesos y mejorar la eficiencia operativa sin depender de plataformas externas."</p> 
-          <small>Cliente real - Director de Tecnología</small> 
-        </div> 
+      <div class="servicio-box"> 
+        <h3>Automatización de procesos empresariales</h3> 
+        <p>Conexión con servicios externos para facturación, contabilidad o gestión documental, adaptando la lógica a tu flujo operativo.</p>
       </div> 
-    </section> 
-    <section class="cta"> 
-      <div class="container"> 
-        <h2 class="section-title">¿Quieres validar tu sistema paso a paso?</h2> 
-        <a href="/contacto/" class="btn">Contáctanos</a> 
+      <div class="servicio-box"> 
+        <h3>Interfaces administrativas claras</h3> 
+        <p>Paneles visuales alineados, filtros por fecha, formularios horizontales y navegación intuitiva para facilitar el trabajo diario.</p> 
       </div> 
-    </section> 
-    <footer> 
-      <div class="container"> 
-        <p>&copy; 2025 Código Vivo Studio. Todos los derechos reservados.</p> 
-      </div>
-      <p class="m-0 mt-3 small">
-        <a href="/admin/" class="text-muted" title="Panel de administración">⚙️⚙️⚙️</a>
-      </p> 
-    </footer> 
-  <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const menuToggle = document.getElementById('menuToggle');
-    const navLinks = document.getElementById('navLinks');
-    
-    menuToggle.addEventListener('click', function() {
-      navLinks.classList.toggle('active');
-      menuToggle.classList.toggle('active');
-    });
-    
-    // Cerrar menú al hacer clic en un enlace
-    const navLinksItems = navLinks.querySelectorAll('a');
-    navLinksItems.forEach(link => {
-      link.addEventListener('click', function() {
-        navLinks.classList.remove('active');
-        menuToggle.classList.remove('active');
-      });
-    });
-    
-    // Cerrar menú al hacer clic fuera de él
-    document.addEventListener('click', function(event) {
-      if (!navLinks.contains(event.target) && !menuToggle.contains(event.target)) {
-        navLinks.classList.remove('active');
-        menuToggle.classList.remove('active');
-      }
-    });
-  });
-  </script>
-  </body> 
-  </html>
+      <div class="servicio-box"> 
+        <h3>Integraciones API y conectores personalizados</h3> 
+        <p>Desarrollo de enlaces entre plataformas, con control total sobre accesos, permisos y trazabilidad.</p> 
+      </div> 
+      <div class="servicio-box"> 
+        <h3>Proyectos escalables sin cuotas mensuales</h3> 
+        <p>Pagas una sola vez por el desarrollo. No hay suscripciones ni pagos recurrentes. Y eso no te deja sin asistencia: puedes solicitar mejoras, ajustes o nuevas funcionalidades cuando lo necesites.</p> 
+      </div> 
+    </div> 
+  </div> 
+</section> 
+
+<section class="testimonio"> 
+  <div class="container"> 
+    <div class="testimonio-content"> 
+      <h2 class="section-title">Opinión de clientes</h2> 
+      <p>"El sistema que nos entregó nos permitió tener control total sobre nuestros procesos y mejorar la eficiencia operativa sin depender de plataformas externas."</p> 
+      <small>Cliente real - Director de Tecnología</small> 
+    </div> 
+  </div> 
+</section> 
+
+<section class="cta"> 
+  <div class="container"> 
+    <h2 class="section-title">¿Quieres validar tu sistema paso a paso?</h2> 
+    <a href="/contacto/" class="btn">Contáctanos</a> 
+  </div> 
+</section> 
+
+<footer> 
+  <div class="container"> 
+    <p>&copy; 2025 Código Vivo Studio. Todos los derechos reservados.</p> 
+  </div>
+  <p class="m-0 mt-3 small">
+    <a href="/admin/" class="text-muted" title="Panel de administración">⚙️⚙️⚙️</a>
+  </p> 
+</footer> 
+
+<!-- SCRIPTS NECESARIOS -->
+<script src="{% static 'ProyectoWebApp/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'ProyectoWebApp/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+</body> 
+</html>

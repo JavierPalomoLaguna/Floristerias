@@ -19,8 +19,9 @@ class CustomUserAdmin(DefaultUserAdmin):
         if not request.user.is_superuser:
             actions.pop('delete_selected', None)
         return actions
+    
     def has_change_permission(self, request, obj=None):
-    # Si el objeto es un superusuario y el usuario actual NO lo es, denegar edición
+        # Si el objeto es un superusuario y el usuario actual NO lo es, denegar edición
         if obj and obj.is_superuser and not request.user.is_superuser:
             return False
         return super().has_change_permission(request, obj)
