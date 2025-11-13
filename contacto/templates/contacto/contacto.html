@@ -6,29 +6,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contacto - Código Vivo Studio</title>
     <link href="{% static 'ProyectoWebApp/css/gestion.css' %}" rel="stylesheet">
+    <link href="{% static 'ProyectoWebApp/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 </head>
 <body class="index-layout">
-    <header> 
-        <div class="container"> 
-            <nav> 
-                <div class="logo">Código Vivo Studio</div> 
-                <!-- BOTÓN HAMBURGUESA AÑADIDO -->
-                <div class="menu-toggle" id="menuToggle">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-                <!-- AÑADIDO id="navLinks" -->
-                <div class="nav-links" id="navLinks">
-                    <a href="/">Inicio</a>
-                    <a href="/servicios/">Servicios</a> 
-                    <a href="/tienda/">Tienda</a> 
-                    <a href="/contacto/">Contacto</a> 
-                    <a href="/blog/">Blog</a> 
-                </div> 
-            </nav> 
-        </div> 
-    </header>
+
+    <!-- NAVBAR DE BOOTSTRAP FUNCIONAL -->
+    <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" style="background-color: rgba(17, 17, 17, 0.95);">
+        <div class="container">
+            <a class="navbar-brand text-uppercase text-expanded font-weight-bold" href="/" style="font-size: 1.5rem;">
+                Código Vivo Studio
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContacto" aria-controls="navbarContacto" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarContacto">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item px-lg-3">
+                        <a class="nav-link text-uppercase text-expanded" href="/">Inicio</a>
+                    </li>
+                    <li class="nav-item px-lg-3">
+                        <a class="nav-link text-uppercase text-expanded" href="/servicios/">Servicios</a>
+                    </li>
+                    <li class="nav-item px-lg-3">
+                        <a class="nav-link text-uppercase text-expanded" href="/tienda/">Tienda</a>
+                    </li>
+                    <li class="nav-item px-lg-3">
+                        <a class="nav-link text-uppercase text-expanded" href="/contacto/">Contacto</a>
+                    </li>
+                    <li class="nav-item px-lg-3">
+                        <a class="nav-link text-uppercase text-expanded" href="/blog/">Blog</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
     <section class="contacto-section">
         <div class="container">
@@ -65,30 +77,14 @@
         <div class="container"> 
             <p>&copy; 2025 Código Vivo Studio. Todos los derechos reservados.</p> 
         </div> 
+        <p class="m-0 mt-3 small">
+            <a href="/admin/" class="text-muted" title="Panel de administración">⚙️⚙️⚙️</a>
+        </p> 
     </footer>
-    <script>
-        // JavaScript para el menú hamburguesa
-        document.addEventListener('DOMContentLoaded', function() {
-            const menuToggle = document.getElementById('menuToggle');
-            const navLinks = document.getElementById('navLinks');
-            
-            if (menuToggle && navLinks) {
-                menuToggle.addEventListener('click', function() {
-                    navLinks.classList.toggle('active');
-                    menuToggle.classList.toggle('active');
-                });
-                
-                // Cerrar menú al hacer clic en un enlace
-                const navLinksItems = navLinks.querySelectorAll('a');
-                navLinksItems.forEach(link => {
-                    link.addEventListener('click', function() {
-                        navLinks.classList.remove('active');
-                        menuToggle.classList.remove('active');
-                    });
-                });
-            }
-        });
-    </script>
+
+    <!-- SCRIPTS NECESARIOS -->
+    <script src="{% static 'ProyectoWebApp/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'ProyectoWebApp/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
 </body>
 </html>
-
