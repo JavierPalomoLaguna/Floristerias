@@ -25,8 +25,8 @@ def contacto(request):
             send_mail(
                 subject="Nuevo mensaje de contacto",
                 message=f"Nombre: {nombre}\nEmail: {email}\nContenido:\n{contenido}",
-                from_email=settings.EMAIL_HOST_USER,  # ← debe ser 'jpalomolaguna@gmail.com'
-                recipient_list=['jpalomolaguna@gmail.com'],  # ← puede ser otro correo
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=['jpalomolaguna@gmail.com'],
                 fail_silently=False,
             )
 
@@ -35,7 +35,11 @@ def contacto(request):
     else:
         formulario = FormularioContacto()
 
-    return render(request, "contacto/contacto.html", {
+    context = {
         "formulario": formulario,
-        "mensaje_exito": mensaje_exito
-    })
+        "mensaje_exito": mensaje_exito,
+        'meta_title': 'Contacta con Nuestros Desarrolladores Web | Código Vivo Studio',
+        'meta_description': 'Solicita presupuesto para tu proyecto web. Desarrollo personalizado para restaurantes, comercios y empresas.',
+    }
+    
+    return render(request, "contacto/contacto.html", context)

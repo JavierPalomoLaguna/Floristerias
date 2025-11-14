@@ -1,27 +1,26 @@
 <html>
 
 <head>
-
-{% load static %}
-    <title>Gestión</title>
+    {% load static %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">  
-    <meta name="author" content="">
+    
+    <!-- ✅ META TAGS DINÁMICOS -->
+    <title>{% if meta_title %}{{ meta_title }}{% else %}Código Vivo Studio - Desarrollo Web para Restaurantes y Comercios{% endif %}</title>
+    <meta name="description" content="{% if meta_description %}{{ meta_description }}{% else %}Desarrollo web personalizado, tiendas online y sistemas de gestión para restaurantes y comercios.{% endif %}">
+    <meta name="author" content="Código Vivo Studio">
 
     <!-- Bootstrap -->
     <link href="{% static 'ProyectoWebApp/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
-     <!-- Fonts -->
-     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet"> 
-     <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
-     
-
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
+    
     <!-- Styles -->
     <link href="{% static 'ProyectoWebApp/css/gestion.css' %}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
-
 </head>
 <script type="application/ld+json">
 {
@@ -150,7 +149,7 @@
         	<a href="sample.html" class="link">Aviso legal</a> ·
         	<a href="sample.html" class="link">Cookies</a>
 		</p>
-        <p class="m-0 mbt1">&copy; Gestión de Pedidos 2020</p>
+        <p>&copy; 2025 Código Vivo Studio. Todos los derechos reservados.</p> 
       </div>
     <p class="m-0 mt-3 small">
       <a href="/admin/" class="text-muted" title="Panel de administración">⚙️⚙️⚙️</a>

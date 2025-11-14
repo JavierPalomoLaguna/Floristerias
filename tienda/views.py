@@ -7,10 +7,15 @@ from django.views.decorators.csrf import csrf_exempt
 def tienda(request):
     productos = Productos.objects.filter(disponibilidad=True)
     categorias = CategoriaProducto.objects.all()
-    return render(request, 'tienda/tienda.html', {
+    
+    context = {
         'productos': productos,
-        'categorias': categorias
-    })
+        'categorias': categorias,
+        'meta_title': 'Tiendas Online para Comercios - Desarrollo Ecommerce | Código Vivo Studio',
+        'meta_description': 'Creamos tiendas online profesionales para comercios. Catálogo de productos, pasarelas de pago y gestión de pedidos.',
+    }
+    
+    return render(request, 'tienda/tienda.html', context)
 
 def productos_por_categoria(request, categoria_id):
     categoria = get_object_or_404(CategoriaProducto, id=categoria_id)
@@ -88,3 +93,6 @@ def exportar_csv(request):
         "fecha_hasta": fecha_hasta,
         "categoria_id": categoria_id,
     })
+
+
+    
