@@ -18,6 +18,10 @@ from django.urls import include, path
 from django.contrib.auth import views as auth_views
 from django.contrib.sitemaps.views import sitemap
 from ProyectoWebApp.sitemaps import StaticViewSitemap
+from django.views.generic import RedirectView  
+from django.conf import settings  
+from django.conf.urls.static import static  
+
 
 sitemaps = {
     'static': StaticViewSitemap,
@@ -38,4 +42,5 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('ventas/', include('ventas.urls')),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    path('robots.txt', RedirectView.as_view(url='/static/ProyectoWebApp/robots.txt', permanent=True)),
 ]
