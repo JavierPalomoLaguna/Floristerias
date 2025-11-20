@@ -1,104 +1,189 @@
-{% extends 'ProyectoWebApp/base.html' %}
+{% extends 'tienda/base_tienda.html' %}
+
+{% block title %}Carrito de Compra - Tienda CVS{% endblock %}
+
+{% block meta_description %}Revisa y gestiona los productos en tu carrito de compra.{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-  <h2 class="mb-4 text-white">🛒 Tu carrito de compra</h2>
+<!-- Hero Section -->
+<section class="hero-tienda">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">🛒 Tu Carrito de Compra</h1>
+        <p class="lead">Revisa y gestiona tus productos</p>
+    </div>
+</section>
 
-  {% if carro %}
-    <table class="table table-bordered table-hover align-middle bg-light">
-      <thead class="table-warning text-center">
-        <tr>
-          <th>Producto</th>
-          <th>Nombre</th>
-          <th>Precio unitario</th>
-          <th>Cantidad</th>
-          <th>Total</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for key, item in carro.items %}
-        <tr>
-          <td class="text-center">
-            <img src="{{ item.imagen }}" alt="Imagen" style="width: 80px; border-radius: 6px;">
-          </td>
-          <td>{{ item.nombre }}</td>
-          <td>{{ item.precio|floatformat:2 }} €</td>
-          <td class="text-center">{{ item.cantidad }}</td>
-          <td>{{ item.total|floatformat:2 }} €</td>
-          <td class="text-center">
-            <a href="{% url 'sumar_producto' key %}" class="btn btn-sm btn-success me-1">+</a>
-            <a href="{% url 'restar_producto' key %}" class="btn btn-sm btn-secondary me-1">−</a>
-            <a href="{% url 'eliminar_producto' key %}" class="btn btn-sm btn-danger">Eliminar</a>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    
-    <!-- ✅ SECCIÓN CORREGIDA: USAR VARIABLES DE CONTEXT PROCESSORS -->
-    <div class="row justify-content-end">
-      <div class="col-md-6">
-        <div class="card bg-light">
-          <div class="card-body">
-            <h5 class="card-title">Resumen del pedido</h5>
-            
-            <div class="d-flex justify-content-between mb-2">
-              <span>Subtotal productos:</span>
-              <strong>{{ importe_total_carro|floatformat:2 }} €</strong>
+<section class="container my-5">
+    {% if carro %}
+    <!-- Tabla de productos -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="border-0">Producto</th>
+                            <th class="border-0">Nombre</th>
+                            <th class="border-0 text-center">Precio</th>
+                            <th class="border-0 text-center">Cantidad</th>
+                            <th class="border-0 text-center">Total</th>
+                            <th class="border-0 text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, item in carro.items %}
+                        <tr>
+                            <td>
+                                <img src="{{ item.imagen }}" 
+                                     alt="{{ item.nombre }}" 
+                                     class="rounded-3"
+                                     style="width: 80px; height: 80px; object-fit: cover;">
+                            </td>
+                            <td>
+                                <h6 class="mb-1">{{ item.nombre }}</h6>
+                            </td>
+                            <td class="text-center">
+                                <span class="fw-bold text-primary">{{ item.precio|floatformat:2 }} €</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge bg-primary fs-6">{{ item.cantidad }}</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="fw-bold text-success">{{ item.total|floatformat:2 }} €</span>
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a href="{% url 'sumar_producto' key %}" 
+                                       class="btn btn-success" 
+                                       title="Aumentar cantidad">
+                                        <i class="fas fa-plus"></i>
+                                    </a>
+                                    <a href="{% url 'restar_producto' key %}" 
+                                       class="btn btn-secondary" 
+                                       title="Disminuir cantidad">
+                                        <i class="fas fa-minus"></i>
+                                    </a>
+                                    <a href="{% url 'eliminar_producto' key %}" 
+                                       class="btn btn-danger" 
+                                       title="Eliminar producto">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-            
-            <div class="d-flex justify-content-between mb-2">
-              <span>
-                Gastos de envío:
-                {% if envio_gratis_carro %}  <!-- ✅ CAMBIADO: envio_gratis_carro -->
-                  <small class="text-success">(Gratis)</small>
-                {% endif %}
-              </span>
-              <strong>
-                {% if envio_gratis_carro %}  <!-- ✅ CAMBIADO: envio_gratis_carro -->
-                  0.00 €
-                {% else %}
-                  {{ gastos_envio_carro|floatformat:2 }} €  <!-- ✅ CAMBIADO: gastos_envio_carro -->
-                {% endif %}
-              </strong>
-            </div>
-            
-            {% if not envio_gratis_carro %}  <!-- ✅ CAMBIADO: envio_gratis_carro -->
-            <div class="small text-muted mb-3">
-              <i class="fas fa-truck"></i>
-              ¡Te faltan {{ falta_para_envio_gratis|floatformat:2 }} € para envío gratis!
-              (Envío gratis en pedidos superiores a {{ umbral_envio_gratis|floatformat:2 }} €)
-            </div>
-            {% else %}
-            <div class="small text-success mb-3">
-              <i class="fas fa-check-circle"></i>
-              ¡Envío gratis aplicado!
-            </div>
-            {% endif %}
-            
-            <hr>
-            <div class="d-flex justify-content-between mb-3">
-              <span><strong>Total:</strong></span>
-              <strong class="h5 text-success">{{ total_con_envio_carro|floatformat:2 }} €</strong>  <!-- ✅ CAMBIADO: total_con_envio_carro -->
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-    
-    <div class="text-end mt-4">
-      {% if request.session.ultima_categoria %}
-      <a href="{% url 'productos_por_categoria' request.session.ultima_categoria %}" class="btn btn-success">Seguir comprando</a>
-      {% else %}
-      <a href="{% url 'tienda' %}" class="btn btn-success">Seguir comprando</a>
-      {% endif %}  
-      <a href="{% url 'checkout' %}" class="btn btn-warning fw-bold">Tramitar pedido</a>
-      <a href="{% url 'vaciar_carro' %}" class="btn btn-danger me-2">Vaciar carrito</a>      
-    </div>
-  {% else %}
-    <div class="alert alert-info text-center">Tu carrito está vacío. ¡Ve a la tienda y añade algo!</div>
-  {% endif %}
-</div>
 
+    <!-- Resumen del pedido -->
+    <div class="row justify-content-end">
+        <div class="col-lg-6 col-md-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-receipt me-2"></i>Resumen del Pedido
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- Subtotal -->
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted">Subtotal productos:</span>
+                        <strong class="fs-5">{{ importe_total_carro|floatformat:2 }} €</strong>
+                    </div>
+
+                    <!-- Gastos de envío -->
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted">
+                            Gastos de envío:
+                            {% if envio_gratis_carro %}
+                                <small class="text-success">(Gratis)</small>
+                            {% endif %}
+                        </span>
+                        <strong class="fs-6">
+                            {% if envio_gratis_carro %}
+                                0.00 €
+                            {% else %}
+                                {{ gastos_envio_carro|floatformat:2 }} €
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                    <!-- Información envío gratis -->
+                    {% if not envio_gratis_carro %}
+                    <div class="alert alert-info py-2 mb-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-truck me-2"></i>
+                            <small>
+                                ¡Te faltan <strong>{{ falta_para_envio_gratis|floatformat:2 }} €</strong> 
+                                para envío gratis!
+                                <br>
+                                <em>(Envío gratis en pedidos superiores a {{ umbral_envio_gratis|floatformat:2 }} €)</em>
+                            </small>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-success py-2 mb-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <small>¡Envío gratis aplicado!</small>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <hr>
+
+                    <!-- Total -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <span class="fs-5 fw-bold">Total:</span>
+                        <strong class="fs-4 text-success">{{ total_con_envio_carro|floatformat:2 }} €</strong>
+                    </div>
+
+                    <!-- Botones de acción -->
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        {% if request.session.ultima_categoria %}
+                        <a href="{% url 'productos_por_categoria' request.session.ultima_categoria %}" 
+                           class="btn btn-outline-primary me-md-2">
+                            <i class="fas fa-arrow-left me-2"></i>Seguir Comprando
+                        </a>
+                        {% else %}
+                        <a href="{% url 'tienda' %}" 
+                           class="btn btn-outline-primary me-md-2">
+                            <i class="fas fa-arrow-left me-2"></i>Seguir Comprando
+                        </a>
+                        {% endif %}
+                        
+                        <a href="{% url 'checkout' %}" 
+                           class="btn btn-primario me-md-2">
+                            <i class="fas fa-credit-card me-2"></i>Tramitar Pedido
+                        </a>
+                        
+                        <a href="{% url 'vaciar_carro' %}" 
+                           class="btn btn-outline-danger">
+                            <i class="fas fa-trash me-2"></i>Vaciar Carrito
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <!-- Carrito vacío -->
+    <div class="text-center py-5">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body py-5">
+                <i class="fas fa-shopping-cart fa-4x text-muted mb-4"></i>
+                <h3 class="text-muted mb-3">Tu carrito está vacío</h3>
+                <p class="text-muted mb-4">¡Ve a la tienda y descubre nuestros productos!</p>
+                <a href="{% url 'tienda' %}" class="btn btn-primario btn-lg">
+                    <i class="fas fa-store me-2"></i>Ir a la Tienda
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</section>
 {% endblock %}

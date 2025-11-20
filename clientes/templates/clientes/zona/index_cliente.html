@@ -1,26 +1,218 @@
-{% extends 'ProyectoWebApp/base.html' %}
+{% extends 'tienda/base_tienda.html' %}
+{% load static %}
+
+{% block title %}Zona Cliente - Tienda CVS{% endblock %}
+
+{% block meta_description %}Accede a tu área personal para gestionar tus datos, pedidos y preferencias.{% endblock %}
 
 {% block content %}
-  <div class="zona-cliente">
-    <h2>Zona privada del cliente</h2>
-
-    {% if messages %}
-      {% for message in messages %}
-        <div class="alert-custom">
-          {{ message }}
-        </div>
-      {% endfor %}
-    {% endif %}
-
-    <p>Bienvenido, {{ cliente.nombre }} {{ cliente.apellidos }}.</p>
-
-    <div class="mt-4">
-      <h4>Opciones disponibles:</h4>
-      <ul>
-        <li><a href="{% url 'editar_datos_cliente' %}">Editar mis datos</a></li>
-        <li><a href="{% url 'ver_pedidos_cliente' %}">Histórico de pedidos</a></li>
-        <li><a href="{% url 'logout_cliente' %}">Cerrar sesión</a></li>
-      </ul>
+<!-- Hero Section -->
+<section class="hero-tienda">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">👋 Bienvenido a tu Zona</h1>
+        <p class="lead">Gestiona tu cuenta y consulta tus pedidos</p>
     </div>
-  </div>
+</section>
+
+<!-- Zona Cliente -->
+<section class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+            <!-- Mensajes -->
+            {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                    <i class="fas 
+                        {% if message.tags == 'success' %}fa-check-circle
+                        {% elif message.tags == 'error' %}fa-exclamation-circle
+                        {% elif message.tags == 'warning' %}fa-exclamation-triangle
+                        {% else %}fa-info-circle{% endif %} 
+                        me-2"></i>
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Tarjeta de Bienvenida -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-primario text-white py-3">
+                    <h5 class="mb-0">
+                        <i class="fas fa-user-circle me-2"></i>Bienvenido a tu zona privada
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="bg-primario rounded-circle d-flex align-items-center justify-content-center me-4" style="width: 60px; height: 60px;">
+                            <i class="fas fa-user fa-lg text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="mb-1">{{ cliente.nombre }} {{ cliente.apellidos }}</h4>
+                            <p class="text-muted mb-0">
+                                <i class="fas fa-envelope me-1"></i>{{ cliente.email }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Opciones del Cliente -->
+            <div class="row g-4">
+                <!-- Editar Datos -->
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm h-100 hover-card">
+                        <div class="card-body text-center p-4">
+                            <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                                <i class="fas fa-user-edit fa-2x text-primary"></i>
+                            </div>
+                            <h5 class="card-title">Editar Mis Datos</h5>
+                            <p class="card-text text-muted">Actualiza tu información personal, dirección y contacto</p>
+                            <a href="{% url 'editar_datos_cliente' %}" class="btn btn-primario mt-2">
+                                <i class="fas fa-edit me-2"></i>Gestionar Datos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Histórico de Pedidos -->
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm h-100 hover-card">
+                        <div class="card-body text-center p-4">
+                            <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                                <i class="fas fa-history fa-2x text-success"></i>
+                            </div>
+                            <h5 class="card-title">Histórico de Pedidos</h5>
+                            <p class="card-text text-muted">Consulta y gestiona todos tus pedidos realizados</p>
+                            <a href="{% url 'ver_pedidos_cliente' %}" class="btn btn-primario mt-2">
+                                <i class="fas fa-list-alt me-2"></i>Ver Pedidos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cerrar Sesión -->
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                                <i class="fas fa-sign-out-alt fa-2x text-warning"></i>
+                            </div>
+                            <h5 class="card-title">Cerrar Sesión</h5>
+                            <p class="card-text text-muted">Sal de forma segura de tu cuenta</p>
+                            <a href="{% url 'logout_cliente' %}" class="btn btn-outline-warning mt-2">
+                                <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Información Adicional -->
+            <div class="card border-0 bg-light mt-4">
+                <div class="card-body text-center">
+                    <h6 class="mb-3">
+                        <i class="fas fa-shield-alt me-2 text-primario"></i>Tu información está protegida
+                    </h6>
+                    <p class="text-muted small mb-0">
+                        Todos tus datos personales están seguros y protegidos según nuestra 
+                        <a href="#" class="text-primario text-decoration-none">política de privacidad</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Estilos adicionales -->
+<style>
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .hover-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    .card-header {
+        border: none;
+    }
+    
+    .bg-primario {
+        background: linear-gradient(135deg, var(--color-primario), var(--color-secundario)) !important;
+    }
+    
+    .text-primario {
+        color: var(--color-primario) !important;
+    }
+    
+    .btn-primario {
+        background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primario:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        color: white;
+    }
+    
+    .btn-outline-warning {
+        border: 2px solid #ffc107;
+        color: #ffc107;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-outline-warning:hover {
+        background-color: #ffc107;
+        color: #000;
+        transform: translateY(-2px);
+    }
+    
+    .bg-primary.bg-opacity-10 {
+        background-color: rgba(102, 126, 234, 0.1) !important;
+    }
+    
+    .bg-success.bg-opacity-10 {
+        background-color: rgba(40, 167, 69, 0.1) !important;
+    }
+    
+    .bg-warning.bg-opacity-10 {
+        background-color: rgba(255, 193, 7, 0.1) !important;
+    }
+    
+    /* Avatar del usuario */
+    .bg-primario.rounded-circle {
+        background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .d-flex.align-items-center {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .bg-primario.rounded-circle {
+            margin-bottom: 1rem;
+            margin-right: 0 !important;
+        }
+        
+        .card-body.text-center {
+            padding: 1.5rem !important;
+        }
+    }
+</style>
 {% endblock %}

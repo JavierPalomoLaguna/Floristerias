@@ -1,33 +1,360 @@
-{% extends "ProyectoWebApp/base.html" %}
+{% extends 'tienda/base_tienda.html' %}
+
+{% block title %}Recuperar Contraseña - Tienda CVS{% endblock %}
+
+{% block meta_description %}Solicita un enlace para restablecer tu contraseña.{% endblock %}
+
+{% block extra_css %}
+<style>
+    .reset-container {
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 0;
+    }
+
+    .reset-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        border: none;
+        max-width: 1400px;
+        width: 98%;
+        margin: 1rem auto;
+    }
+
+    .reset-header {
+        background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+        color: white;
+        border-radius: 15px 15px 0 0;
+        padding: 1.5rem 3rem;
+        text-align: center;
+    }
+
+    .reset-body {
+        padding: 1.5rem 3rem;
+    }
+
+    .form-control {
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        height: auto;
+    }
+
+    .form-control:focus {
+        border-color: var(--color-primario);
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--color-texto);
+        margin-bottom: 8px;
+        display: block;
+        font-size: 1rem;
+    }
+
+    .form-text {
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin-top: 6px;
+        line-height: 1.3;
+    }
+
+    .alert-custom {
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        border: 1px solid transparent;
+        font-size: 0.9rem;
+    }
+
+    .alert-custom.success {
+        background: linear-gradient(135deg, #d4edda, #c3e6cb);
+        border-color: #c3e6cb;
+        color: #155724;
+    }
+
+    .alert-custom.error {
+        background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+        border-color: #f5c6cb;
+        color: #721c24;
+    }
+
+    .alert-custom.info {
+        background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+        border-color: #bee5eb;
+        color: #0c5460;
+    }
+
+    .btn-primario {
+        background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+        border: none;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+
+    .btn-primario:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        color: white;
+    }
+
+    .btn-outline-secondary {
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        width: 100%;
+        border: 2px solid #6c757d;
+        margin: 0.25rem 0;
+    }
+
+    /* Espaciado más compacto */
+    .mb-4 {
+        margin-bottom: 1rem !important;
+    }
+
+    .mb-3 {
+        margin-bottom: 0.75rem !important;
+    }
+
+    .mt-4 {
+        margin-top: 1rem !important;
+    }
+
+    .pt-3 {
+        padding-top: 0.75rem !important;
+    }
+
+    .pt-4 {
+        padding-top: 1rem !important;
+    }
+
+    .border-top {
+        border-top: 1px solid #e9ecef !important;
+        padding-top: 1rem !important;
+    }
+
+    /* Hero section más compacta */
+    .hero-tienda {
+        padding: 1.5rem 0 0.5rem 0;
+    }
+
+    .hero-tienda h1 {
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .hero-tienda .lead {
+        font-size: 1rem;
+        margin-bottom: 0;
+    }
+
+    /* Instrucciones más compactas */
+    .alert-info {
+        padding: 1rem !important;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+    }
+
+    /* Iconos más pequeños */
+    .reset-header .fa-key {
+        font-size: 2.5rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+
+    .reset-header h3 {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .reset-header p {
+        font-size: 0.95rem;
+    }
+
+    /* Columnas más anchas */
+    .col-12.col-md-8.col-lg-6 {
+        max-width: 100%;
+        flex: 0 0 100%;
+    }
+
+    /* Contenedor interno más ancho */
+    .reset-container .row {
+        max-width: 100%;
+        margin: 0;
+    }
+
+    /* Ajustes específicos para este template */
+    .alert-info .fa-lg {
+        font-size: 1.2rem !important;
+    }
+
+    .alert-heading {
+        font-size: 1.1rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .fs-5 {
+        font-size: 1.1rem !important;
+    }
+
+    .fs-6 {
+        font-size: 0.9rem !important;
+    }
+
+    .py-3 {
+        padding-top: 0.75rem !important;
+        padding-bottom: 0.75rem !important;
+    }
+
+    .py-2 {
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .reset-card {
+            margin: 0.5rem;
+            width: calc(100% - 1rem);
+        }
+        
+        .reset-header {
+            padding: 1rem 1.5rem;
+        }
+        
+        .reset-body {
+            padding: 1rem 1.5rem;
+        }
+        
+        .hero-tienda h1 {
+            font-size: 1.5rem;
+        }
+        
+        .form-control {
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+        
+        .reset-header .fa-key {
+            font-size: 2rem !important;
+        }
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-12 col-sm-8 col-md-6 col-lg-5">
-
-      <h2 class="mb-4 text-center text-white">Recuperar contraseña</h2>
-
-      {% if messages %}
-        {% for message in messages %}
-          <div class="alert alert-custom {{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-      {% endif %}
-
-      <form method="post" class="border p-4 rounded bg-white shadow-sm">
-        {% csrf_token %}
-        <div class="form-group mb-3">
-          <label for="usuario" class="form-label">Usuario</label>
-          <input type="text" name="usuario" id="usuario" class="form-control" required>
-        </div>
-
-        <button type="submit" class="btn btn-primary w-100">Enviar enlace de recuperación</button>
-      </form>
-
-      <div class="d-flex justify-content-center mt-4">
-        <a href="/tienda/" class="btn btn-success w-100">Volver a la tienda</a>
-      </div>
-
+<!-- Hero Section -->
+<section class="hero-tienda">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">🔐 Recuperar Contraseña</h1>
+        <p class="lead">Solicita un enlace para restablecer tu contraseña</p>
     </div>
-  </div>
-</div>
+</section>
+
+<!-- Reset Request Form -->
+<section class="container reset-container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="reset-card">
+                <!-- Header -->
+                <div class="reset-header">
+                    <i class="fas fa-key fa-3x mb-4"></i>
+                    <h3 class="mb-2">Recuperar Acceso</h3>
+                    <p class="mb-0 opacity-85 fs-5">Ingresa tu usuario para continuar</p>
+                </div>
+                
+                <!-- Body -->
+                <div class="reset-body">
+                    <!-- Mensajes -->
+                    {% if messages %}
+                    <div class="mb-4">
+                        {% for message in messages %}
+                        <div class="alert-custom {{ message.tags }}">
+                            <i class="fas 
+                                {% if message.tags == 'success' %}fa-check-circle
+                                {% elif message.tags == 'error' %}fa-exclamation-circle
+                                {% elif message.tags == 'warning' %}fa-exclamation-triangle
+                                {% else %}fa-info-circle{% endif %} 
+                                me-2"></i>
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Instrucciones -->
+                    <div class="alert alert-info border-0 bg-light mb-4 p-3">
+                        <div class="d-flex align-items-start">
+                            <i class="fas fa-info-circle fa-lg text-primary me-3 mt-1"></i>
+                            <div>
+                                <h6 class="alert-heading mb-2 fs-5">¿Cómo funciona?</h6>
+                                <p class="mb-0 fs-6">
+                                    Ingresa tu nombre de usuario y te enviaremos un enlace seguro 
+                                    para restablecer tu contraseña a tu email registrado.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formulario -->
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <!-- Campo de usuario -->
+                        <div class="mb-4">
+                            <label for="usuario" class="form-label">
+                                <i class="fas fa-user me-2"></i>Nombre de Usuario
+                            </label>
+                            <input type="text" 
+                                   name="usuario" 
+                                   id="usuario" 
+                                   class="form-control" 
+                                   placeholder="Ingresa tu nombre de usuario"
+                                   required
+                                   style="padding: 14px 18px; font-size: 1.05rem;">
+                            <div class="form-text mt-2">
+                                <i class="fas fa-question-circle me-1"></i>
+                                Introduce el mismo usuario que usas para iniciar sesión en el sistema
+                            </div>
+                        </div>
+
+                        <!-- Botón de envío -->
+                        <button type="submit" class="btn btn-primario py-3 mb-4 fs-5">
+                            <i class="fas fa-paper-plane me-2"></i>Enviar Enlace de Recuperación
+                        </button>
+                    </form>
+
+                    <!-- Enlace de volver -->
+                    <div class="text-center mb-3">
+                        <a href="{% url 'tienda' %}" class="btn btn-outline-secondary py-2">
+                            <i class="fas fa-arrow-left me-2"></i>Volver a la Tienda
+                        </a>
+                    </div>
+
+                    <!-- Enlaces adicionales -->
+                    <div class="text-center mt-4 pt-4 border-top">
+                        <small class="text-muted fs-6">
+                            ¿Recordaste tu contraseña? 
+                            <a href="{% url 'tramitar_pedido' %}" class="text-decoration-none fw-bold">
+                                Iniciar sesión
+                            </a>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

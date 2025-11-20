@@ -1,26 +1,206 @@
-{% extends 'ProyectoWebApp/base.html' %}
+{% extends 'tienda/base_tienda.html' %}
+
+{% block title %}Iniciar Sesión - Tienda CVS{% endblock %}
+
+{% block meta_description %}Inicia sesión en tu cuenta para continuar con tu compra.{% endblock %}
+
+{% block extra_css %}
+<style>
+    .login-container {
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .login-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        border: none;
+        max-width: 450px;
+        width: 100%;
+    }
+    
+    .login-header {
+        background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+        color: white;
+        border-radius: 20px 20px 0 0;
+        padding: 2rem;
+        text-align: center;
+    }
+    
+    .login-body {
+        padding: 2rem;
+    }
+    
+    /* Estilos específicos para asegurar alineación */
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-control {
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 12px 16px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        width: 100%;
+        box-sizing: border-box;
+        height: 48px;
+        line-height: 1.5;
+    }
+    
+    /* Asegurar que todos los inputs tengan el mismo estilo */
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 12px 16px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        width: 100%;
+        box-sizing: border-box;
+        height: 48px;
+        line-height: 1.5;
+    }
+    
+    .form-control:focus,
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="email"]:focus {
+        border-color: var(--color-primario);
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        outline: none;
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: var(--color-texto);
+        margin-bottom: 8px;
+        display: block;
+    }
+    
+    .login-links {
+        border-top: 1px solid #e9ecef;
+        padding-top: 1.5rem;
+        margin-top: 1.5rem;
+    }
+    
+    .login-links a {
+        color: var(--color-primario);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+    
+    .login-links a:hover {
+        color: var(--color-secundario);
+        text-decoration: underline;
+    }
+    
+    /* Asegurar consistencia en los mensajes de error */
+    .text-danger.small {
+        margin-top: 5px;
+        font-size: 0.875rem;
+    }
+    
+    .form-text {
+        margin-top: 5px;
+        font-size: 0.875rem;
+        color: #6c757d;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="login-box">
-  <h2 class="login-title">Iniciar sesión</h2>
-
-  <form method="post">
-    {% csrf_token %}
-    {{ login_form.as_p }}
-    <button type="submit" class="btn btn-primary w-100">Entrar</button>
-  </form>
-
-  {% if messages %}
-    <div class="mt-3">
-      {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-      {% endfor %}
+<!-- Hero Section -->
+<section class="hero-tienda">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">🔐 Iniciar Sesión</h1>
+        <p class="lead">Accede a tu cuenta para continuar con tu compra</p>
     </div>
-  {% endif %}
+</section>
 
-  <div class="login-links">
-    <p>¿Primera vez comprando? <a href="{% url 'registro_cliente' %}">Regístrate aquí</a></p>
-    <p>¿Olvidaste tu contraseña? <a href="{% url 'solicitar_reset' %}">Recupérala aquí</a></p>
-  </div>
-</div>
+<!-- Login Form -->
+<section class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="login-card">
+                <!-- Header -->
+                <div class="login-header">
+                    <i class="fas fa-user-circle fa-3x mb-3"></i>
+                    <h3 class="mb-0">Bienvenido de nuevo</h3>
+                </div>
+                
+                <!-- Body -->
+                <div class="login-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <!-- Campos del formulario con estructura consistente -->
+                        {% for field in login_form %}
+                        <div class="form-group">
+                            <label for="{{ field.id_for_label }}" class="form-label">
+                                <i class="fas 
+                                    {% if field.name == 'username' %}fa-user
+                                    {% elif field.name == 'password' %}fa-lock
+                                    {% else %}fa-pencil-alt{% endif %} 
+                                    me-2"></i>
+                                {{ field.label }}
+                            </label>
+                            {{ field }}
+                            {% if field.help_text %}
+                            <div class="form-text">{{ field.help_text }}</div>
+                            {% endif %}
+                            {% for error in field.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+
+                        <!-- Botón de envío -->
+                        <button type="submit" class="btn btn-primario w-100 py-2 mb-4">
+                            <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+                        </button>
+                    </form>
+
+                    <!-- Mensajes -->
+                    {% if messages %}
+                    <div class="mt-3">
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            <i class="fas 
+                                {% if message.tags == 'success' %}fa-check-circle
+                                {% elif message.tags == 'error' %}fa-exclamation-circle
+                                {% elif message.tags == 'warning' %}fa-exclamation-triangle
+                                {% else %}fa-info-circle{% endif %} 
+                                me-2"></i>
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Enlaces -->
+                    <div class="login-links text-center">
+                        <p class="mb-2">
+                            <i class="fas fa-user-plus me-2"></i>
+                            ¿Primera vez comprando? 
+                            <a href="{% url 'registro_cliente' %}">Regístrate aquí</a>
+                        </p>
+                        <p class="mb-0">
+                            <i class="fas fa-key me-2"></i>
+                            ¿Olvidaste tu contraseña? 
+                            <a href="{% url 'solicitar_reset' %}">Recupérala aquí</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

@@ -1,59 +1,213 @@
-{% extends 'ProyectoWebApp/base.html' %}
+{% extends 'tienda/base_tienda.html' %}
+{% load static %}
+
+{% block title %}Editar Mis Datos - Tienda CVS{% endblock %}
+
+{% block meta_description %}Actualiza tu información personal y de contacto en tu cuenta de cliente.{% endblock %}
 
 {% block content %}
-  <div class="container mt-5 zona-cliente">
-    <h2>Editar mis datos</h2>
+<!-- Hero Section -->
+<section class="hero-tienda">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">👤 Editar Mis Datos</h1>
+        <p class="lead">Actualiza tu información personal y de contacto</p>
+    </div>
+</section>
 
-    {% if messages %}
-      {% for message in messages %}
-        <div class="alert-custom">
-          {{ message }}
+<!-- Formulario de Edición -->
+<section class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm mb-5">
+                <div class="card-header bg-primario text-white py-3">
+                    <h5 class="mb-0">
+                        <i class="fas fa-user-edit me-2"></i>Información Personal
+                    </h5>
+                </div>
+                
+                <div class="card-body p-4">
+                    <!-- Mensajes -->
+                    {% if messages %}
+                    <div class="mb-4">
+                        {% for message in messages %}
+                        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                            <i class="fas 
+                                {% if message.tags == 'success' %}fa-check-circle
+                                {% elif message.tags == 'error' %}fa-exclamation-circle
+                                {% elif message.tags == 'warning' %}fa-exclamation-triangle
+                                {% else %}fa-info-circle{% endif %} 
+                                me-2"></i>
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <!-- Columna izquierda: Información Personal -->
+                            <div class="col-lg-6">
+                                <h6 class="text-primario mb-3 border-bottom pb-2">
+                                    <i class="fas fa-id-card me-2"></i>Datos Personales
+                                </h6>
+                                
+                                {% for field in form %}
+                                    {% if field.name in 'usuario nombre apellidos telefono email cif provincia localidad' %}
+                                    <div class="mb-3">
+                                        <label for="{{ field.id_for_label }}" class="form-label fw-semibold">
+                                            {{ field.label }}
+                                        </label>
+                                        {{ field }}
+                                        {% if field.errors %}
+                                        <div class="text-danger small mt-1">
+                                            <i class="fas fa-exclamation-circle me-1"></i>{{ field.errors.0 }}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+
+                            <!-- Columna derecha: Dirección -->
+                            <div class="col-lg-6">
+                                <h6 class="text-primario mb-3 border-bottom pb-2">
+                                    <i class="fas fa-home me-2"></i>Dirección de Envío
+                                </h6>
+                                
+                                {% for field in form %}
+                                    {% if field.name in 'calle numero_calle portal escalera piso puerta codigo_postal' %}
+                                    <div class="mb-3">
+                                        <label for="{{ field.id_for_label }}" class="form-label fw-semibold">
+                                            {{ field.label }}
+                                        </label>
+                                        {{ field }}
+                                        {% if field.errors %}
+                                        <div class="text-danger small mt-1">
+                                            <i class="fas fa-exclamation-circle me-1"></i>{{ field.errors.0 }}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Botones de acción -->
+                        <div class="row mt-4 pt-3 border-top">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <button type="submit" class="btn btn-primario px-4 py-2">
+                                            <i class="fas fa-save me-2"></i>Guardar Cambios
+                                        </button>
+                                        <a href="{% url 'zona_cliente' %}" class="btn btn-outline-secondary ms-2 px-4 py-2">
+                                            <i class="fas fa-times me-2"></i>Cancelar
+                                        </a>
+                                    </div>
+                                    
+                                    <div class="text-end">
+                                        <small class="text-muted">
+                                            ¿Quieres cambiar tu contraseña? 
+                                            <a href="{% url 'solicitar_reset' %}" class="text-primario text-decoration-none fw-bold">
+                                                Haz clic aquí
+                                            </a>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-      {% endfor %}
-    {% endif %}
+    </div>
+</section>
 
-    <form method="POST">
-      {% csrf_token %}
-
-      <div class="row">
-        <!-- Columna izquierda: 8 campos -->
-        <div class="col-md-6">
-          {% for field in form %}
-            {% if field.name in 'usuario nombre apellidos telefono email cif provincia localidad' %}
-              <div class="form-group mb-3">
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
-                {% if field.errors %}
-                  <div class="text-danger">{{ field.errors }}</div>
-                {% endif %}
-              </div>
-            {% endif %}
-          {% endfor %}
-        </div>
-
-        <!-- Columna derecha: 8 campos -->
-        <div class="col-md-6">
-          {% for field in form %}
-            {% if field.name in 'calle numero_calle portal escalera piso puerta codigo_postal' %}
-              <div class="form-group mb-3">
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
-                {% if field.errors %}
-                  <div class="text-danger">{{ field.errors }}</div>
-                {% endif %}
-              </div>
-            {% endif %}
-          {% endfor %}
-        </div>
-      </div>
-
-      <div class="mt-4">
-        <button type="submit" class="btn btn-primary">Guardar cambios</button>
-        <a href="{% url 'zona_cliente' %}" class="btn btn-secondary ms-2">Cancelar</a>
-      </div>
-    </form>
-
-    <hr>
-    <p>¿Quieres cambiar tu contraseña? <a href="{% url 'solicitar_reset' %}">Haz clic aquí</a>.</p>
-  </div>
+<!-- Estilos adicionales -->
+<style>
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    
+    .card-header {
+        border: none;
+    }
+    
+    .bg-primario {
+        background: linear-gradient(135deg, var(--color-primario), var(--color-secundario)) !important;
+    }
+    
+    .text-primario {
+        color: var(--color-primario) !important;
+    }
+    
+    .btn-primario {
+        background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+        border: none;
+        color: white;
+        padding: 10px 25px;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primario:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        color: white;
+    }
+    
+    .form-control {
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+        border-color: var(--color-primario);
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: var(--color-texto);
+        margin-bottom: 8px;
+    }
+    
+    .border-bottom {
+        border-bottom: 2px solid #e9ecef !important;
+    }
+    
+    .border-top {
+        border-top: 2px solid #e9ecef !important;
+    }
+    
+    /* Mejoras para los campos del formulario */
+    select.form-control,
+    input.form-control {
+        height: auto;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .d-flex {
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .text-end {
+            text-align: left !important;
+        }
+        
+        .card-body {
+            padding: 1.5rem !important;
+        }
+    }
+</style>
 {% endblock %}

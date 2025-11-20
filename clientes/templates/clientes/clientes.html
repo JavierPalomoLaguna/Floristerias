@@ -1,59 +1,247 @@
-{% extends 'ProyectoWebApp/base.html' %}
+{% extends 'tienda/base_tienda.html' %}
+
+{% block title %}Registro de Cliente - Tienda CVS{% endblock %}
+
+{% block meta_description %}Crea tu cuenta de cliente para disfrutar de una experiencia de compra personalizada.{% endblock %}
+
+{% block extra_css %}
+<style>
+    .registro-container {
+        min-height: 80vh;
+        padding: 2rem 0;
+    }
+    
+    .registro-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        border: none;
+        overflow: hidden;
+    }
+    
+    .registro-header {
+        background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+        color: white;
+        padding: 2.5rem;
+        text-align: center;
+    }
+    
+    .registro-body {
+        padding: 2.5rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: var(--color-texto);
+        margin-bottom: 8px;
+        display: block;
+    }
+    
+    .form-control {
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 12px 16px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+    
+    .form-control:focus {
+        border-color: var(--color-primario);
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    
+    .text-danger {
+        font-size: 0.875rem;
+        margin-top: 5px;
+        display: block;
+    }
+    
+    .alert-success-custom {
+        background: linear-gradient(135deg, #d4edda, #c3e6cb);
+        border: 1px solid #c3e6cb;
+        color: #155724;
+        padding: 1rem;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .field-icon {
+        width: 20px;
+        margin-right: 8px;
+        opacity: 0.7;
+    }
+    
+    .section-title {
+        color: var(--color-primario);
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--color-primario);
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-  <div class="container mt-5 zona-cliente">
-    <h2>Registro de Cliente</h2>
+<!-- Hero Section -->
+<section class="hero-tienda">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">👤 Crear Cuenta</h1>
+        <p class="lead">Regístrate para una experiencia de compra personalizada</p>
+    </div>
+</section>
 
-    {% if messages %}
-      {% for message in messages %}
-        <div class="alert-custom">
-          {{ message }}
+<!-- Registro Form -->
+<section class="container registro-container">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="registro-card">
+                <!-- Header -->
+                <div class="registro-header">
+                    <i class="fas fa-user-plus fa-3x mb-3"></i>
+                    <h2 class="mb-2">Registro de Cliente</h2>
+                    <p class="mb-0 opacity-75">Completa tus datos para crear tu cuenta</p>
+                </div>
+                
+                <!-- Body -->
+                <div class="registro-body">
+                    <!-- Mensajes de éxito -->
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert-success-custom">
+                            <i class="fas fa-check-circle me-2"></i>
+                            {{ message }}
+                        </div>
+                        <div class="text-center mb-4">
+                            <a href="{% url 'tramitar_pedido' %}" class="btn btn-primario">
+                                <i class="fas fa-shopping-cart me-2"></i>Seguir con la compra
+                            </a>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="POST" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <!-- Columna izquierda - Datos personales -->
+                            <div class="col-md-6">
+                                <h4 class="section-title">
+                                    <i class="fas fa-user-circle field-icon"></i>Datos Personales
+                                </h4>
+                                
+                                {% for field in form %}
+                                    {% if field.name in 'usuario nombre apellidos telefono email cif provincia localidad' %}
+                                    <div class="form-group">
+                                        <label for="{{ field.id_for_label }}" class="form-label">
+                                            <i class="fas 
+                                                {% if field.name == 'usuario' %}fa-user
+                                                {% elif field.name == 'nombre' %}fa-signature
+                                                {% elif field.name == 'apellidos' %}fa-id-card
+                                                {% elif field.name == 'telefono' %}fa-phone
+                                                {% elif field.name == 'email' %}fa-envelope
+                                                {% elif field.name == 'cif' %}fa-building
+                                                {% elif field.name == 'provincia' %}fa-map-marker-alt
+                                                {% elif field.name == 'localidad' %}fa-map-pin
+                                                {% else %}fa-pencil-alt{% endif %} 
+                                                field-icon"></i>
+                                            {{ field.label }}
+                                        </label>
+                                        {{ field }}
+                                        {% if field.errors %}
+                                            <div class="text-danger">
+                                                <i class="fas fa-exclamation-circle me-1"></i>
+                                                {{ field.errors }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+
+                            <!-- Columna derecha - Dirección y contraseña -->
+                            <div class="col-md-6">
+                                <h4 class="section-title">
+                                    <i class="fas fa-home field-icon"></i>Dirección
+                                </h4>
+                                
+                                {% for field in form %}
+                                    {% if field.name in 'calle numero_calle portal escalera piso puerta codigo_postal' %}
+                                    <div class="form-group">
+                                        <label for="{{ field.id_for_label }}" class="form-label">
+                                            <i class="fas 
+                                                {% if field.name == 'calle' %}fa-road
+                                                {% elif field.name == 'numero_calle' %}fa-hashtag
+                                                {% elif field.name == 'portal' %}fa-door-open
+                                                {% elif field.name == 'escalera' %}fa-stairs
+                                                {% elif field.name == 'piso' %}fa-building
+                                                {% elif field.name == 'puerta' %}fa-door-closed
+                                                {% elif field.name == 'codigo_postal' %}fa-mail-bulk
+                                                {% else %}fa-pencil-alt{% endif %} 
+                                                field-icon"></i>
+                                            {{ field.label }}
+                                        </label>
+                                        {{ field }}
+                                        {% if field.errors %}
+                                            <div class="text-danger">
+                                                <i class="fas fa-exclamation-circle me-1"></i>
+                                                {{ field.errors }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+
+                                <h4 class="section-title mt-4">
+                                    <i class="fas fa-lock field-icon"></i>Contraseña
+                                </h4>
+                                
+                                {% for field in form %}
+                                    {% if field.name in 'password1 password2' %}
+                                    <div class="form-group">
+                                        <label for="{{ field.id_for_label }}" class="form-label">
+                                            <i class="fas 
+                                                {% if field.name == 'password1' %}fa-key
+                                                {% elif field.name == 'password2' %}fa-key
+                                                {% else %}fa-pencil-alt{% endif %} 
+                                                field-icon"></i>
+                                            {{ field.label }}
+                                        </label>
+                                        {{ field }}
+                                        {% if field.errors %}
+                                            <div class="text-danger">
+                                                <i class="fas fa-exclamation-circle me-1"></i>
+                                                {{ field.errors }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Botones de acción -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <a href="{% url 'tienda' %}" class="btn btn-outline-secondary me-md-2">
+                                        <i class="fas fa-times me-2"></i>Cancelar
+                                    </a>
+                                    <button type="submit" class="btn btn-primario">
+                                        <i class="fas fa-user-plus me-2"></i>Registrarse
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="mt-3">
-          <a href="{% url 'tramitar_pedido' %}" class="btn btn-success">Seguir con la compra</a>
-        </div>
-      {% endfor %}
-    {% endif %}
-
-    <form method="POST" novalidate>
-      {% csrf_token %}
-
-      <div class="row">
-        <!-- Columna izquierda -->
-        <div class="col-md-6">
-          {% for field in form %}
-            {% if field.name in 'usuario nombre apellidos telefono email cif provincia localidad' %}
-              <div class="form-group mb-3">
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
-                {% if field.errors %}
-                  <div class="text-danger">{{ field.errors }}</div>
-                {% endif %}
-              </div>
-            {% endif %}
-          {% endfor %}
-        </div>
-
-        <!-- Columna derecha -->
-        <div class="col-md-6">
-          {% for field in form %}
-            {% if field.name in 'calle numero_calle portal escalera piso puerta codigo_postal password1 password2' %}
-              <div class="form-group mb-3">
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
-                {% if field.errors %}
-                  <div class="text-danger">{{ field.errors }}</div>
-                {% endif %}
-              </div>
-            {% endif %}
-          {% endfor %}
-        </div>
-      </div>
-
-      <div class="mt-4">
-        <button type="submit" class="btn btn-primary">Registrarse</button>
-        <a href="{% url 'home' %}" class="btn btn-secondary ms-2">Cancelar</a>
-      </div>
-    </form>
-  </div>
+    </div>
+</section>
 {% endblock %}

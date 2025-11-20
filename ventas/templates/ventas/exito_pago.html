@@ -1,9 +1,229 @@
-{% extends 'ProyectoWebApp/base.html' %}
+{% extends 'tienda/base_tienda.html' %}
+{% load static %}
+
+{% block title %}Pago Realizado con Éxito - Tienda CVS{% endblock %}
+
+{% block meta_description %}¡Gracias por tu compra! Hemos recibido tu pago correctamente y estamos procesando tu pedido.{% endblock %}
 
 {% block content %}
-<div class="container mt-5 text-center">
-  <h2 class="mt-3" style="color: white;" >✅ Pago realizado con éxito</h2>
-  <p class="mt-3" style="color: white;">Gracias por tu compra. Hemos recibido el pago correctamente.</p>
-  <a href="/" class="btn btn-primary mt-4">Volver al inicio</a>
-</div>
+<!-- Hero Section -->
+<section class="hero-tienda">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">🎉 ¡Pago Realizado con Éxito!</h1>
+        <p class="lead">Tu compra ha sido procesada correctamente</p>
+    </div>
+</section>
+
+<!-- Confirmación de Pago Exitoso -->
+<section class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <!-- Tarjeta de Éxito -->
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-header bg-success text-white py-4">
+                    <i class="fas fa-check-circle fa-4x mb-3"></i>
+                    <h3 class="mb-2">¡Pago Confirmado!</h3>
+                    <p class="mb-0 opacity-90">Transacción completada satisfactoriamente</p>
+                </div>
+                
+                <div class="card-body p-4">
+                    <!-- Icono de éxito -->
+                    <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-4" style="width: 100px; height: 100px;">
+                        <i class="fas fa-check fa-3x text-success"></i>
+                    </div>
+                    
+                    <!-- Mensaje de agradecimiento -->
+                    <h4 class="text-success mb-3">¡Gracias por tu compra!</h4>
+                    <p class="text-muted mb-4">
+                        Hemos recibido tu pago correctamente y estamos procesando tu pedido. 
+                        En breve recibirás un email de confirmación con todos los detalles.
+                    </p>
+                    
+                    <!-- Información del proceso -->
+                    <div class="alert alert-info border-0 bg-light mb-4">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="fas fa-rocket fa-lg text-info me-3"></i>
+                            <div>
+                                <strong>Tu pedido está siendo preparado</strong>
+                                <span class="text-muted d-block mt-1">Te notificaremos cuando sea enviado</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Próximos pasos -->
+                    <div class="row text-start mb-4">
+                        <div class="col-12">
+                            <h6 class="text-primario mb-3">¿Qué puedes esperar ahora?</h6>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-primario text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px; font-size: 0.8rem;">1</div>
+                                <span>Email de confirmación con los detalles del pedido</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-primario text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px; font-size: 0.8rem;">2</div>
+                                <span>Actualización del estado de envío en tu zona de cliente</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="bg-primario text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px; font-size: 0.8rem;">3</div>
+                                <span>Notificación cuando tu pedido sea enviado</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Botones de acción -->
+                    <div class="d-grid gap-2 d-md-flex justify-content-center">
+                        <a href="{% url 'tienda' %}" class="btn btn-primario px-4 py-2">
+                            <i class="fas fa-shopping-bag me-2"></i>Seguir Comprando
+                        </a>
+                        <a href="{% url 'ver_pedidos_cliente' %}" class="btn btn-outline-success px-4 py-2">
+                            <i class="fas fa-clipboard-list me-2"></i>Ver Mis Pedidos
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Footer informativo -->
+                <div class="card-footer bg-light border-0 py-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                ¿Tienes alguna pregunta sobre tu pedido? 
+                                <a href="#" class="text-primario text-decoration-none">Contáctanos</a>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sección de confianza -->
+<section class="container mb-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10">
+            <div class="card border-0 bg-light">
+                <div class="card-body text-center p-4">
+                    <h5 class="text-primario mb-3">
+                        <i class="fas fa-shield-alt me-2"></i>Compra 100% Segura
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <i class="fas fa-lock fa-2x text-success mb-2"></i>
+                            <h6>Pago Seguro</h6>
+                            <p class="small text-muted mb-0">Tus datos están protegidos con encriptación SSL</p>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <i class="fas fa-truck fa-2x text-success mb-2"></i>
+                            <h6>Envío Rápido</h6>
+                            <p class="small text-muted mb-0">Procesamos los pedidos en 24-48 horas</p>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <i class="fas fa-headset fa-2x text-success mb-2"></i>
+                            <h6>Soporte 24/7</h6>
+                            <p class="small text-muted mb-0">Estamos aquí para ayudarte cuando lo necesites</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Estilos adicionales -->
+<style>
+    .card {
+        border-radius: 20px;
+        overflow: hidden;
+    }
+    
+    .card-header {
+        border: none;
+    }
+    
+    .bg-success {
+        background: linear-gradient(135deg, #198754, #20c997) !important;
+    }
+    
+    .text-primario {
+        color: var(--color-primario) !important;
+    }
+    
+    .btn-primario {
+        background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+        border: none;
+        color: white;
+        padding: 12px 25px;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primario:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        color: white;
+    }
+    
+    .btn-outline-success {
+        border: 2px solid #198754;
+        color: #198754;
+        padding: 12px 25px;
+        border-radius: 10px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-outline-success:hover {
+        background-color: #198754;
+        color: white;
+        transform: translateY(-2px);
+    }
+    
+    .bg-success.bg-opacity-10 {
+        background-color: rgba(25, 135, 84, 0.1) !important;
+    }
+    
+    .alert-info {
+        border-radius: 10px;
+        padding: 1rem 1.25rem;
+    }
+    
+    /* Animación sutil para el icono de éxito */
+    .fa-check-circle {
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    /* Números de los pasos */
+    .bg-primario.rounded-circle {
+        background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+        font-weight: 600;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .d-md-flex {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .btn-primario,
+        .btn-outline-success {
+            width: 100%;
+        }
+        
+        .card-body {
+            padding: 1.5rem !important;
+        }
+        
+        .row.text-start .d-flex {
+            align-items: flex-start;
+        }
+    }
+</style>
 {% endblock %}

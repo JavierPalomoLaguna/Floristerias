@@ -1,14 +1,131 @@
-{% extends 'ProyectoWebApp/base.html' %}
+{% extends 'tienda/base_tienda.html' %}
+
+{% block title %}Pedido Confirmado - Tienda CVS{% endblock %}
+
+{% block meta_description %}Tu pedido ha sido procesado correctamente. Gracias por tu compra.{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-  <div class="alert alert-success">
-    <h2>Pedido confirmado</h2>
-    <p>Tu pedido ha sido procesado correctamente. (Vista provisional)</p>
-  </div>
+<!-- Hero Section -->
+<section class="hero-tienda">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">✅ Pedido Confirmado</h1>
+        <p class="lead">¡Gracias por tu compra!</p>
+    </div>
+</section>
 
-  <div class="mt-4 text-end">
-    <a href="{% url 'tienda' %}" class="btn btn-primary">Volver a la tienda</a>
-  </div>
-</div>
+<!-- Sección de Confirmación -->
+<section class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <!-- Card de éxito -->
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-body py-5">
+                    <!-- Icono de éxito -->
+                    <div class="mb-4">
+                        <div class="success-icon mx-auto">
+                            <i class="fas fa-check-circle fa-5x text-success"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Mensaje principal -->
+                    <h2 class="text-success mb-3">¡Pedido Procesado Correctamente!</h2>
+                    <p class="lead text-muted mb-4">
+                        Tu pedido ha sido confirmado y está siendo procesado.
+                    </p>
+                    
+                    <!-- Información adicional -->
+                    <div class="alert alert-success border-0 bg-light">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-info-circle fa-2x text-success me-3"></i>
+                            <div class="text-start">
+                                <h6 class="alert-heading mb-1">Estado: Confirmado</h6>
+                                <p class="mb-0 small">
+                                    Esta es una vista provisional. Pronto recibirás más detalles sobre tu pedido.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Próximos pasos -->
+                    <div class="card bg-light border-0 mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">
+                                <i class="fas fa-clipboard-list me-2"></i>Próximos pasos
+                            </h5>
+                            <div class="text-start">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-envelope text-primary me-3"></i>
+                                    <span>Recibirás un email de confirmación</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-shipping-fast text-warning me-3"></i>
+                                    <span>Prepararemos tu pedido para el envío</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-truck text-success me-3"></i>
+                                    <span>Te notificaremos cuando sea enviado</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Botones de acción -->
+                    <div class="d-grid gap-2 d-md-flex justify-content-center mt-5">
+                        <a href="{% url 'tienda' %}" class="btn btn-primario me-md-2">
+                            <i class="fas fa-store me-2"></i>Seguir Comprando
+                        </a>
+                        <a href="/" class="btn btn-outline-primary">
+                            <i class="fas fa-home me-2"></i>Ir al Inicio
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Información de contacto -->
+            <div class="card border-0 bg-light mt-4">
+                <div class="card-body text-center p-4">
+                    <h6 class="mb-3">¿Tienes alguna pregunta sobre tu pedido?</h6>
+                    <div class="d-flex justify-content-center gap-4">
+                        <div class="text-center">
+                            <i class="fas fa-phone-alt text-primary mb-2"></i>
+                            <div class="small">Llámanos</div>
+                            <small class="text-muted">+34 900 000 000</small>
+                        </div>
+                        <div class="text-center">
+                            <i class="fas fa-envelope text-success mb-2"></i>
+                            <div class="small">Escríbenos</div>
+                            <small class="text-muted">soporte@codigovivo.com</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sección de agradecimiento -->
+<section class="bg-light py-4 mt-5">
+    <div class="container text-center">
+        <p class="text-muted mb-0">
+            <i class="fas fa-heart text-danger me-1"></i>
+            Gracias por confiar en <strong>Tienda CVS</strong>. Tu satisfacción es nuestra prioridad.
+        </p>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .success-icon {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(40, 167, 69, 0.2));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        border: 4px solid rgba(40, 167, 69, 0.3);
+    }
+</style>
 {% endblock %}

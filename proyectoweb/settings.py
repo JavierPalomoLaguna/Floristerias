@@ -7,33 +7,53 @@ SECRET_KEY = 'd^czxedced*yn8mz7-nhrf7w234!d#&sn5unmoz!_4x^lv+$o+'
 
 ENV = config('DJANGO_ENV', default='local')
 
+SITE_ID = 1
+
 if ENV == 'production':
     DEBUG = False
     ALLOWED_HOSTS = ['codigovivostudio.cloud', 'www.codigovivostudio.cloud', '72.61.94.146']
     CSRF_TRUSTED_ORIGINS = ['https://codigovivostudio.cloud', 'https://www.codigovivostudio.cloud']
-    SITE_ID = 1  
+    
+    # Configuración automática del Site para producción
+    try:
+        from django.contrib.sites.models import Site
+        site = Site.objects.get(id=1)
+        site.domain = 'codigovivostudio.cloud'
+        site.name = 'Código Vivo Studio'
+        site.save()
+    except:
+        pass  # Se creará con el comando de setup
+    
 else:
     DEBUG = True
-    # CORREGIDO: Añade estas opciones para desarrollo
     ALLOWED_HOSTS = [
         'localhost',
         '127.0.0.1',
         '.ngrok-free.dev',
         'codigovivostudio.cloud',
         'www.codigovivostudio.cloud',
-        '.localhost',  # ← AÑADIDO
-        '0.0.0.0',     # ← AÑADIDO
-        'testserver',  # ← AÑADIDO
+        '.localhost',
+        '0.0.0.0',
+        'testserver',
     ]
     CSRF_TRUSTED_ORIGINS = [
         'https://*.ngrok-free.dev',
         'https://codigovivostudio.cloud',
         'https://www.codigovivostudio.cloud',
-        'http://localhost:8000',  # ← AÑADIDO
-        'http://127.0.0.1:8000',  # ← AÑADIDO
+        'http://localhost:8000',
+        'http://127.0.0.1:8000',
     ]
+    
+    # Configuración automática del Site para desarrollo
+    try:
+        from django.contrib.sites.models import Site
+        site = Site.objects.get(id=1)
+        site.domain = 'localhost:8000'
+        site.name = 'Código Vivo Studio - Desarrollo'
+        site.save()
+    except:
+        pass  # Se creará con el comando de setup
 
-# ... el resto del código se mantiene igual ...
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

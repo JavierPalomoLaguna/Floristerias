@@ -1,8 +1,140 @@
-{% extends 'ProyectoWebApp/base.html' %}
+{% extends 'tienda/base_tienda.html' %}
+
+{% block title %}Confirmación de Pago - Tienda CVS{% endblock %}
+
+{% block meta_description %}Proceso de pago seguro para completar tu compra.{% endblock %}
 
 {% block content %}
-  <div class="container mt-5" style="color: beige;">
-    <h2>Aquí vendrá el pago</h2>
-    <p>Aquí irá la forma de pago y la confirmación de aceptación de pago cuando esté lista la app de ventas.</p>
-  </div>
+<!-- Hero Section -->
+<section class="hero-tienda">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">💳 Proceso de Pago</h1>
+        <p class="lead">Completa tu compra de forma segura</p>
+    </div>
+</section>
+
+<!-- Sección de Pago -->
+<section class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent text-center py-4">
+                    <i class="fas fa-credit-card fa-4x text-primary mb-3"></i>
+                    <h2 class="card-title mb-2">Sistema de Pago</h2>
+                    <p class="text-muted mb-0">Próximamente disponible</p>
+                </div>
+                
+                <div class="card-body text-center py-5">
+                    <!-- Icono de construcción -->
+                    <div class="mb-4">
+                        <i class="fas fa-tools fa-5x text-warning mb-3"></i>
+                    </div>
+                    
+                    <!-- Mensaje principal -->
+                    <h3 class="text-primary mb-3">¡Estamos trabajando en ello!</h3>
+                    <p class="lead text-muted mb-4">
+                        Actualmente estamos desarrollando nuestro sistema de pagos seguro para ofrecerte 
+                        la mejor experiencia de compra.
+                    </p>
+                    
+                    <!-- Características futuras -->
+                    <div class="row mb-4">
+                        <div class="col-md-4 mb-3">
+                            <div class="card border-0 bg-light">
+                                <div class="card-body">
+                                    <i class="fas fa-shield-alt fa-2x text-success mb-2"></i>
+                                    <h6>Pago Seguro</h6>
+                                    <small class="text-muted">Transacciones protegidas</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card border-0 bg-light">
+                                <div class="card-body">
+                                    <i class="fas fa-bolt fa-2x text-warning mb-2"></i>
+                                    <h6>Proceso Rápido</h6>
+                                    <small class="text-muted">Completar en minutos</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card border-0 bg-light">
+                                <div class="card-body">
+                                    <i class="fas fa-mobile-alt fa-2x text-info mb-2"></i>
+                                    <h6>Múltiples Métodos</h6>
+                                    <small class="text-muted">Varias formas de pago</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Información adicional -->
+                    <div class="alert alert-info">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-info-circle fa-2x me-3"></i>
+                            <div>
+                                <h6 class="alert-heading mb-1">Mientras tanto...</h6>
+                                <p class="mb-0">
+                                    Puedes contactarnos directamente para realizar tu pedido o consultar 
+                                    el estado de tus compras anteriores.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Botones de acción -->
+                    <div class="d-grid gap-2 d-md-flex justify-content-center mt-4">
+                        <a href="{% url 'tienda' %}" class="btn btn-outline-primary me-md-2">
+                            <i class="fas fa-arrow-left me-2"></i>Volver a la Tienda
+                        </a>
+                        <a href="{% url 'contacto' %}" class="btn btn-primario">
+                            <i class="fas fa-envelope me-2"></i>Contactar con Nosotros
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Footer informativo -->
+                <div class="card-footer bg-light text-center py-3">
+                    <small class="text-muted">
+                        <i class="fas fa-clock me-1"></i>
+                        Sistema de pagos en desarrollo - Próxima implementación
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sección de Contacto Rápido -->
+<section class="container mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card border-0 bg-light">
+                <div class="card-body text-center p-4">
+                    <h5 class="card-title mb-3">¿Necesitas ayuda inmediata?</h5>
+                    <p class="card-text text-muted mb-3">
+                        Nuestro equipo está disponible para ayudarte con tu pedido.
+                    </p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <div class="text-center">
+                            <i class="fas fa-phone fa-2x text-primary mb-2"></i>
+                            <h6>Teléfono</h6>
+                            <small class="text-muted">+34 900 000 000</small>
+                        </div>
+                        <div class="text-center">
+                            <i class="fas fa-envelope fa-2x text-success mb-2"></i>
+                            <h6>Email</h6>
+                            <small class="text-muted">ventas@codigovivo.com</small>
+                        </div>
+                        <div class="text-center">
+                            <i class="fas fa-comments fa-2x text-info mb-2"></i>
+                            <h6>Chat</h6>
+                            <small class="text-muted">Disponible 24/7</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

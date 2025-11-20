@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- ✅ META TAGS DINÁMICOS -->
+    <title>{% if meta_title %}{{ meta_title }}{% else %}Tienda - Código Vivo Studio{% endif %}</title>
+    <meta name="description" content="{% if meta_description %}{{ meta_description }}{% else %}Descubre nuestros productos exclusivos en la tienda online de Código Vivo Studio.{% endif %}">
+    <meta name="author" content="Código Vivo Studio">
+    
+    <!-- Schema.org markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Código Vivo Studio",
+      "url": "https://codigovivostudio.cloud",
+      "logo": "https://codigovivostudio.cloud/static/ProyectoWebApp/img/logo.png",
+      "description": "Desarrollo web profesional y soluciones digitales",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Tu Ciudad",
+        "addressCountry": "ES"
+      }
+    }
+    </script>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-fondo: #f8f9fa;
+            --color-primario: #667eea;
+            --color-secundario: #764ba2;
+            --color-texto: #2c3e50;
+            --color-borde: #e9ecef;
+        }
+        
+        body {
+            background-color: var(--color-fondo);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--color-texto);
+        }
+        
+        .navbar-tienda {
+            background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .hero-tienda {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            padding: 60px 0;
+            margin-bottom: 40px;
+        }
+        
+        .card-producto {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .card-producto:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .card-producto img {
+            border-radius: 15px 15px 0 0;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .precio {
+            color: var(--color-primario);
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+        
+        .categoria-badge {
+            background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .categoria-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+        
+        .buscador-tienda {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .btn-primario {
+            background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+            border: none;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primario:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        
+        .badge-carrito {
+            font-size: 0.7rem;
+            padding: 0.25em 0.4em;
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-tienda">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{% url 'tienda' %}">
+                <i class="fas fa-store me-2"></i>Tienda CVS
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTienda">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarTienda">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'tienda' %}">Inicio</a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav ms-auto">
+                    <!-- Carrito usando tu sistema existente -->
+                    <li class="nav-item">
+                        <a class="nav-link position-relative" href="{% url 'ver_carro' %}">
+                            <i class="fas fa-shopping-cart"></i> Carrito
+                            {% if request.session.carro %}
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger badge-carrito">
+                                    {{ request.session.carro.items|length }}
+                                </span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    
+                    <!-- Login/Usuario usando tu sistema existente -->
+                    {% if user.is_authenticated or cliente %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-1"></i> 
+                            {% if user.is_authenticated %}
+                                {{ user.username }}
+                            {% else %}
+                                {{ cliente.usuario }}
+                            {% endif %}
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% if user.is_authenticated %}
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-user-circle me-2"></i>Mi Cuenta</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-history me-2"></i>Mis Pedidos</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
+                            {% else %}
+                                <li><a class="dropdown-item" href="{% url 'zona_cliente' %}"><i class="fas fa-user-circle me-2"></i>Mi Cuenta</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/clientes/logout/"><i class="fas fa-sign-out-alt me-2"></i>Salir</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/clientes/tramitar/">
+                            <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home me-1"></i> Sitio Principal
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container text-center">
+            <p class="m-0">
+                <a href="#" class="link text-white me-3">
+                    <span class="fa-stack fa-lg">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                <a href="#" class="link text-white me-3">
+                    <span class="fa-stack fa-lg">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+                <a href="#" class="link text-white">
+                    <span class="fa-stack fa-lg">
+                        <i class="fa fa-circle fa-stack-2x"></i>
+                        <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+            </p>
+            <p class="m-0 mbt mt-3">
+                <a href="sample.html" class="link text-white">Política de privacidad</a> ·
+                <a href="sample.html" class="link text-white">Aviso legal</a> ·
+                <a href="sample.html" class="link text-white">Cookies</a>
+            </p>
+            <p class="mb-0 mt-3">&copy; 2025 Código Vivo Studio. Todos los derechos reservados.</p>
+            <p class="m-0 mt-3 small">
+                <a href="/admin/" class="text-white" title="Panel de administración">⚙️⚙️⚙️</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

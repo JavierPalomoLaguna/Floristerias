@@ -1,28 +1,224 @@
-{% extends 'ProyectoWebApp/base.html' %}
+{% extends 'tienda/base_tienda.html' %}
+{% load static %}
+
+{% block title %}Procesando Pago - Tienda CVS{% endblock %}
+
+{% block meta_description %}Estamos redirigiendo a la pasarela de pago segura de Redsys para procesar tu transacción.{% endblock %}
 
 {% block content %}
-<div class="container mt-5 text-center">
-  <h4 class="mb-4" style="color: white;">Redirigiendo al TPV virtual de Redsys…</h4>
+<!-- Hero Section -->
+<section class="hero-tienda">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">🔒 Procesando Pago</h1>
+        <p class="lead">Redirigiendo a la pasarela de pago segura</p>
+    </div>
+</section>
 
-  <form id="redsys-form" method="post" action="https://sis-t.redsys.es:25443/sis/realizarPago">
-    <input type="hidden" name="Ds_SignatureVersion" value="HMAC_SHA256_V1">
-    <input type="hidden" name="Ds_MerchantParameters" value="{{ encoded_params }}">
-    <input type="hidden" name="Ds_Signature" value="{{ signature }}">
-    <noscript>
-      <button type="submit" class="btn btn-success" style="color: white;">Pagar ahora</button>
-    </noscript>
-  </form>
+<!-- Proceso de Pago -->
+<section class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <!-- Tarjeta de Redirección -->
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-header bg-primario text-white py-4">
+                    <i class="fas fa-lock fa-3x mb-3"></i>
+                    <h3 class="mb-2">Redirección Segura</h3>
+                    <p class="mb-0 opacity-90">Conectando con Redsys</p>
+                </div>
+                
+                <div class="card-body p-4">
+                    <!-- Spinner de carga -->
+                    <div class="loading-spinner mb-4">
+                        <div class="spinner-border text-primario" style="width: 4rem; height: 4rem;" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Mensaje informativo -->
+                    <h4 class="text-primario mb-3">Redirigiendo al TPV Virtual</h4>
+                    <p class="text-muted mb-4">
+                        Estás siendo redirigido de forma segura a la pasarela de pago de Redsys. 
+                        Por favor, no cierres esta ventana ni recargues la página.
+                    </p>
+                    
+                    <!-- Información de seguridad -->
+                    <div class="alert alert-info border-0 bg-light mb-4">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-shield-alt fa-2x text-info me-3"></i>
+                            <div class="text-start">
+                                <h6 class="alert-heading mb-2">Conexión Segura Activada</h6>
+                                <p class="mb-0 small">
+                                    Tu transacción está protegida con encriptación SSL de 256 bits. 
+                                    Tus datos bancarios nunca se almacenan en nuestros servidores.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Progreso visual -->
+                    <div class="progress mb-4" style="height: 6px;">
+                        <div class="progress-bar bg-primario progress-bar-striped progress-bar-animated" 
+                             role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    
+                    <!-- Formulario Redsys (oculto) -->
+                    <form id="redsys-form" method="post" action="https://sis-t.redsys.es:25443/sis/realizarPago">
+                        <input type="hidden" name="Ds_SignatureVersion" value="HMAC_SHA256_V1">
+                        <input type="hidden" name="Ds_MerchantParameters" value="{{ encoded_params }}">
+                        <input type="hidden" name="Ds_Signature" value="{{ signature }}">
+                        
+                        <!-- Fallback para JavaScript deshabilitado -->
+                        <noscript>
+                            <div class="alert alert-warning mt-4">
+                                <h6>JavaScript Requerido</h6>
+                                <p class="mb-3">Tu navegador tiene JavaScript deshabilitado. Por favor, haz clic en el botón para continuar.</p>
+                                <button type="submit" class="btn btn-primario">
+                                    <i class="fas fa-credit-card me-2"></i>Continuar al Pago
+                                </button>
+                            </div>
+                        </noscript>
+                    </form>
+                    
+                    <!-- Mensaje de espera -->
+                    <div class="text-center mt-4">
+                        <small class="text-muted">
+                            <i class="fas fa-clock me-1"></i>
+                            Si la redirección no funciona automáticamente en 5 segundos, 
+                            <a href="#" onclick="document.getElementById('redsys-form').submit(); return false;" class="text-primario text-decoration-none">
+                                haz clic aquí
+                            </a>
+                        </small>
+                    </div>
+                </div>
+                
+                <!-- Footer informativo -->
+                <div class="card-footer bg-light border-0 py-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Operación procesada a través de 
+                                <strong>Redsys</strong> - Servicios de Pago Seguros
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-  <script>
-    console.log("Intentando enviar formulario...");
-    setTimeout(function() {
-      console.log("Enviando formulario manualmente");
-      
-      document.getElementById('redsys-form').submit();
-      
+<!-- Script de redirección automática -->
+<script>
+    console.log("🔄 Iniciando proceso de redirección a Redsys...");
+    
+    // Mostrar información de depuración en consola
+    console.log("Parámetros codificados:", "{{ encoded_params|slice:':50' }}...");
+    console.log("Firma:", "{{ signature|slice:':50' }}...");
+    
+    // Redirección automática con feedback visual
+    let countdown = 3;
+    const countdownElement = document.createElement('div');
+    countdownElement.className = 'text-center mt-3';
+    countdownElement.innerHTML = `<small class="text-muted">Redirección en <span id="countdown">${countdown}</span> segundos...</small>`;
+    document.querySelector('.card-body').appendChild(countdownElement);
+    
+    const countdownInterval = setInterval(function() {
+        countdown--;
+        document.getElementById('countdown').textContent = countdown;
+        
+        if (countdown <= 0) {
+            clearInterval(countdownInterval);
+            console.log("🚀 Enviando formulario a Redsys...");
+            document.getElementById('redsys-form').submit();
+        }
     }, 1000);
+    
+    // Redirección de respaldo por timeout
+    setTimeout(function() {
+        console.log("⏰ Redirección por timeout de seguridad");
+        document.getElementById('redsys-form').submit();
+    }, 5000);
 </script>
-</div>
-{% endblock %}
 
+<!-- Estilos adicionales -->
+<style>
+    .card {
+        border-radius: 20px;
+        overflow: hidden;
+    }
+    
+    .card-header {
+        border: none;
+    }
+    
+    .bg-primario {
+        background: linear-gradient(135deg, var(--color-primario), var(--color-secundario)) !important;
+    }
+    
+    .text-primario {
+        color: var(--color-primario) !important;
+    }
+    
+    .btn-primario {
+        background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primario:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        color: white;
+    }
+    
+    /* Spinner personalizado */
+    .loading-spinner {
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    /* Barra de progreso animada */
+    .progress-bar-animated {
+        animation: progress-animation 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes progress-animation {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+    
+    /* Alertas mejoradas */
+    .alert-info {
+        border-radius: 10px;
+        padding: 1.25rem;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .card-body {
+            padding: 1.5rem !important;
+        }
+        
+        .alert-info .d-flex {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .alert-info .fa-2x {
+            margin-bottom: 1rem;
+            margin-right: 0 !important;
+        }
+    }
+</style>
+{% endblock %}
 

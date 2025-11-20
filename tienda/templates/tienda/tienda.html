@@ -1,68 +1,111 @@
-{% extends 'ProyectoWebApp/base.html' %}
+{% extends 'tienda/base_tienda.html' %}
 {% load static %}
 
+{% block title %}Tienda Online - Código Vivo Studio{% endblock %}
+
 {% block content %}
-<section class="page-section" style="padding: 0;">
-  <div class="container-fluid" style="padding-left: 0; padding-right: 0;">
-    
-    <!-- Barra de categorías superior -->
-    <section class="categorias-bar py-3">
-      <div class="container">
-        <div class="categorias-content text-center text-white">
-          <span class="categorias-label fw-bold me-3">Categorías:</span>
-          <div class="categorias-links d-inline-flex flex-wrap justify-content-center gap-2 gap-md-3">
-            {% for categoria in categorias %}
-              <a href="{% url 'productos_por_categoria' categoria.id %}" class="categoria-link">
-                {{ categoria.nombre }}
-              </a>
-            {% endfor %}
-          </div>
+<!-- Hero Section -->
+<section class="hero-tienda">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">Nuestra Tienda</h1>
+        <p class="lead mb-4">Descubre nuestros productos exclusivos</p>
+        
+        <!-- Buscador -->
+        <div class="buscador-tienda mb-4">
+            <form method="get" action="{% url 'tienda' %}">
+                <div class="input-group input-group-lg">
+                    <input type="text" name="q" class="form-control" 
+                           placeholder="¿Qué estás buscando?" value="{{ request.GET.q }}">
+                    <button class="btn btn-primario" type="submit">
+                        <i class="fas fa-search"></i> Buscar
+                    </button>
+                </div>
+            </form>
         </div>
-      </div>
-    </section>
-
-    <!-- Grid de productos -->
-    <div class="products-grid">
-      {% for producto in productos %}
-        <div class="product-card">
-          <div class="card h-100 shadow-sm">
-            {% if producto.foto_principal %}
-              <a href="{% url 'detalle_producto' producto.id %}">
-                <img src="{{ producto.foto_principal.url }}" alt="{{ producto.nombre }}"
-                     class="card-img-top product-image">
-              </a>
+        
+        <!-- Resultados de búsqueda -->
+        {% if query %}
+        <div class="alert alert-info">
+            {% if productos %}
+                <i class="fas fa-search me-2"></i>
+                {{ productos.count }} producto{{ productos.count|pluralize }} encontrado{{ productos.count|pluralize:"s" }} para "{{ query }}"
+                <a href="{% url 'tienda' %}" class="btn btn-sm btn-outline-secondary ms-2">Ver todos</a>
+            {% else %}
+                <i class="fas fa-exclamation-circle me-2"></i>
+                No se encontraron productos para "{{ query }}"
             {% endif %}
-            <div class="card-body">
-              <h4 class="card-title"><strong>{{ producto.nombre }}</strong></h4>
-              <p class="card-text product-price">{{ producto.precio }} €</p>
-              <p class="card-text text-muted small product-description">
-                {{ producto.caracteristicas|truncatechars:100 }}
-              </p>
-            </div>
-            <div class="card-footer text-muted small">
-              Categoría: {{ producto.categoria.nombre }}
-            </div>
-          </div>
         </div>
-      {% endfor %}
+        {% endif %}
     </div>
+</section>
 
-    <!-- Barra de categorías inferior CON EL MISMO FORMATO -->
-    <section class="categorias-bar py-3">
-      <div class="container">
-        <div class="categorias-content text-center text-white">
-          <span class="categorias-label fw-bold me-3">Categorías:</span>
-          <div class="categorias-links d-inline-flex flex-wrap justify-content-center gap-2 gap-md-3">
-            {% for categoria in categorias %}
-              <a href="{% url 'productos_por_categoria' categoria.id %}" class="categoria-link">
-                {{ categoria.nombre }}
-              </a>
-            {% endfor %}
-          </div>
+<!-- Categorías -->
+<section class="container mb-5">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center mb-4">Categorías</h2>
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+                {% for categoria in categorias %}
+                <a href="{% url 'productos_por_categoria' categoria.id %}" class="categoria-badge text-decoration-none">
+                    {{ categoria.nombre }}
+                </a>
+                {% endfor %}
+            </div>
         </div>
-      </div>
-    </section>
+    </div>
+</section>
 
-  </div>
+<!-- Productos -->
+<section class="container mb-5">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center mb-4">Productos Destacados</h2>
+        </div>
+    </div>
+    
+    <div class="row g-4">
+        {% for producto in productos %}
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="card card-producto">
+                {% if producto.foto_principal %}
+                <a href="{% url 'detalle_producto' producto.id %}">
+                    <img src="{{ producto.foto_principal.url }}" class="card-img-top" alt="{{ producto.nombre }}">
+                </a>
+                {% else %}
+                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                    <i class="fas fa-image fa-3x text-muted"></i>
+                </div>
+                {% endif %}
+                
+                <div class="card-body">
+                    <h5 class="card-title">{{ producto.nombre }}</h5>
+                    <p class="card-text text-muted small">
+                        {{ producto.caracteristicas|truncatechars:80 }}
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="precio">{{ producto.precio }} €</span>
+                        <a href="{% url 'detalle_producto' producto.id %}" class="btn btn-sm btn-primario">
+                            Ver detalles
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="card-footer bg-transparent">
+                    <small class="text-muted">
+                        <i class="fas fa-tag me-1"></i>{{ producto.categoria.nombre }}
+                    </small>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+            <h4 class="text-muted">No se encontraron productos</h4>
+            {% if query %}
+            <p class="text-muted">Intenta con otros términos de búsqueda</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
 </section>
 {% endblock %}

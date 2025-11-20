@@ -3,16 +3,26 @@ from .models import CategoriaProducto, Productos
 from django.http import HttpResponse
 import csv
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q 
 
 def tienda(request):
     productos = Productos.objects.filter(disponibilidad=True)
     categorias = CategoriaProducto.objects.all()
+
+    query = request.GET.get('q')
+    if query:
+        productos = productos.filter(
+            Q(nombre__icontains=query) | 
+            Q(caracteristicas__icontains=query) |
+            Q(categoria__nombre__icontains=query)
+        )
     
     context = {
         'productos': productos,
         'categorias': categorias,
         'meta_title': 'Tiendas Online para Comercios - Desarrollo Ecommerce | Código Vivo Studio',
         'meta_description': 'Creamos tiendas online profesionales para comercios. Catálogo de productos, pasarelas de pago y gestión de pedidos.',
+        'query': query,
     }
     
     return render(request, 'tienda/tienda.html', context)

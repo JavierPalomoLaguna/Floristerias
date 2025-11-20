@@ -1,102 +1,249 @@
-{% extends 'ProyectoWebApp/base.html' %}
+{% extends 'tienda/base_tienda.html' %}
+{% load static %}
+
+{% block title %}Detalle del Pedido #{{ pedido.id }} - Tienda CVS{% endblock %}
+
+{% block meta_description %}Consulta los detalles de tu pedido #{{ pedido.id }} en nuestra tienda.{% endblock %}
 
 {% block content %}
-<div class="container mt-5 zona-cliente">
-    <h2 style="color: beige;">Detalle del Pedido #{{ pedido.id }}</h2>
+<!-- Hero Section -->
+<section class="hero-tienda">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">📦 Detalle del Pedido</h1>
+        <p class="lead mb-4">Pedido #{{ pedido.id }}</p>
+    </div>
+</section>
 
-    {% if messages %}
-      {% for message in messages %}
-        <div class="alert-custom">
-          {{ message }}
-        </div>
-      {% endfor %}
-    {% endif %}
-
-    <!-- Información del pedido -->
-    <div class="card mb-4 bg-dark text-light border-secondary">
-        <div class="card-header bg-secondary">
-            <h5 class="mb-0">Información del Pedido</h5>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Fecha:</strong> {{ pedido.fecha|date:"d/m/Y H:i" }}</p>
-                    <p><strong>Total:</strong> {{ pedido.total }}€</p>
-                    <p><strong>Método de pago:</strong> {{ pedido.get_metodo_pago_display }}</p>
+<!-- Detalle del Pedido -->
+<section class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Mensajes -->
+            {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                    <i class="fas 
+                        {% if message.tags == 'success' %}fa-check-circle
+                        {% elif message.tags == 'error' %}fa-exclamation-circle
+                        {% elif message.tags == 'warning' %}fa-exclamation-triangle
+                        {% else %}fa-info-circle{% endif %} 
+                        me-2"></i>
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-                <div class="col-md-6">
-                    <p><strong>Estado:</strong> 
-                        {% if pedido.enviado %}
-                            <span class="badge bg-success">✅ Enviado</span>
-                            {% if pedido.fecha_envio %}
-                                <br><small>Fecha de envío: {{ pedido.fecha_envio|date:"d/m/Y H:i" }}</small>
-                            {% endif %}
-                        {% else %}
-                            <span class="badge bg-warning text-dark">⏳ Pendiente de envío</span>
-                        {% endif %}
-                    </p>
-                    <p><strong>Envío:</strong> 
-                        {% if pedido.envio_gratis %}
-                            <span class="badge bg-info">🚚 Gratis</span>
-                        {% else %}
-                            {{ pedido.gastos_envio }}€
-                        {% endif %}
-                    </p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Información del pedido -->
+            <div class="card mb-4 border-0 shadow-sm">
+                <div class="card-header bg-primario text-white py-3">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>Información del Pedido
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-calendar-alt text-primario me-3 fa-lg"></i>
+                                <div>
+                                    <strong>Fecha:</strong><br>
+                                    {{ pedido.fecha|date:"d/m/Y H:i" }}
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-euro-sign text-primario me-3 fa-lg"></i>
+                                <div>
+                                    <strong>Total:</strong><br>
+                                    <span class="h5 text-primario">{{ pedido.total }} €</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-credit-card text-primario me-3 fa-lg"></i>
+                                <div>
+                                    <strong>Método de pago:</strong><br>
+                                    {{ pedido.get_metodo_pago_display }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-truck text-primario me-3 fa-lg"></i>
+                                <div>
+                                    <strong>Estado:</strong><br>
+                                    {% if pedido.enviado %}
+                                        <span class="badge bg-success p-2">
+                                            <i class="fas fa-check me-1"></i>Enviado
+                                        </span>
+                                        {% if pedido.fecha_envio %}
+                                            <br><small class="text-muted">Enviado el: {{ pedido.fecha_envio|date:"d/m/Y H:i" }}</small>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="badge bg-warning text-dark p-2">
+                                            <i class="fas fa-clock me-1"></i>Pendiente de envío
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-shipping-fast text-primario me-3 fa-lg"></i>
+                                <div>
+                                    <strong>Envío:</strong><br>
+                                    {% if pedido.envio_gratis %}
+                                        <span class="badge bg-info p-2">🚚 Envío Gratis</span>
+                                    {% else %}
+                                        {{ pedido.gastos_envio }} €
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Productos del pedido -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-primario text-white py-3">
+                    <h5 class="mb-0">
+                        <i class="fas fa-boxes me-2"></i>Productos del Pedido
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-4">Producto</th>
+                                    <th class="text-center">Cantidad</th>
+                                    <th class="text-end pe-4">Precio unitario</th>
+                                    <th class="text-end pe-4">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for linea in lineas_pedido %}
+                                <tr>
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-cube text-muted me-3"></i>
+                                            <div>
+                                                <strong>{{ linea.producto.nombre }}</strong>
+                                                {% if linea.producto.categoria %}
+                                                <br>
+                                                <small class="text-muted">
+                                                    <i class="fas fa-tag me-1"></i>{{ linea.producto.categoria.nombre }}
+                                                </small>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge bg-secondary rounded-pill px-3 py-2">
+                                            {{ linea.cantidad }}
+                                        </span>
+                                    </td>
+                                    <td class="text-end pe-4">{{ linea.producto.precio }} €</td>
+                                    <td class="text-end pe-4">
+                                        <strong>{{ linea.subtotal }} €</strong>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                
+                                <!-- Gastos de envío -->
+                                <tr class="table-light">
+                                    <td class="ps-4" colspan="3">
+                                        <strong>Gastos de envío</strong>
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <strong>
+                                            {% if pedido.envio_gratis %}
+                                                0.00 €
+                                            {% else %}
+                                                {{ pedido.gastos_envio }} €
+                                            {% endif %}
+                                        </strong>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Total -->
+                                <tr class="table-primary">
+                                    <td class="ps-4" colspan="3">
+                                        <h5 class="mb-0">TOTAL</h5>
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <h4 class="mb-0 text-primario">{{ pedido.total }} €</h4>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="d-flex justify-content-between mt-4">
+                <a href="{% url 'historial_pedidos' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Volver al historial
+                </a>
+                <div>
+                    <a href="{% url 'tienda' %}" class="btn btn-primario">
+                        <i class="fas fa-store me-2"></i>Volver a la tienda
+                    </a>
                 </div>
             </div>
         </div>
     </div>
+</section>
 
-    <!-- Productos del pedido -->
-    <div class="card bg-dark text-light border-secondary">
-        <div class="card-header bg-secondary">
-            <h5 class="mb-0">Productos</h5>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-dark table-striped">
-                    <thead>
-                        <tr>
-                            <th>Producto</th>
-                            <th>Cantidad</th>
-                            <th>Precio unitario</th>
-                            <th>Subtotal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for linea in lineas_pedido %}
-                        <tr>
-                            <td>{{ linea.producto.nombre }}</td>
-                            <td>{{ linea.cantidad }}</td>
-                            <td>{{ linea.producto.precio }}€</td>
-                            <td>{{ linea.subtotal }}€</td>
-                        </tr>
-                        {% endfor %}
-                        <!-- Gastos de envío -->
-                        <tr>
-                            <td colspan="3"><strong>Gastos de envío</strong></td>
-                            <td>
-                                {% if pedido.envio_gratis %}
-                                    0.00€
-                                {% else %}
-                                    {{ pedido.gastos_envio }}€
-                                {% endif %}
-                            </td>
-                        </tr>
-                        <!-- Total -->
-                        <tr style="background-color: #2c3e50;">
-                            <td colspan="3"><strong>TOTAL</strong></td>
-                            <td><strong>{{ pedido.total }}€</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="mt-4">
-        <a href="{% url 'historial_pedidos' %}" class="btn btn-secondary">← Volver al historial</a>
-        <a href="{% url 'tienda' %}" class="btn btn-primary ms-2">Volver a la tienda</a>
-    </div>
-</div>
+<!-- Estilos adicionales -->
+<style>
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    
+    .card-header {
+        border: none;
+    }
+    
+    .table th {
+        border-top: none;
+        font-weight: 600;
+        padding: 1rem 0.5rem;
+    }
+    
+    .table td {
+        padding: 1rem 0.5rem;
+        vertical-align: middle;
+    }
+    
+    .table-hover tbody tr:hover {
+        background-color: rgba(102, 126, 234, 0.05);
+    }
+    
+    .bg-primario {
+        background: linear-gradient(135deg, var(--color-primario), var(--color-secundario)) !important;
+    }
+    
+    .text-primario {
+        color: var(--color-primario) !important;
+    }
+    
+    .btn-primario {
+        background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+        border: none;
+        color: white;
+        padding: 10px 25px;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primario:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        color: white;
+    }
+</style>
 {% endblock %}
