@@ -30,7 +30,7 @@ def create_signature(clave, encoded_params, order):
 
 def confirmar_pedido(request):
     carro = request.session.get('carro', {})
-    cliente_id = request.session.get('cliente_id')
+    cliente_id = request.session.get('cliente_persistent_id')  # ✅ CAMBIADO
 
     if request.method == 'POST' and carro and cliente_id:
         metodo_pago = request.POST.get('metodo_pago')

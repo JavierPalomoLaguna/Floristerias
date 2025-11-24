@@ -21,6 +21,8 @@
     <!-- Styles -->
     <link href="{% static 'ProyectoWebApp/css/gestion.css' %}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+    <!-- FontAwesome para los iconos de alérgenos -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <script type="application/ld+json">
 {
@@ -93,7 +95,7 @@
             <a class="nav-link text-uppercase text-expanded" href="{% url 'index' %}">Inicio</a>
           </li>
           <li class="nav-item {% if request.path == '/servicios/' %}active{% endif %} px-lg-4">
-            <a class="nav-link text-uppercase text-expanded" href="{% url 'servicios' %}">Servicios</a>
+            <a class="nav-link text-uppercase text-expanded" href="{% url 'servicios' %}">Restaurante</a>
           </li>
           <li class="nav-item {% if request.path == '/tienda/' %}active{% endif %} px-lg-4">
             <a class="nav-link text-uppercase text-expanded" href="{% url 'tienda' %}">Tienda</a>
@@ -102,7 +104,7 @@
             <a class="nav-link text-uppercase text-expanded" href="{% url 'contacto' %}">Contacto</a>
           </li>
           <li class="nav-item {% if request.path|slice:':6' == '/blog/' %}active{% endif %} px-lg-4">
-            <a class="nav-link text-uppercase text-expanded" href="{% url 'blog' %}">Blog</a>
+            <a class="nav-link text-uppercase text-expanded" href="{% url 'blog' %}">Web</a>
           </li>
           
          
@@ -124,28 +126,9 @@
     <!-- Footer -->
     <footer class="footer text-faded text-center py-5">
       <div class="container">
-        <p class="m-0">
-	        <a href="#" class="link">
-	          <span class="fa-stack fa-lg">
-	            <i class="fa fa-circle fa-stack-2x"></i>
-	            <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-	          </span>
-	        </a>
-	        <a href="#" class="link">
-	          <span class="fa-stack fa-lg">
-	            <i class="fa fa-circle fa-stack-2x"></i>
-	            <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-	          </span>
-	        </a>
-	        <a href="#" class="link">
-	          <span class="fa-stack fa-lg">
-	            <i class="fa fa-circle fa-stack-2x"></i>
-	            <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
-	          </span>
-	        </a>
-	    </p>
+        
         <p class="m-0 mbt mt-3">
-          <!-- ✅ ENLACES ACTUALIZADOS CON LAS PÁGINAS REALES -->
+          <!-- ENLACES ACTUALIZADOS CON LAS PÁGINAS REALES -->
           <a href="/politica-privacidad/" class="link text-white">Política de privacidad</a> ·
           <a href="/aviso-legal/" class="link text-white">Aviso legal</a> ·
           <a href="/politica-cookies/" class="link text-white">Cookies</a>

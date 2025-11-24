@@ -146,7 +146,7 @@
                 </ul>
                 
                 <ul class="navbar-nav ms-auto">
-                    <!-- Carrito usando tu sistema existente -->
+                    <!-- Carrito -->
                     <li class="nav-item">
                         <a class="nav-link position-relative" href="{% url 'ver_carro' %}">
                             <i class="fas fa-shopping-cart"></i> Carrito
@@ -158,43 +158,44 @@
                         </a>
                     </li>
                     
-                    <!-- Login/Usuario usando tu sistema existente -->
-                    {% if user.is_authenticated or cliente %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user me-1"></i> 
-                            {% if user.is_authenticated %}
-                                {{ user.username }}
-                            {% else %}
-                                {{ cliente.usuario }}
-                            {% endif %}
-                        </a>
-                        <ul class="dropdown-menu">
-                            {% if user.is_authenticated %}
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-user-circle me-2"></i>Mi Cuenta</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-history me-2"></i>Mis Pedidos</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
-                            {% else %}
+                    <!-- SISTEMA COMPLETAMENTE INDEPENDIENTE -->
+                    {% if cliente %}
+                        <!-- CLIENTE logeado - IGNORAR completamente si hay usuario admin -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user me-1"></i>{{ cliente.usuario }}
+                            </a>
+                            <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{% url 'zona_cliente' %}"><i class="fas fa-user-circle me-2"></i>Mi Cuenta</a></li>
+                                <li><a class="dropdown-item" href="{% url 'historial_pedidos' %}"><i class="fas fa-history me-2"></i>Mis Pedidos</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="/clientes/logout/"><i class="fas fa-sign-out-alt me-2"></i>Salir</a></li>
-                            {% endif %}
-                        </ul>
-                    </li>
+                                <li><a class="dropdown-item" href="{% url 'logout_cliente' %}"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
+                            </ul>
+                        </li>
                     {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/clientes/tramitar/">
-                            <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión
-                        </a>
-                    </li>
+                        <!-- NO hay cliente logeado -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="/clientes/tramitar/">
+                                <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión Cliente
+                            </a>
+                        </li>
                     {% endif %}
                     
+                    <!-- Enlace al sitio principal -->
                     <li class="nav-item">
                         <a class="nav-link" href="/">
                             <i class="fas fa-home me-1"></i> Sitio Principal
                         </a>
                     </li>
+                    
+                    <!-- Indicador separado para admin (solo información) -->
+                    {% if user.is_authenticated and user.is_staff %}
+                    <li class="nav-item">
+                        <span class="nav-link text-warning">
+                            <i class="fas fa-shield-alt me-1"></i>Modo Admin
+                        </span>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -209,7 +210,6 @@
     <footer class="bg-dark text-white py-4 mt-5">
         <div class="container text-center">
             <p class="m-0 mbt mt-3">
-                <!-- ✅ ENLACES ACTUALIZADOS CON LAS PÁGINAS REALES -->
                 <a href="/politica-privacidad/" class="link text-white">Política de privacidad</a> ·
                 <a href="/aviso-legal/" class="link text-white">Aviso legal</a> ·
                 <a href="/politica-cookies/" class="link text-white">Cookies</a>

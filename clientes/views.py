@@ -40,8 +40,8 @@ def registro_cliente(request):
             nuevo_cliente.password = make_password(password)
             nuevo_cliente.save()
 
-            # Activar sesión del cliente
-            request.session['cliente_id'] = nuevo_cliente.id
+            # Activar sesión del cliente CON CLAVE PERSISTENTE
+            request.session['cliente_persistent_id'] = nuevo_cliente.id
 
             messages.success(request, "Registro completado con éxito.")
             return redirect('/tienda/checkout/')
@@ -59,8 +59,8 @@ def tramitar_pedido(request):
             try:
                 cliente = Cliente.objects.get(usuario=usuario)
                 if check_password(password, cliente.password):
-                    # Guardamos el cliente en la sesión
-                    request.session['cliente_id'] = cliente.id
+                    # Guardamos el cliente en la sesión CON CLAVE PERSISTENTE
+                    request.session['cliente_persistent_id'] = cliente.id
                     messages.success(request, f"Bienvenido {cliente.usuario}")
                     return redirect('/tienda/checkout/')
                 else:
@@ -137,11 +137,13 @@ def reset_password(request, token):
     return render(request, 'clientes/reset_password.html', {'token': token})
 
 def logout_cliente(request):
-    request.session.flush()
+    # Solo eliminar la sesión del cliente, no toda la sesión
+    if 'cliente_persistent_id' in request.session:
+        del request.session['cliente_persistent_id']
     return redirect('/tienda/')
 
 def zona_cliente(request):
-    cliente_id = request.session.get('cliente_id')
+    cliente_id = request.session.get('cliente_persistent_id')
     if not cliente_id:
         return redirect('tramitar_pedido')
 
@@ -149,14 +151,14 @@ def zona_cliente(request):
     return render(request, 'clientes/zona/index_cliente.html', {'cliente': cliente})
 
 def confirmar_pedido(request):
-    cliente_id = request.session.get('cliente_id')
+    cliente_id = request.session.get('cliente_persistent_id')
     if not cliente_id:
         return redirect('tramitar_pedido')  # por si alguien accede sin estar logueado
 
     return render(request, 'clientes/confirmar_pedido.html')
 
 def editar_datos_cliente(request):
-    cliente_id = request.session.get('cliente_id')
+    cliente_id = request.session.get('cliente_persistent_id')
     if not cliente_id:
         return redirect('tramitar_pedido')
 
@@ -175,7 +177,7 @@ def editar_datos_cliente(request):
 
 
 def historial_pedidos(request):
-    cliente_id = request.session.get('cliente_id')
+    cliente_id = request.session.get('cliente_persistent_id')
     if not cliente_id:
         return redirect('tramitar_pedido')
 
@@ -195,7 +197,7 @@ def historial_pedidos(request):
     })
 
 def detalle_pedido(request, pedido_id):
-    cliente_id = request.session.get('cliente_id')
+    cliente_id = request.session.get('cliente_persistent_id')
     if not cliente_id:
         return redirect('tramitar_pedido')
 
@@ -223,4 +225,3 @@ def localidades_por_provincia(request):
         localidades = Cliente.objects.filter(provincia=provincia).order_by('localidad').values_list('localidad', flat=True).distinct()
 
     return JsonResponse({'localidades': list(localidades)})
-
