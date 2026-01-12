@@ -12,87 +12,101 @@
     </script>
 <!-- End Google Tag Manager -->
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
     <!-- ✅ META TAGS DINÁMICOS -->
-    <title>{% if meta_title %}{{ meta_title }}{% else %}Código Vivo Studio - Desarrollo Web para Restaurantes y Comercios{% endif %}</title>
-    <meta name="description" content="{% if meta_description %}{{ meta_description }}{% else %}Desarrollo web personalizado, tiendas online y sistemas de gestión para restaurantes y comercios.{% endif %}">
-    <meta name="author" content="Código Vivo Studio">
+   <!-- META SEO PRINCIPAL -->
+  <title>Código Vivo Studio - Creación de Páginas Web, Tiendas Online, Webs para Restaurantes y Sistemas Web</title>
+  <meta name="description" content="Desarrollo profesional de páginas web, tiendas online, webs para restaurantes, sistemas web y soluciones digitales a medida. Soluciones funcionales, escalables y sin cuotas mensuales.">
+  <meta name="keywords" content="páginas web, tiendas online, webs restaurantes, sistemas web, soluciones digitales, desarrollo web, ecommerce, desarrollo a medida">
+  <meta name="author" content="Código Vivo Studio">
+  <meta name="robots" content="index, follow">
 
-    <!-- Bootstrap -->
-    <link href="{% static 'ProyectoWebApp/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- OPEN GRAPH -->
+  <meta property="og:title" content="Código Vivo Studio - Creación de Páginas Web, Tiendas Online y Sistemas Web">
+  <meta property="og:description" content="Desarrollo profesional de páginas web, tiendas online, webs para restaurantes, sistemas web y soluciones digitales a medida. Soluciones funcionales y escalables sin cuotas mensuales.">
+  <meta property="og:url" content="https://www.codigovivostudio.cloud">
+  <meta property="og:image" content="https://www.codigovivostudio.cloud/static/ProyectoWebApp/img/og-image.jpg">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Código Vivo Studio">
+  <meta property="og:locale" content="es_ES">
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet"> 
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
-    
-    <!-- Styles -->
-    <link href="{% static 'ProyectoWebApp/css/gestion.css' %}" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
-    <!-- FontAwesome para los iconos de alérgenos -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Código Vivo Studio",
-      "url": "https://codigovivostudio.cloud",
-      "logo": "https://codigovivostudio.cloud/static/ProyectoWebApp/img/logo.png",
-      "description": "Desarrollo web profesional y soluciones digitales a medida para comercios y restaurantes. Tiendas online, APIs y sistemas de gestión sin cuotas mensuales.",
-      "foundingDate": "2025",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Madrid",
-        "addressRegion": "Comunidad de Madrid",
-        "postalCode": "28015",
-        "addressCountry": "ES"
-      },
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+34-615613427",
-        "contactType": "customer service",
-        "areaServed": "ES",
-        "availableLanguage": ["es"]
-      },
-      "sameAs": [
-        "https://www.linkedin.com/in/javierpalomo",
-        "https://x.com/codigovivostudio",
-        "https://www.facebook.com/codigovivostudio"
-      ],
-      "hasOfferCatalog": {
-        "@type": "OfferCatalog",
-        "name": "Servicios de Código Vivo Studio",
-        "itemListElement": [
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Desarrollo web a medida",
-              "description": "Creación de páginas web adaptadas a tu negocio, funcionales y escalables."
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Tiendas online",
-              "description": "Desarrollo de tiendas online completas para comercios y restaurantes."
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Integración de APIs",
-              "description": "Conexión con servicios externos para automatizar procesos y centralizar información."
-            }
+  <!-- TWITTER CARD -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Código Vivo Studio - Creación de Páginas Web, Tiendas Online y Sistemas Web">
+  <meta name="twitter:description" content="Desarrollo profesional de páginas web, tiendas online, webs para restaurantes, sistemas web y soluciones digitales a medida. Soluciones funcionales y escalables sin cuotas mensuales.">
+  <meta name="twitter:image" content="https://www.codigovivostudio.cloud/static/ProyectoWebApp/img/twitter-image.jpg">
+
+  <!-- SCHEMA JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Código Vivo Studio",
+    "url": "https://www.codigovivostudio.cloud",
+    "logo": "https://www.codigovivostudio.cloud/static/ProyectoWebApp/img/logo.png",
+    "description": "Desarrollo profesional de páginas web, tiendas online, webs para restaurantes, sistemas web y soluciones digitales a medida para empresas de todos los sectores. Soluciones funcionales, escalables y sin cuotas mensuales.",
+    "foundingDate": "2025",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Madrid",
+      "addressRegion": "Comunidad de Madrid",
+      "postalCode": "28015",
+      "addressCountry": "ES"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+34-615613427",
+      "contactType": "customer service",
+      "areaServed": "ES",
+      "availableLanguage": ["es"]
+    },
+    "sameAs": [
+      "https://www.linkedin.com/in/javierpalomo",
+      "https://x.com/codigovivostudio",
+      "https://www.facebook.com/codigovivostudio"
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Servicios de Código Vivo Studio",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Creación de páginas web",
+            "description": "Desarrollo de páginas web adaptadas a tu negocio, funcionales y escalables."
           }
-        ]
-      }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Tiendas online",
+            "description": "Desarrollo de tiendas online completas para comercios y restaurantes."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Webs para restaurantes",
+            "description": "Diseño de páginas web específicas para restaurantes, optimizadas para reservas y ventas online."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Sistemas web y soluciones digitales",
+            "description": "Desarrollo de sistemas web, APIs y soluciones digitales a medida para automatizar procesos y gestionar información."
+          }
+        }
+      ]
     }
-  </script>
+  }
+</script>
 </head>
 
 
