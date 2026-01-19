@@ -17,15 +17,13 @@
     
     <!-- ✅ META TAGS DINÁMICOS -->
    <!-- META SEO PRINCIPAL -->
-  <title>Código Vivo Studio - Creación de Páginas Web, Tiendas Online, Webs para Restaurantes y Sistemas Web</title>
-  <meta name="description" content="Desarrollo profesional de páginas web, tiendas online, webs para restaurantes, sistemas web y soluciones digitales a medida. Soluciones funcionales, escalables y sin cuotas mensuales.">
-  <meta name="keywords" content="páginas web, tiendas online, webs restaurantes, sistemas web, soluciones digitales, desarrollo web, ecommerce, desarrollo a medida">
-  <meta name="author" content="Código Vivo Studio">
+  <title>{% block meta_title %}Código Vivo Studio - Creación de Páginas Web, Tiendas Online y Sistemas Web{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}Desarrollo profesional de páginas web, tiendas online, webs para restaurantes, sistemas web y soluciones digitales a medida. Soluciones funcionales, escalables y sin cuotas mensuales.{% endblock %}">
   <meta name="robots" content="index, follow">
 
   <!-- OPEN GRAPH -->
-  <meta property="og:title" content="Código Vivo Studio - Creación de Páginas Web, Tiendas Online y Sistemas Web">
-  <meta property="og:description" content="Desarrollo profesional de páginas web, tiendas online, webs para restaurantes, sistemas web y soluciones digitales a medida. Soluciones funcionales y escalables sin cuotas mensuales.">
+  <meta property="og:title" content="{% block og_title %}Código Vivo Studio - Creación de Páginas Web, Tiendas Online y Sistemas Web{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}Desarrollo profesional de páginas web, tiendas online, webs para restaurantes, sistemas web y soluciones digitales a medida. Soluciones funcionales y escalables sin cuotas mensuales.{% endblock %}">
   <meta property="og:url" content="https://www.codigovivostudio.cloud">
   <meta property="og:image" content="https://www.codigovivostudio.cloud/static/ProyectoWebApp/img/og-image.jpg">
   <meta property="og:type" content="website">
@@ -34,10 +32,9 @@
 
   <!-- TWITTER CARD -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Código Vivo Studio - Creación de Páginas Web, Tiendas Online y Sistemas Web">
-  <meta name="twitter:description" content="Desarrollo profesional de páginas web, tiendas online, webs para restaurantes, sistemas web y soluciones digitales a medida. Soluciones funcionales y escalables sin cuotas mensuales.">
+  <meta name="twitter:title" content="{% block twitter_title %}Código Vivo Studio - Creación de Páginas Web, Tiendas Online y Sistemas Web{% endblock %}">
+  <meta name="twitter:description" content="{% block twitter_description %}Desarrollo profesional de páginas web, tiendas online, webs para restaurantes, sistemas web y soluciones digitales a medida. Soluciones funcionales y escalables sin cuotas mensuales.{% endblock %}">
   <meta name="twitter:image" content="https://www.codigovivostudio.cloud/static/ProyectoWebApp/img/twitter-image.jpg">
-
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="{% static 'ProyectoWebApp/vendor/bootstrap/css/bootstrap.min.css' %}">
 
