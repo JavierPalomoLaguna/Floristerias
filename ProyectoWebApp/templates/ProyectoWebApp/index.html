@@ -115,7 +115,53 @@
   
   <!-- ✅ ESTILOS DE COOKIES -->
   <link href="{% static 'ProyectoWebApp/css/cookies.css' %}" rel="stylesheet">
-  
+
+  <!-- ESTILOS FAQ ACCORDION - INLINE FORZADO -->
+  <style>
+    .faq-item {
+      background: white !important;
+      border-radius: 16px !important;
+      overflow: hidden !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
+      transition: all 0.3s ease !important;
+      margin-bottom: 16px !important;
+      border: none !important;
+      padding: 0 !important;
+    }
+
+    .faq-button {
+      width: 100% !important;
+      padding: 24px 28px !important;
+      background: white !important;
+      border: none !important;
+      text-align: left !important;
+      cursor: pointer !important;
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      font-size: 1.15rem !important;
+      font-weight: 600 !important;
+      color: #2c3e50 !important;
+      transition: all 0.3s ease !important;
+      border-radius: 16px !important;
+    }
+
+    .faq-body {
+      padding: 0 28px 28px 28px !important;
+      color: #555 !important;
+      line-height: 1.9 !important;
+      font-size: 1.05rem !important;
+      background: transparent !important;
+      border: none !important;
+      border-top: none !important;
+    }
+
+    .faq-body p {
+      margin: 0 !important;
+      padding-top: 10px !important;
+    }
+  </style>
+    
   <!-- FAVICON -->
   <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
 
@@ -175,7 +221,7 @@
         </div>
         <div class="col-lg-6">
           <div class="hero-image">
-            <img src="{% static 'ProyectoWebApp/img/hero-image.jpg' %}" alt="Desarrollo web profesional" class="img-fluid rounded shadow">
+            <img src="{% static 'ProyectoWebApp/img/hero-image.jpg' %}" alt="Desarrollo web profesional para negocios, tiendas online y restaurantes" width="800" height="600" class="img-fluid rounded shadow">
           </div>
         </div>
       </div>
@@ -220,7 +266,7 @@
         <div class="col-lg-6 mb-5">
           <div class="servicio-box-with-image-dark">
             <div class="servicio-imagen-container">
-              <img src="{% static 'ProyectoWebApp/img/servicio-tienda.jpg' %}" alt="Tiendas online" class="servicio-imagen">
+              <img src="{% static 'ProyectoWebApp/img/servicio-tienda.jpg' %}" alt="Panel administrativo de tienda online con gestión completa de productos" width="600" height="400" loading="lazy" class="servicio-imagen">
             </div>
             <div class="servicio-contenido">
               <h3>Tiendas online y sistemas de venta</h3> 
@@ -233,7 +279,7 @@
         <div class="col-lg-6 mb-5">
           <div class="servicio-box-with-image-dark">
             <div class="servicio-imagen-container">
-              <img src="{% static 'ProyectoWebApp/img/servicio-automatizacion.jpg' %}" alt="Automatización" class="servicio-imagen">
+              <img src="{% static 'ProyectoWebApp/img/servicio-automatizacion.jpg' %}" alt="Sistema de automatización de procesos empresariales integrado con APIs externas" width="600" height="400" loading="lazy" class="servicio-imagen">
             </div>
             <div class="servicio-contenido">
               <h3>Automatización de procesos empresariales</h3> 
@@ -246,7 +292,7 @@
         <div class="col-lg-6 mb-5">
           <div class="servicio-box-with-image-dark">
             <div class="servicio-imagen-container">
-              <img src="{% static 'ProyectoWebApp/img/servicio-interfaces.jpg' %}" alt="Interfaces administrativas" class="servicio-imagen">
+              <img src="{% static 'ProyectoWebApp/img/servicio-interfaces.jpg' %}" alt="Dashboard administrativo intuitivo con filtros avanzados y navegación clara" width="600" height="400" loading="lazy" class="servicio-imagen">
             </div>
             <div class="servicio-contenido">
               <h3>Interfaces administrativas claras</h3> 
@@ -259,7 +305,7 @@
         <div class="col-lg-6 mb-5">
           <div class="servicio-box-with-image-dark">
             <div class="servicio-imagen-container">
-              <img src="{% static 'ProyectoWebApp/img/servicio-api.jpg' %}" alt="Integraciones API" class="servicio-imagen">
+              <img src="{% static 'ProyectoWebApp/img/servicio-api.jpg' %}" alt="Conectores API personalizados con control total de accesos y sincronización de datos" width="600" height="400" loading="lazy" class="servicio-imagen">
             </div>
             <div class="servicio-contenido">
               <h3>Integraciones API a medida</h3> 
@@ -290,7 +336,7 @@
     <div class="container"> 
       <div class="row align-items-center">
         <div class="col-lg-4 text-center mb-4 mb-lg-0">
-          <img src="{% static 'ProyectoWebApp/img/testimonio-cliente.jpg' %}" alt="Cliente satisfecho" class="img-fluid rounded-circle shadow" style="width: 200px; height: 200px; object-fit: cover;">
+          <img src="{% static 'ProyectoWebApp/img/testimonio-cliente.jpg' %}" alt="Director de Tecnología satisfecho con sistema desarrollado por Código Vivo Studio" width="200" height="200" loading="lazy" class="img-fluid rounded-circle shadow" style="width: 200px; height: 200px; object-fit: cover;">
         </div>
         <div class="col-lg-8">
           <div class="testimonio-content text-center text-lg-start"> 
@@ -301,6 +347,213 @@
         </div>
       </div>
     </div> 
+    <!-- Schema Review para testimonio -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Review",
+        "itemReviewed": {
+          "@type": "Organization",
+          "name": "Código Vivo Studio",
+          "url": "https://www.codigovivostudio.cloud"
+        },
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5",
+          "bestRating": "5"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Director de Tecnología",
+          "jobTitle": "Director de Tecnología"
+        },
+        "reviewBody": "El sistema que nos entregó nos permitió tener control total sobre nuestros procesos y mejorar la eficiencia operativa sin depender de plataformas externas.",
+        "datePublished": "2025-01-15"
+      }
+    </script>
+  </section>
+
+  <!-- SECCIÓN FAQ CON ACORDEÓN -->
+  <section class="faq-section" style="padding: 80px 0; background: #f8f9fa;" itemscope itemtype="https://schema.org/FAQPage">
+    <div class="container">
+      <h2 class="text-center mb-5" style="font-size: 2.5rem; color: #2c3e50; font-weight: 700;">
+        Preguntas Frecuentes
+      </h2>
+      <p class="text-center mb-5" style="font-size: 1.2rem; color: #666; max-width: 700px; margin: 0 auto 3rem;">
+        Resolvemos las dudas más comunes sobre nuestros servicios de desarrollo web
+      </p>
+      
+      <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-9">
+          
+          <!-- ACORDEÓN FAQ -->
+          <div class="accordion" id="faqAccordion">
+            
+            <!-- FAQ 1 -->
+            <div class="faq-item mb-3" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <div class="faq-header" id="heading1">
+                <button class="faq-button collapsed" type="button" data-toggle="collapse" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                  <span itemprop="name">
+                    <i class="fas fa-question-circle me-2" style="color: #667eea;"></i>
+                    ¿Cuánto cuesta desarrollar una tienda online completa?
+                  </span>
+                  <i class="fas fa-chevron-down faq-icon"></i>
+                </button>
+              </div>
+              <div id="collapse1" class="collapse" aria-labelledby="heading1" data-parent="#faqAccordion" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                <div class="faq-body">
+                  <p itemprop="text">
+                    El coste depende de las funcionalidades específicas que necesites: catálogo de productos, pasarela de pago (Stripe, PayPal, Redsys), sistema de envíos, facturación automática, integraciones con ERP o CRM, etc. No es lo mismo una tienda básica funcional que soluciones más complejas con funcionalidades avanzadas pueden requerir inversiones mayores. <strong>Contacta con nosotros para un presupuesto personalizado sin compromiso.</strong>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 2 -->
+            <div class="faq-item mb-3" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <div class="faq-header" id="heading2">
+                <button class="faq-button collapsed" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                  <span itemprop="name">
+                    <i class="fas fa-question-circle me-2" style="color: #667eea;"></i>
+                    ¿Hay cuotas mensuales obligatorias?
+                  </span>
+                  <i class="fas fa-chevron-down faq-icon"></i>
+                </button>
+              </div>
+              <div id="collapse2" class="collapse" aria-labelledby="heading2" data-parent="#faqAccordion" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                <div class="faq-body">
+                  <p itemprop="text">
+                    <strong>No.</strong> Pagas una sola vez por el desarrollo completo del proyecto. Solo necesitarás cubrir costes estándar de infraestructura: hosting y dominio. Si en el futuro necesitas añadir nuevas funcionalidades, mejoras o cambios, las cotizamos por separado sin compromisos de permanencia ni cuotas recurrentes.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="faq-item mb-3" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <div class="faq-header" id="heading3">
+                <button class="faq-button collapsed" type="button" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                  <span itemprop="name">
+                    <i class="fas fa-question-circle me-2" style="color: #667eea;"></i>
+                    ¿Cuánto tiempo tarda el desarrollo de una web?
+                  </span>
+                  <i class="fas fa-chevron-down faq-icon"></i>
+                </button>
+              </div>
+              <div id="collapse3" class="collapse" aria-labelledby="heading3" data-parent="#faqAccordion" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                <div class="faq-body">
+                  <p itemprop="text">
+                    Los plazos varían según la complejidad del proyecto: una landing page corporativa puede estar lista en 1-2 semanas, una web para restaurante con sistema de reservas online en 3-4 semanas, una tienda online completa en 6-10 semanas, y un sistema a medida puede requerir 2-4 meses. Trabajamos con metodología ágil entregando avances para que puedas ver el progreso.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 4 -->
+            <div class="faq-item mb-3" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <div class="faq-header" id="heading4">
+                <button class="faq-button collapsed" type="button" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                  <span itemprop="name">
+                    <i class="fas fa-question-circle me-2" style="color: #667eea;"></i>
+                    ¿Qué tecnologías utilizáis para el desarrollo?
+                  </span>
+                  <i class="fas fa-chevron-down faq-icon"></i>
+                </button>
+              </div>
+              <div id="collapse4" class="collapse" aria-labelledby="heading4" data-parent="#faqAccordion" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                <div class="faq-body">
+                  <p itemprop="text">
+                    Trabajamos principalmente con <strong>Django (Python)</strong> para el backend, un framework robusto, seguro y escalable utilizado por empresas como Instagram, Spotify y NASA. Para el frontend usamos HTML5, CSS3, JavaScript moderno y Bootstrap. Son tecnologías consolidadas con gran comunidad de soporte, actualizaciones constantes de seguridad y excelente documentación. Esto garantiza que tu proyecto sea mantenible a largo plazo.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 5 -->
+            <div class="faq-item mb-3" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <div class="faq-header" id="heading5">
+                <button class="faq-button collapsed" type="button" data-toggle="collapse" data-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                  <span itemprop="name">
+                    <i class="fas fa-question-circle me-2" style="color: #667eea;"></i>
+                    ¿Puedo actualizar el contenido de mi web por mi cuenta?
+                  </span>
+                  <i class="fas fa-chevron-down faq-icon"></i>
+                </button>
+              </div>
+              <div id="collapse5" class="collapse" aria-labelledby="heading5" data-parent="#faqAccordion" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                <div class="faq-body">
+                  <p itemprop="text">
+                    Sí. Todos nuestros proyectos incluyen un <strong>panel administrativo intuitivo</strong> desde donde puedes gestionar productos, servicios, imágenes, textos, pedidos y reservas sin necesidad de conocimientos técnicos. Funciona como cualquier sistema de gestión que uses habitualmente. También te proporcionamos formación personalizada y documentación detallada. Si prefieres que nos encarguemos nosotros del mantenimiento, ofrecemos servicio de actualización y soporte a medida.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 6 -->
+            <div class="faq-item mb-3" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <div class="faq-header" id="heading6">
+                <button class="faq-button collapsed" type="button" data-toggle="collapse" data-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+                  <span itemprop="name">
+                    <i class="fas fa-question-circle me-2" style="color: #667eea;"></i>
+                    ¿Ofrecéis soporte después del lanzamiento?
+                  </span>
+                  <i class="fas fa-chevron-down faq-icon"></i>
+                </button>
+              </div>
+              <div id="collapse6" class="collapse" aria-labelledby="heading6" data-parent="#faqAccordion" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                <div class="faq-body">
+                  <p itemprop="text">
+                    Sí. Incluimos <strong>30 días de soporte técnico gratuito</strong> después del lanzamiento para resolver dudas, hacer ajustes menores y garantizar que todo funciona perfectamente. Después de este período puedes solicitar mejoras puntuales sin compromiso de permanencia.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 7 -->
+            <div class="faq-item mb-3" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <div class="faq-header" id="heading7">
+                <button class="faq-button collapsed" type="button" data-toggle="collapse" data-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+                  <span itemprop="name">
+                    <i class="fas fa-question-circle me-2" style="color: #667eea;"></i>
+                    ¿La web será responsive y funcionará en móviles?
+                  </span>
+                  <i class="fas fa-chevron-down faq-icon"></i>
+                </button>
+              </div>
+              <div id="collapse7" class="collapse" aria-labelledby="heading7" data-parent="#faqAccordion" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                <div class="faq-body">
+                  <p itemprop="text">
+                    Absolutamente. Todos nuestros desarrollos son <strong>100% responsive</strong> y están optimizados para funcionar perfectamente en móviles, tablets y ordenadores. Más del 60% del tráfico web actual proviene de dispositivos móviles, por lo que diseñamos con un enfoque "mobile-first": primero optimizamos para móvil y luego escalamos a pantallas más grandes. Además, cumplimos con los estándares de Google para velocidad y usabilidad móvil.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 8 -->
+            <div class="faq-item mb-3" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <div class="faq-header" id="heading8">
+                <button class="faq-button collapsed" type="button" data-toggle="collapse" data-target="#collapse8" aria-expanded="false" aria-controls="collapse8">
+                  <span itemprop="name">
+                    <i class="fas fa-question-circle me-2" style="color: #667eea;"></i>
+                    ¿Qué incluye el desarrollo de una web para restaurante?
+                  </span>
+                  <i class="fas fa-chevron-down faq-icon"></i>
+                </button>
+              </div>
+              <div id="collapse8" class="collapse" aria-labelledby="heading8" data-parent="#faqAccordion" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                <div class="faq-body">
+                  <p itemprop="text">
+                    Una web para restaurante completa incluye: <strong>menú digital interactivo</strong> con fotos y descripciones, sistema de <strong>reservas online</strong> con calendario, gestión de alérgenos, mapa de localización, horarios, formulario de contacto, galería de fotos, integración con redes sociales y panel administrativo para gestionar todo el contenido. Opcionalmente podemos añadir: pedidos online con pago, carta con precios variables según día/horario, programa de fidelización y newsletter.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <!-- FIN ACORDEÓN -->
+
+        </div>
+      </div> 
   </section>
 
   <!-- CTA -->

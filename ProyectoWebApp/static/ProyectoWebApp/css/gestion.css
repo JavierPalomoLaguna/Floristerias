@@ -1718,3 +1718,149 @@ body.index-layout {
 .products-grid .col-12.text-center .fa-search {
   opacity: 0.5;
 }
+/* FAQ ACCORDION - Diseño más fluido y natural */
+.faq-item {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: all 0.3s ease;
+  margin-bottom: 16px;
+}
+
+.faq-item:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+.faq-header {
+  background: white;
+}
+
+.faq-button {
+  width: 100%;
+  padding: 24px 28px;
+  background: white;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #2c3e50;
+  transition: all 0.3s ease;
+  border-radius: 16px;
+}
+
+.faq-button:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+  color: #667eea;
+}
+
+.faq-button:focus {
+  outline: none;
+}
+
+.faq-button span {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-right: 20px;
+}
+
+.faq-icon {
+  font-size: 1.1rem;
+  color: #667eea;
+  transition: transform 0.3s ease;
+  margin-left: 15px;
+  flex-shrink: 0;
+}
+
+.faq-button:not(.collapsed) .faq-icon {
+  transform: rotate(180deg);
+}
+
+.faq-button:not(.collapsed) {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.08));
+  color: #667eea;
+}
+
+/* Respuesta más fluida y natural */
+.faq-body {
+  padding: 0 28px 28px 28px;
+  color: #555;
+  line-height: 1.9;
+  font-size: 1.05rem;
+  background: linear-gradient(to bottom, rgba(102, 126, 234, 0.02), transparent);
+}
+
+.faq-body p {
+  margin: 0;
+  padding-top: 10px;
+}
+
+.faq-body strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+/* Animación suave para el collapse */
+.collapse {
+  transition: height 0.35s ease;
+}
+
+.collapsing {
+  transition: height 0.35s ease;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .faq-button {
+    padding: 20px 24px;
+    font-size: 1.08rem;
+  }
+  
+  .faq-button span {
+    padding-right: 15px;
+  }
+  
+  .faq-body {
+    padding: 0 24px 24px 24px;
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+  
+  .faq-icon {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .faq-item {
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .faq-button {
+    padding: 16px 20px;
+    font-size: 1rem;
+    border-radius: 12px;
+  }
+  
+  .faq-button span {
+    padding-right: 10px;
+  }
+  
+  .faq-body {
+    padding: 0 20px 20px 20px;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+  
+  .faq-icon {
+    font-size: 0.9rem;
+    margin-left: 10px;
+  }
+}
