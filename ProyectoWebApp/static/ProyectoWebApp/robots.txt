@@ -1,13 +1,13 @@
 User-agent: *
 Allow: /
 
-# Bloquear URLs del carrito (son acciones, no páginas)
+# Bloquear URLs del carrito (son acciones, no paginas)
 Disallow: /carro/agregar/
 Disallow: /carro/eliminar/
 Disallow: /carro/restar/
 Disallow: /carro/limpiar/
 
-# Bloquear panel de administración
+# Bloquear panel de administracion
 Disallow: /admin/
 
 # Bloquear zona de clientes privada
@@ -16,9 +16,8 @@ Disallow: /clientes/procesar-pedido/
 Disallow: /clientes/zona-cliente/
 Disallow: /clientes/logout/
 
-# Bloquear páginas de autenticación
+# Bloquear paginas de autenticacion
 Disallow: /password_reset/
 Disallow: /reset/
-
 
 Sitemap: https://www.codigovivostudio.cloud/sitemap.xml
