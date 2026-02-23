@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- ✅ META TAGS DINÁMICOS -->
-    <title>{% if meta_title %}{{ meta_title }}{% else %}Tienda - Código Vivo Studio{% endif %}</title>
+    <title>{% if meta_title %}{{ meta_title }}{% else %}La Rosa Púrpura del Cairo{% endif %}</title>
     <meta name="description" content="{% if meta_description %}{{ meta_description }}{% else %}Descubre nuestros productos exclusivos en la tienda online de Código Vivo Studio.{% endif %}">
     <meta name="author" content="Código Vivo Studio">
     
@@ -30,6 +30,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'FloristeriasApp/css/gestion.css' %}">
     
     <style>
         :root {
@@ -131,7 +134,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark navbar-tienda">
         <div class="container">
             <a class="navbar-brand fw-bold" href="{% url 'tienda' %}">
-                <i class="fas fa-store me-2"></i>Tienda CVS
+                <i class="fas fa-store me-2"></i>Inicio Tienda
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTienda">
@@ -141,7 +144,7 @@
             <div class="collapse navbar-collapse" id="navbarTienda">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'tienda' %}">Inicio</a>
+                        <a class="nav-link" href="{% url 'tienda' %}"></a>
                     </li>
                 </ul>
                 
@@ -184,7 +187,7 @@
                     <!-- Enlace al sitio principal -->
                     <li class="nav-item">
                         <a class="nav-link" href="/">
-                            <i class="fas fa-home me-1"></i> Sitio Principal
+                            <i class="fas fa-home me-1"></i> Página Principal
                         </a>
                     </li>
                     
@@ -206,19 +209,65 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white py-4 mt-5">
-        <div class="container text-center">
-            <p class="m-0 mbt mt-3">
-                <a href="/politica-privacidad/" class="link text-white">Política de privacidad</a> ·
-                <a href="/aviso-legal/" class="link text-white">Aviso legal</a> ·
-                <a href="/politica-cookies/" class="link text-white">Cookies</a>
-            </p>
-            <p class="mb-0 mt-3">&copy; 2025 Código Vivo Studio. Todos los derechos reservados.</p>
-            <p class="m-0 mt-3 small">
-                <a href="/admin/" class="text-white" title="Panel de administración">⚙️⚙️⚙️</a>
-            </p>
+    <!-- FOOTER -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="row">
+                <!-- Sobre Nosotros -->
+                <div class="col-md-4 mb-4">
+                    <div class="footer-section">
+                        <h4>La Rosa Púrpura del Cairo</h4>
+                        <p>Floristería artesanal especializada en arreglos florales únicos para cada ocasión. Flores frescas y diseños personalizados.</p>
+                        <div class="social-icons">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Enlaces Rápidos -->
+                <div class="col-md-4 mb-4">
+                    <div class="footer-section">
+                        <h4>Enlaces Rápidos</h4>
+                        <ul>
+                            <li><a href="#">Sobre Nosotros</a></li>
+                            <li><a href="{% url 'tienda' %}">Catálogo</a></li>
+                            <li><a href="#">Bodas y Eventos</a></li>
+                            <li><a href="{% url 'contacto' %}">Contacto</a></li>
+                            <li><a href="#">Preguntas Frecuentes</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Contacto -->
+                <div class="col-md-4 mb-4">
+                    <div class="footer-section">
+                        <h4>Contacto</h4>
+                        <ul>
+                            <li><i class="fas fa-map-marker-alt me-2"></i>Calle Ejemplo 123, Madrid</li>
+                            <li><i class="fas fa-phone me-2"></i>91 123 45 67</li>
+                            <li><i class="fas fa-envelope me-2"></i>info@rosapurpuracairo.com</li>
+                            <li><i class="fas fa-clock me-2"></i>Lun-Sáb: 9:00-20:00</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 La Rosa Púrpura del Cairo - Todos los derechos reservados</p>
+                <div class="mt-2">
+                    <a href="{% url 'politica_privacidad' %}" class="text-decoration-none me-3">Política de Privacidad</a>
+                    <a href="{% url 'aviso_legal' %}" class="text-decoration-none me-3">Aviso Legal</a>
+                    <a href="{% url 'politica_cookies' %}" class="text-decoration-none">Cookies</a>
+                </div>
+                <p class="m-0 mt-3 small">
+                    <a href="/admin/" class="text-muted" title="Panel de administración">⚙️⚙️⚙️</a>
+                </p>
+            </div>
+            
         </div>
+        
     </footer>
 
     <!-- Bootstrap JS -->

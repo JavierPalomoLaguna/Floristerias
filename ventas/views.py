@@ -30,7 +30,7 @@ def create_signature(clave, encoded_params, order):
 
 def confirmar_pedido(request):
     carro = request.session.get('carro', {})
-    cliente_id = request.session.get('cliente_persistent_id')  # ✅ CAMBIADO
+    cliente_id = request.session.get('cliente_persistent_id')
 
     if request.method == 'POST' and carro and cliente_id:
         metodo_pago = request.POST.get('metodo_pago')
@@ -39,23 +39,22 @@ def confirmar_pedido(request):
         # ✅ OBTENER CONFIGURACIÓN DE ENVÍO
         try:
             config_envio = ConfiguracionEnvio.objects.get(activo=True)
-            # ✅ CONVERTIR Decimal A float
             umbral = float(config_envio.umbral_envio_gratis)
             costo_envio = float(config_envio.costo_envio_estandar)
         except ConfiguracionEnvio.DoesNotExist:
-            # Configuración por defecto si no existe
+            print("❌ DEBUG: No se encontró configuración activa: ConfiguracionEnvio matching query does not exist.")
             umbral = 300.00
             costo_envio = 5.95
 
         # Calcular importe total del carrito
         importe_total = sum(item["precio"] * item["cantidad"] for item in carro.values())
         
-        # ✅ CALCULAR GASTOS DE ENVÍO (USANDO LOS float)
+        # ✅ CALCULAR GASTOS DE ENVÍO
         if importe_total >= umbral:
             gastos_envio = 0
             envio_gratis = True
         else:
-            gastos_envio = costo_envio  # ✅ ESTO ES float
+            gastos_envio = costo_envio
             envio_gratis = False
 
         # ✅ VERIFICAR STOCK ANTES DE CREAR PEDIDO
@@ -66,11 +65,8 @@ def confirmar_pedido(request):
                 productos_sin_stock.append(f"{producto.nombre} (stock: {producto.stock}, pedido: {item['cantidad']})")
         
         if productos_sin_stock:
-            # Mostrar error al usuario y no crear pedido
             error_message = f'Stock insuficiente para: {", ".join(productos_sin_stock)}'
             print(f"❌ {error_message}")
-            
-            # Volver al checkout con el error
             importe_total = sum(item["precio"] * item["cantidad"] for item in carro.values())
             return render(request, 'carro/checkout.html', {
                 'carro': carro,
@@ -78,14 +74,76 @@ def confirmar_pedido(request):
                 'error_stock': error_message
             })
 
-        # ✅ CREAR PEDIDO CON GASTOS DE ENVÍO
+        # ✅ CAPTURAR DATOS DE ENVÍO Y DEDICATORIA
+        usar_direccion_cliente = request.POST.get('usar_direccion_cliente', '1') == '1'
+        
+        print(f"🔍 DEBUG: usar_direccion_cliente = {usar_direccion_cliente}")
+        
+        if usar_direccion_cliente:
+            # Usar dirección del cliente
+            destinatario_nombre = f"{cliente.nombre} {cliente.apellidos}"
+            destinatario_direccion = f"{cliente.calle} {cliente.numero_calle}"
+            if cliente.portal or cliente.escalera or cliente.piso or cliente.puerta:
+                partes = []
+                if cliente.portal:
+                    partes.append(f"Portal {cliente.portal}")
+                if cliente.escalera:
+                    partes.append(f"Esc. {cliente.escalera}")
+                if cliente.piso:
+                    partes.append(f"{cliente.piso}º")
+                if cliente.puerta:
+                    partes.append(cliente.puerta)
+                destinatario_direccion += ", " + " ".join(partes)
+            destinatario_cp = cliente.codigo_postal or ''
+            destinatario_localidad = cliente.localidad or ''
+            destinatario_provincia = cliente.provincia or ''
+            destinatario_telefono = cliente.telefono or ''
+        else:
+            # Usar nueva dirección proporcionada
+            destinatario_nombre = request.POST.get('destinatario_nombre', '')
+            destinatario_calle = request.POST.get('destinatario_calle', '')
+            destinatario_portal = request.POST.get('destinatario_portal', '')
+            destinatario_piso = request.POST.get('destinatario_piso', '')
+            
+            destinatario_direccion = destinatario_calle
+            if destinatario_portal or destinatario_piso:
+                partes = []
+                if destinatario_portal:
+                    partes.append(f"Portal {destinatario_portal}")
+                if destinatario_piso:
+                    partes.append(destinatario_piso)
+                destinatario_direccion += ", " + " ".join(partes)
+            
+            destinatario_cp = request.POST.get('destinatario_cp', '')
+            destinatario_localidad = request.POST.get('destinatario_localidad', '')
+            destinatario_provincia = request.POST.get('destinatario_provincia', '')
+            destinatario_telefono = request.POST.get('destinatario_telefono', '')
+        
+        # Capturar tarjeta de dedicatoria
+        mensaje_dedicatoria = request.POST.get('mensaje_dedicatoria', '')
+        
+        print(f"✅ DEBUG: Destinatario: {destinatario_nombre}")
+        print(f"✅ DEBUG: Dirección: {destinatario_direccion}")
+        print(f"✅ DEBUG: Dedicatoria: {mensaje_dedicatoria[:50]}...")
+
+        # ✅ CREAR PEDIDO CON DATOS DE ENVÍO
         pedido = Pedido.objects.create(
             cliente=cliente,
             metodo_pago=metodo_pago,
             pagado=False,
             gastos_envio=gastos_envio,  
-            envio_gratis=envio_gratis   
+            envio_gratis=envio_gratis,
+            # ✅ NUEVOS CAMPOS
+            destinatario_nombre=destinatario_nombre,
+            destinatario_direccion=destinatario_direccion,
+            destinatario_cp=destinatario_cp,
+            destinatario_localidad=destinatario_localidad,
+            destinatario_provincia=destinatario_provincia,
+            destinatario_telefono=destinatario_telefono,
+            mensaje_dedicatoria=mensaje_dedicatoria
         )
+
+        print(f"✅ Pedido #{pedido.id} creado con datos de envío")
 
         # Crear líneas de pedido
         for key, item in carro.items():

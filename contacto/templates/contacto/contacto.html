@@ -1,90 +1,139 @@
+{% extends 'FloristeriasApp/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contacto - Código Vivo Studio</title>
-    <link href="{% static 'ProyectoWebApp/css/gestion.css' %}" rel="stylesheet">
-    <link href="{% static 'ProyectoWebApp/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-</head>
-<body class="index-layout">
 
-    <!-- NAVBAR DE BOOTSTRAP FUNCIONAL -->
-    <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" style="background-color: rgba(17, 17, 17, 0.95);">
-        <div class="container">
-            <a class="navbar-brand text-uppercase text-expanded font-weight-bold" href="/" style="font-size: 1.5rem;">
-                Código Vivo Studio
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContacto" aria-controls="navbarContacto" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+{% block content %}
+
+<div class="container" style="padding: 60px 20px;">
+    
+    <h1 style="text-align: center; color: var(--rosa-principal); font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 50px;">
+        Contáctanos
+    </h1>
+    
+    {% if mensaje_exito %}
+    <div style="background: var(--rosa-claro); color: var(--texto-oscuro); padding: 20px; border-radius: 12px; margin-bottom: 30px; text-align: center; border: 2px solid var(--rosa-principal); font-weight: 500; max-width: 400px; margin-left: auto; margin-right: auto;">
+        <i class="fas fa-check-circle me-2"></i>
+        {{ mensaje_exito }}
+    </div>
+    {% endif %}
+    
+    <!-- FORMULARIO CENTRADO Y ESTRECHO -->
+    <div style="max-width: 400px; margin: 0 auto 80px;">
+        <form action="" method="post" style="background: white; padding: 35px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 2px solid var(--rosa-principal);">
+            {% csrf_token %}
             
-            <div class="collapse navbar-collapse" id="navbarContacto">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item px-lg-3">
-                        <a class="nav-link text-uppercase text-expanded" href="/">Inicio</a>
-                    </li>
-                    <li class="nav-item px-lg-3">
-                        <a class="nav-link text-uppercase text-expanded" href="/servicios/">Restaurante</a>
-                    </li>
-                    <li class="nav-item px-lg-3">
-                        <a class="nav-link text-uppercase text-expanded" href="/tienda/">Tienda</a>
-                    </li>
-                    <li class="nav-item px-lg-3">
-                        <a class="nav-link text-uppercase text-expanded" href="/contacto/">Contacto</a>
-                    </li>
-                    <li class="nav-item px-lg-3">
-                        <a class="nav-link text-uppercase text-expanded" href="/blog/">Web</a>
-                    </li>
-                </ul>
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--rosa-principal); font-size: 0.95rem;">Nombre:</label>
+                {{ formulario.name }}
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--rosa-principal); font-size: 0.95rem;">Email:</label>
+                {{ formulario.email }}
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--rosa-principal); font-size: 0.95rem;">Contenido:</label>
+                {{ formulario.contenido }}
+            </div>
+            
+            <div style="text-align: center; margin-top: 25px;">
+                <button type="submit" class="btn-rosa">
+                    <i class="fas fa-paper-plane me-2"></i>Enviar Mensaje
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- MAPA Y DIRECCIÓN -->
+    <div>
+        <h2 style="text-align: center; color: var(--rosa-principal); font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 40px;">
+            Visítanos
+        </h2>
+        
+        <div class="row g-3">
+            <!-- MAPA - 75% -->
+            <div class="col-lg-9">
+                <div style="border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 2px solid var(--rosa-principal); height: 500px;">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3037.6056634890423!2d-3.7037902!3d40.4167754!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd422997800a3c81%3A0xc436dec1618c2269!2sPuerta%20del%20Sol%2C%20Madrid!5e0!3m2!1ses!2ses!4v1234567890" 
+                        style="width: 100%; height: 100%; border: none;"
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+            
+            <!-- DIRECCIÓN - 25% -->
+            <div class="col-lg-3">
+                <div style="background: var(--rosa-claro); padding: 25px; border-radius: 20px; height: 500px; display: flex; flex-direction: column; justify-content: center;">
+                    <h3 style="color: var(--rosa-principal); font-family: 'Playfair Display', serif; margin-bottom: 20px; font-size: 1.2rem;">Nuestra Ubicación</h3>
+                    
+                    <div style="display: flex; align-items: flex-start; margin-bottom: 15px; font-size: 0.85rem;">
+                        <i class="fas fa-map-marker-alt" style="color: var(--rosa-principal); font-size: 1rem; margin-right: 10px; margin-top: 2px; width: 18px;"></i>
+                        <div>
+                            <strong style="display: block; margin-bottom: 2px;">Dirección:</strong>
+                            Calle Ejemplo 123<br>
+                            28015 Madrid
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: flex-start; margin-bottom: 15px; font-size: 0.85rem;">
+                        <i class="fas fa-phone" style="color: var(--rosa-principal); font-size: 1rem; margin-right: 10px; margin-top: 2px; width: 18px;"></i>
+                        <div>
+                            <strong style="display: block; margin-bottom: 2px;">Teléfono:</strong>
+                            91 123 45 67
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: flex-start; margin-bottom: 15px; font-size: 0.85rem;">
+                        <i class="fas fa-envelope" style="color: var(--rosa-principal); font-size: 1rem; margin-right: 10px; margin-top: 2px; width: 18px;"></i>
+                        <div>
+                            <strong style="display: block; margin-bottom: 2px;">Email:</strong>
+                            info@rosapurpuracairo.com
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: flex-start; font-size: 0.85rem;">
+                        <i class="fas fa-clock" style="color: var(--rosa-principal); font-size: 1rem; margin-right: 10px; margin-top: 2px; width: 18px;"></i>
+                        <div>
+                            <strong style="display: block; margin-bottom: 2px;">Horario:</strong>
+                            Lun-Sáb: 9:00 - 20:00<br>
+                            Domingos: Cerrado
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </nav>
+    </div>
+    
+</div>
 
-    <section class="contacto-section">
-        <div class="container">
-            <h2 class="contact-title">Formulario de contacto</h2>
-            
-            {% if mensaje_exito %}
-            <div class="alert-success">
-                {{ mensaje_exito }}
-            </div>
-            {% endif %}
-            
-            <form action="" method="post" class="contact-form">
-                {% csrf_token %}
-                <div class="form-group">
-                    {{ formulario.name.label_tag }}
-                    {{ formulario.name }}
-                </div>
-                <div class="form-group">
-                    {{ formulario.email.label_tag }}
-                    {{ formulario.email }}
-                </div>
-                <div class="form-group">
-                    {{ formulario.contenido.label_tag }}
-                    {{ formulario.contenido }}
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn-contact">Enviar mensaje</button>
-                </div>
-            </form>
-        </div>
-    </section>
+<style>
+input[type="text"],
+input[type="email"],
+textarea {
+    width: 100%;
+    padding: 10px 15px;
+    border: 2px solid var(--rosa-principal);
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.3s ease;
+}
 
-    <footer> 
-        <div class="container"> 
-            <p>&copy; 2025 Código Vivo Studio. Todos los derechos reservados.</p> 
-        </div> 
-        <p class="m-0 mt-3 small">
-            <a href="/admin/" class="text-muted" title="Panel de administración">⚙️⚙️⚙️</a>
-        </p> 
-    </footer>
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+    outline: none;
+    border-color: #D88FA9;
+    box-shadow: 0 0 0 3px rgba(232, 160, 191, 0.15);
+}
 
-    <!-- SCRIPTS NECESARIOS -->
-    <script src="{% static 'ProyectoWebApp/vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'ProyectoWebApp/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+</style>
 
-</body>
-</html>
+{% endblock %}

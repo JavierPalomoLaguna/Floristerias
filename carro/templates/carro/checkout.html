@@ -1,15 +1,60 @@
 {% extends 'tienda/base_tienda.html' %}
 
-{% block title %}Checkout - Confirmar Pedido - Tienda CVS{% endblock %}
+{% block title %}Confirmar Pedido - La Rosa Púrpura del Cairo{% endblock %}
 
-{% block meta_description %}Confirma tu pedido y selecciona método de pago.{% endblock %}
+{% block extra_css %}
+<style>
+    .direccion-actual {
+        background: var(--rosa-claro);
+        padding: 20px;
+        border-radius: 15px;
+        border: 2px solid var(--rosa-principal);
+    }
+    
+    .direccion-nueva {
+        display: none;
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 15px;
+        margin-top: 15px;
+        border: 2px dashed var(--rosa-principal);
+    }
+    
+    .direccion-nueva.active {
+        display: block;
+    }
+    
+    .btn-cambiar {
+        background: white;
+        border: 2px solid var(--rosa-principal);
+        color: var(--rosa-principal);
+        padding: 8px 20px;
+        border-radius: 20px;
+        transition: all 0.3s;
+    }
+    
+    .btn-cambiar:hover {
+        background: var(--rosa-principal);
+        color: white;
+    }
+    
+    .tarjeta-dedicatoria {
+        background: #fff9f0;
+        border: 2px solid #ffd700;
+        border-radius: 10px;
+        padding: 15px;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
-<section class="hero-tienda">
+<section class="hero-tienda" style="background: linear-gradient(rgba(232, 160, 191, 0.3), rgba(244, 200, 216, 0.3)); padding: 60px 0; margin-bottom: 40px;">
     <div class="container text-center">
-        <h1 class="display-4 fw-bold mb-3">✅ Confirmar Pedido</h1>
-        <p class="lead">Revisa y confirma tu compra</p>
+        <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--rosa-principal); margin-bottom: 15px;">
+            ✅ Confirmar Pedido
+        </h1>
+        <p style="font-size: 1.1rem; color: var(--texto-oscuro);">Revisa los detalles de tu envío floral</p>
     </div>
 </section>
 
@@ -17,11 +62,12 @@
     {% if carro %}
     <div class="row">
         <!-- Resumen del Pedido -->
-        <div class="col-lg-8 mb-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-transparent">
-                    <h4 class="card-title mb-0">
-                        <i class="fas fa-shopping-bag me-2"></i>Resumen del Pedido
+        <div class="col-lg-7 mb-4">
+            <!-- Productos -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header" style="background: var(--rosa-claro); border: none;">
+                    <h4 class="mb-0" style="color: var(--rosa-principal); font-family: 'Playfair Display', serif;">
+                        <i class="fas fa-shopping-bag me-2"></i>Tu Pedido
                     </h4>
                 </div>
                 <div class="card-body p-0">
@@ -38,12 +84,12 @@
                                     <small class="text-muted">{{ item.cantidad }} x {{ item.precio|floatformat:2 }} €</small>
                                 </div>
                             </div>
-                            <span class="fw-bold text-success">{{ item.total|floatformat:2 }} €</span>
+                            <span class="fw-bold" style="color: var(--rosa-principal);">{{ item.total|floatformat:2 }} €</span>
                         </div>
                         {% endfor %}
                         
                         <!-- Gastos de envío -->
-                        <div class="list-group-item d-flex justify-content-between align-items-center py-3">
+                        <div class="list-group-item d-flex justify-content-between align-items-center py-3" style="background: #f8f9fa;">
                             <div>
                                 <h6 class="mb-1">Gastos de envío</h6>
                                 {% if envio_gratis_carro %}
@@ -60,80 +106,170 @@
                                 {% endif %}
                             </span>
                         </div>
-                        
-                        <!-- Información envío gratis -->
-                        {% if not envio_gratis_carro %}
-                        <div class="list-group-item bg-light py-3">
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-info-circle text-primary me-2"></i>
-                                <small class="text-muted">
-                                    ¡Te faltan <strong>{{ falta_para_envio_gratis|floatformat:2 }} €</strong> 
-                                    para envío gratis!
-                                    <br>
-                                    <em>(En pedidos superiores a {{ umbral_envio_gratis|floatformat:2 }} €)</em>
-                                </small>
-                            </div>
-                        </div>
-                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Panel de Confirmación -->
-        <div class="col-lg-4">
-            <div class="card border-0 shadow-sm sticky-top" style="top: 20px;">
-                <div class="card-header bg-transparent">
-                    <h5 class="card-title mb-0">
-                        <i class="fas fa-credit-card me-2"></i>Total del Pedido
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <!-- Total -->
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <span class="fs-5 fw-bold">Total:</span>
-                        <strong class="fs-4 text-success">{{ total_con_envio_carro|floatformat:2 }} €</strong>
+        <!-- Formulario de Envío y Pago -->
+        <div class="col-lg-5">
+            {% if cliente %}
+            <form method="post" action="/ventas/confirmar/" id="formCheckout">
+                {% csrf_token %}
+                
+                <!-- Dirección de Envío -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header" style="background: var(--rosa-claro); border: none;">
+                        <h5 class="mb-0" style="color: var(--rosa-principal); font-family: 'Playfair Display', serif;">
+                            <i class="fas fa-map-marker-alt me-2"></i>Dirección de Envío
+                        </h5>
                     </div>
-
-                    <!-- Método de Pago -->
-                    {% if request.session.cliente_id %}
-                    <form method="post" action="{% url 'confirmar_pedido' %}">
-                        {% csrf_token %}
-                        <div class="mb-4">
-                            <label for="metodo_pago" class="form-label fw-bold">
-                                <i class="fas fa-wallet me-2"></i>Método de pago:
+                    <div class="card-body">
+                        <!-- Dirección Actual del Cliente -->
+                        <div class="direccion-actual">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 style="color: var(--rosa-principal);">
+                                    <i class="fas fa-home me-2"></i>Tu dirección
+                                </h6>
+                            </div>
+                            <p class="mb-1"><strong>{{ cliente.nombre }} {{ cliente.apellidos }}</strong></p>
+                            <p class="mb-1">{{ cliente.calle }} {{ cliente.numero_calle }}</p>
+                            {% if cliente.portal or cliente.escalera or cliente.piso or cliente.puerta %}
+                            <p class="mb-1">
+                                {% if cliente.portal %}Portal {{ cliente.portal }}{% endif %}
+                                {% if cliente.escalera %}, Esc. {{ cliente.escalera }}{% endif %}
+                                {% if cliente.piso %}, {{ cliente.piso }}º{% endif %}
+                                {% if cliente.puerta %} {{ cliente.puerta }}{% endif %}
+                            </p>
+                            {% endif %}
+                            <p class="mb-1">{{ cliente.codigo_postal }} - {{ cliente.localidad }}</p>
+                            <p class="mb-2">{{ cliente.provincia }}</p>
+                            
+                            <button type="button" class="btn-cambiar btn-sm mt-2" id="btnCambiarDireccion">
+                                <i class="fas fa-edit me-1"></i>Enviar a otra dirección
+                            </button>
+                            
+                            <input type="hidden" name="usar_direccion_cliente" value="1" id="usarDireccionCliente">
+                        </div>
+                        
+                        <!-- Nueva Dirección (oculta por defecto) -->
+                        <div class="direccion-nueva" id="divDireccionNueva">
+                            <h6 style="color: var(--rosa-principal); margin-bottom: 15px;">
+                                <i class="fas fa-shipping-fast me-2"></i>Enviar a otra dirección
+                            </h6>
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-bold" style="color: var(--rosa-principal); font-size: 0.9rem;">Nombre destinatario *</label>
+                                <input type="text" name="destinatario_nombre" class="form-control" placeholder="Nombre completo del destinatario">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-bold" style="color: var(--rosa-principal); font-size: 0.9rem;">Calle y número *</label>
+                                <input type="text" name="destinatario_calle" class="form-control" placeholder="Calle y número">
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <label class="form-label fw-bold" style="color: var(--rosa-principal); font-size: 0.9rem;">Portal</label>
+                                    <input type="text" name="destinatario_portal" class="form-control" placeholder="Portal">
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <label class="form-label fw-bold" style="color: var(--rosa-principal); font-size: 0.9rem;">Piso</label>
+                                    <input type="text" name="destinatario_piso" class="form-control" placeholder="Piso">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-bold" style="color: var(--rosa-principal); font-size: 0.9rem;">Código Postal *</label>
+                                <input type="text" name="destinatario_cp" class="form-control" placeholder="28015">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-bold" style="color: var(--rosa-principal); font-size: 0.9rem;">Localidad *</label>
+                                <input type="text" name="destinatario_localidad" class="form-control" placeholder="Madrid">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-bold" style="color: var(--rosa-principal); font-size: 0.9rem;">Provincia *</label>
+                                <input type="text" name="destinatario_provincia" class="form-control" placeholder="Madrid">
+                            </div>
+                            
+                            <div class="mb-0">
+                                <label class="form-label fw-bold" style="color: var(--rosa-principal); font-size: 0.9rem;">Teléfono destinatario *</label>
+                                <input type="tel" name="destinatario_telefono" class="form-control" placeholder="600 123 456">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tarjeta de Dedicatoria -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header" style="background: var(--rosa-claro); border: none;">
+                        <h5 class="mb-0" style="color: var(--rosa-principal); font-family: 'Playfair Display', serif;">
+                            <i class="fas fa-envelope-open-text me-2"></i>Tarjeta de Dedicatoria
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="tarjeta-dedicatoria">
+                            <label class="form-label fw-bold mb-2" style="color: #d4a017;">
+                                <i class="fas fa-heart me-2"></i>Mensaje para el destinatario (opcional)
                             </label>
-                            <select name="metodo_pago" id="metodo_pago" class="form-select" required>
-                                <option value="">Selecciona método...</option>
+                            <textarea name="mensaje_dedicatoria" class="form-control" rows="4" 
+                                      placeholder="Escribe tu mensaje... Ejemplo: ¡Feliz cumpleaños! Con todo mi cariño, María"
+                                      style="border: 2px solid #ffd700; background: white;"></textarea>
+                            <small class="text-muted d-block mt-2">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Este mensaje se incluirá en una tarjeta decorativa con tu pedido
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Método de Pago -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header" style="background: var(--rosa-claro); border: none;">
+                        <h5 class="mb-0" style="color: var(--rosa-principal); font-family: 'Playfair Display', serif;">
+                            <i class="fas fa-credit-card me-2"></i>Método de Pago
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <select name="metodo_pago" id="metodo_pago" class="form-select" required style="border: 2px solid var(--rosa-principal);">
+                                <option value="">Selecciona método de pago...</option>
                                 <option value="tarjeta">💳 Tarjeta de Crédito/Débito</option>
-                                <option value="bizum">📱 Bizum</option>                                
+                                <option value="bizum">📱 Bizum</option>
                             </select>
                         </div>
-
-                        <!-- Botón Confirmar -->
-                        <button type="submit" class="btn btn-primario btn-lg w-100 mb-3">
-                            <i class="fas fa-check-circle me-2"></i>Confirmar Pedido
-                        </button>
-
-                        <!-- Editar datos -->
-                        <a href="{% url 'editar_datos_cliente' %}" class="btn btn-outline-secondary w-100">
-                            <i class="fas fa-edit me-2"></i>Modificar Datos
-                        </a>
-                    </form>
-                    {% else %}
-                    <!-- Usuario no logueado -->
-                    <div class="text-center">
-                        <div class="alert alert-info mb-3">
-                            <i class="fas fa-info-circle me-2"></i>
-                            Para continuar, inicia sesión o regístrate
+                        
+                        <!-- Total -->
+                        <div class="d-flex justify-content-between align-items-center p-3 mt-3" style="background: var(--rosa-claro); border-radius: 10px;">
+                            <span class="fs-5 fw-bold">Total a pagar:</span>
+                            <strong class="fs-4" style="color: var(--rosa-principal);">{{ total_con_envio_carro|floatformat:2 }} €</strong>
                         </div>
-                        <a href="{% url 'tramitar_pedido' %}" class="btn btn-primario btn-lg w-100">
-                            <i class="fas fa-user me-2"></i>Iniciar Sesión / Registrarse
-                        </a>
                     </div>
-                    {% endif %}
                 </div>
+                
+                <!-- Botón Confirmar -->
+                <button type="submit" class="btn btn-rosa w-100 btn-lg mb-3">
+                    <i class="fas fa-check-circle me-2"></i>Confirmar y Pagar
+                </button>
+                
+                <a href="{% url 'ver_carro' %}" class="btn btn-outline-secondary w-100">
+                    <i class="fas fa-arrow-left me-2"></i>Volver al Carrito
+                </a>
+            </form>
+            {% else %}
+            <!-- Usuario no logueado -->
+            <div class="text-center">
+                <div class="alert" style="background: var(--rosa-claro); border: 2px solid var(--rosa-principal); color: var(--texto-oscuro);">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Para continuar, inicia sesión o regístrate
+                </div>
+                <a href="{% url 'tramitar_pedido' %}" class="btn btn-rosa btn-lg w-100">
+                    <i class="fas fa-user me-2"></i>Iniciar Sesión / Registrarse
+                </a>
             </div>
+            {% endif %}
         </div>
     </div>
 
@@ -142,33 +278,75 @@
     <div class="text-center py-5">
         <div class="card border-0 shadow-sm">
             <div class="card-body py-5">
-                <i class="fas fa-shopping-cart fa-4x text-muted mb-4"></i>
-                <h3 class="text-muted mb-3">Tu carrito está vacío</h3>
+                <i class="fas fa-shopping-cart fa-4x mb-4" style="color: var(--rosa-principal);"></i>
+                <h3 class="mb-3" style="color: var(--texto-oscuro);">Tu carrito está vacío</h3>
                 <p class="text-muted mb-4">No hay productos para confirmar el pedido.</p>
-                <a href="{% url 'tienda' %}" class="btn btn-primario btn-lg">
+                <a href="{% url 'tienda' %}" class="btn btn-rosa btn-lg">
                     <i class="fas fa-store me-2"></i>Ir a la Tienda
                 </a>
             </div>
         </div>
     </div>
     {% endif %}
-
-    <!-- Mensajes -->
-    {% if messages %}
-    <div class="mt-4">
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            <i class="fas 
-                {% if message.tags == 'success' %}fa-check-circle
-                {% elif message.tags == 'error' %}fa-exclamation-circle
-                {% elif message.tags == 'warning' %}fa-exclamation-triangle
-                {% else %}fa-info-circle{% endif %} 
-                me-2"></i>
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🔍 Script iniciado');
+    
+    const btnCambiar = document.getElementById('btnCambiarDireccion');
+    const divDireccionNueva = document.getElementById('divDireccionNueva');
+    const usarDireccionCliente = document.getElementById('usarDireccionCliente');
+    const formulario = document.getElementById('formCheckout');
+    
+    console.log('Botón:', btnCambiar);
+    console.log('Div dirección nueva:', divDireccionNueva);
+    console.log('Input hidden:', usarDireccionCliente);
+    
+    if (btnCambiar && divDireccionNueva && usarDireccionCliente) {
+        btnCambiar.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('🖱️ Click en botón cambiar');
+            
+            divDireccionNueva.classList.toggle('active');
+            
+            if (divDireccionNueva.classList.contains('active')) {
+                btnCambiar.innerHTML = '<i class="fas fa-times me-1"></i>Cancelar';
+                usarDireccionCliente.value = '0';
+                console.log('✅ Cambiado a OTRA DIRECCIÓN - value = 0');
+                
+                // Hacer campos obligatorios
+                divDireccionNueva.querySelectorAll('input[name^="destinatario_"]').forEach(input => {
+                    if (input.placeholder && input.placeholder.includes('*')) {
+                        input.required = true;
+                    }
+                });
+            } else {
+                btnCambiar.innerHTML = '<i class="fas fa-edit me-1"></i>Enviar a otra dirección';
+                usarDireccionCliente.value = '1';
+                console.log('✅ Vuelto a DIRECCIÓN CLIENTE - value = 1');
+                
+                // Quitar obligatoriedad
+                divDireccionNueva.querySelectorAll('input').forEach(input => {
+                    input.required = false;
+                });
+            }
+        });
+    } else {
+        console.error('❌ No se encontraron todos los elementos necesarios');
+    }
+    
+    // DEBUG: Ver datos al enviar
+    if (formulario) {
+        formulario.addEventListener('submit', function(e) {
+            const formData = new FormData(formulario);
+            console.log('📤 DATOS A ENVIAR:');
+            for (let [key, value] of formData.entries()) {
+                console.log(`   ${key}: ${value}`);
+            }
+        });
+    }
+});
+</script>
+
 {% endblock %}

@@ -2,7 +2,7 @@
 import os
 import django
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'proyectoweb.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'proyectoFloristerias.settings')  # ← CAMBIAR AQUÍ
 django.setup()
 
 from django.conf import settings
@@ -14,12 +14,12 @@ def setup_site():
     site, created = Site.objects.get_or_create(id=1)
     
     if settings.ENV == 'production':
-        site.domain = 'codigovivostudio.cloud'
-        site.name = 'Código Vivo Studio'
+        site.domain = 'tudominio.com'  # Cambiar por tu dominio
+        site.name = 'Floristería Online'
         print("🚀 Configurando para PRODUCCIÓN")
     else:
         site.domain = 'localhost:8000'
-        site.name = 'Código Vivo Studio - Desarrollo' 
+        site.name = 'Floristería - Desarrollo' 
         print("💻 Configurando para DESARROLLO")
     
     site.save()

@@ -24,23 +24,25 @@ def registro_cliente(request):
 
         if form.is_valid():
             cif = form.cleaned_data['cif']
-            usuario = form.cleaned_data['usuario']
+            email = form.cleaned_data['email']  # ✅ Usamos email
             password = form.cleaned_data['password1']
 
             if Cliente.objects.filter(cif=cif).exists():
                 form.add_error('cif', 'Ya existe un cliente con este CIF.')
                 return render(request, 'clientes/clientes.html', {'form': form})
 
-            if Cliente.objects.filter(usuario=usuario).exists():
-                form.add_error('usuario', 'Ya existe un cliente con este usuario.')
+            # ✅ Verificamos si existe el email
+            if Cliente.objects.filter(email=email).exists():
+                form.add_error('email', 'Ya existe un cliente con este email.')
                 return render(request, 'clientes/clientes.html', {'form': form})
 
-            # Guardar Cliente con contraseña hasheada
+            # ✅ Guardar Cliente con email como usuario
             nuevo_cliente = form.save(commit=False)
+            nuevo_cliente.usuario = email  # ✅ El usuario es el email
             nuevo_cliente.password = make_password(password)
             nuevo_cliente.save()
 
-            # Activar sesión del cliente CON CLAVE PERSISTENTE
+            # Activar sesión del cliente
             request.session['cliente_persistent_id'] = nuevo_cliente.id
 
             messages.success(request, "Registro completado con éxito.")
@@ -48,25 +50,24 @@ def registro_cliente(request):
 
     return render(request, 'clientes/clientes.html', {'form': form})
 
-
 def tramitar_pedido(request):
     if request.method == 'POST':
         login_form = LoginForm(request.POST)
         if login_form.is_valid():
-            usuario = login_form.cleaned_data['usuario']
+            email = login_form.cleaned_data['email']  # ✅ Cambiado de usuario a email
             password = login_form.cleaned_data['password']
 
             try:
-                cliente = Cliente.objects.get(usuario=usuario)
+                # ✅ Buscamos por usuario (que ahora es el email)
+                cliente = Cliente.objects.get(usuario=email)
                 if check_password(password, cliente.password):
-                    # Guardamos el cliente en la sesión CON CLAVE PERSISTENTE
                     request.session['cliente_persistent_id'] = cliente.id
-                    messages.success(request, f"Bienvenido {cliente.usuario}")
+                    messages.success(request, f"Bienvenido {cliente.nombre}")
                     return redirect('/tienda/checkout/')
                 else:
                     messages.error(request, "Contraseña incorrecta.")
             except Cliente.DoesNotExist:
-                messages.error(request, "Usuario no encontrado.")
+                messages.error(request, "Email no encontrado.")
     else:
         login_form = LoginForm()
 

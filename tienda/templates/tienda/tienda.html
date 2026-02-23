@@ -3,12 +3,32 @@
 
 {% block title %}Tienda Online - Código Vivo Studio{% endblock %}
 
+{% block extra_css %}
+<style>
+    .hero-tienda {
+        background: linear-gradient(rgba(232, 160, 191, 0.3), rgba(244, 200, 216, 0.3)), 
+                    url('{% static "FloristeriasApp/img/hero-tienda.jpg" %}') no-repeat center center !important;
+        background-size: cover !important;
+    }
+    
+    .hero-tienda h1, 
+    .hero-tienda p {
+        color: white;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+    }
+    
+    .hero-tienda .form-control {
+        background: rgba(255, 255, 255, 0.95);
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Hero Section -->
 <section class="hero-tienda">
     <div class="container text-center">
-        <h1 class="display-4 fw-bold mb-3">La Trastienda</h1>
-        <p class="lead mb-4">Descubre nuestros productos exclusivos</p>
+        <h1 class="display-4 fw-bold mb-3">La Rosa Púrpura del Cairo</h1>
+        <p class="lead mb-4">Explora Nuestras Creaciones</p>
         
         <!-- Buscador -->
         <div class="buscador-tienda mb-4">

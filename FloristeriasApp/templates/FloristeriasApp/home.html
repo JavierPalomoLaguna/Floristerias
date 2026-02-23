@@ -1,0 +1,85 @@
+{% extends 'FloristeriasApp/base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Hero Principal con imagen -->
+<section class="page-section clearfix">
+  <div class="container">
+    <div class="intro">
+      <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{% static 'FloristeriasApp/img/principal.jpg' %}" alt="Flores frescas La Rosa Púrpura del Cairo">
+      <div class="intro-text left-0 text-center bg-faded p-5 rounded">
+        <h2 class="section-heading mb-4">
+          <span class="section-heading-upper">Flores Frescas</span>
+          <span class="section-heading-lower">Todos los Días</span>
+        </h2>
+        <p class="mb-3">Recibimos flores frescas cada mañana directamente de los mejores viveros. Cada ramo es único y está diseñado especialmente para ti con flores de la máxima calidad y frescura garantizada.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sección con imagen intermedia -->
+<section class="page-section" style="margin-top: 5rem;">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        <img src="{% static 'FloristeriasApp/img/flores-banner.jpg' %}" 
+             alt="Arreglos florales exclusivos" 
+             class="img-fluid rounded shadow" 
+             style="max-height: 400px; width: 100%; object-fit: cover;">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Productos destacados por categoría -->
+<section class="page-section" style="margin-top: 4rem;">
+  <div class="container">
+    <h2 class="text-center mb-5" style="font-family: 'Playfair Display', serif; color: var(--rosa-principal); font-size: 2.5rem;">
+      Explora Nuestra Colección
+    </h2>
+    <div class="d-flex justify-content-center flex-row flex-wrap gap-3">
+      {% for producto in productos_por_categoria %}
+        <div class="card text-center shadow-sm bg-faded" style="width: 200px; flex: 0 0 auto;">
+          {% if producto.foto_principal %}
+            <img src="{{ producto.foto_principal.url }}" alt="{{ producto.nombre }}"
+                 class="card-img-top img-fluid" style="height: 140px; object-fit: cover;">
+          {% endif %}
+          <div class="card-body p-2" style="font-size: 0.85rem;">
+            <h6 class="card-title mb-1" style="font-size: 0.9rem;">{{ producto.nombre }}</h6>
+            <p class="card-text mb-2">{{ producto.precio }} €</p>
+            <a href="{% url 'detalle_producto' producto.id %}" class="btn btn-sm btn-outline-dark">Ver más</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Sección Compromiso con imagen -->
+<section class="page-section cta" style="margin-top: 5rem;">
+  <div class="container">
+    <div class="row align-items-center">
+      <!-- Columna de imagen -->
+      <div class="col-lg-5 mb-4 mb-lg-0">
+        <img src="{% static 'FloristeriasApp/img/florista-trabajando.jpg' %}" 
+             alt="Floristería artesanal" 
+             class="img-fluid rounded shadow" 
+             style="max-height: 350px; width: 100%; object-fit: cover;">
+      </div>
+      
+      <!-- Columna de texto -->
+      <div class="col-lg-7">
+        <div class="cta-inner text-center rounded">
+          <h2 class="section-heading mb-4">
+            <span class="section-heading-upper">Arte Floral</span>
+            <span class="section-heading-lower">Hecho con Pasión</span>
+          </h2>
+          <p class="mb-0">Cada arreglo floral es una obra de arte única. Nuestros floristas expertos seleccionan cuidadosamente cada flor y diseñan composiciones exclusivas que transmiten emociones. Ya sea para una boda, un evento especial o simplemente para alegrar el día de alguien, en La Rosa Púrpura del Cairo convertimos tus momentos en recuerdos inolvidables.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

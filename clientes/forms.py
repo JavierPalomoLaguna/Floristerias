@@ -6,19 +6,19 @@ import re
 class ClienteForm(forms.ModelForm):
     password1 = forms.CharField(
         label="Contraseña",
-        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', 'class': 'form-control'}),
     )
     password2 = forms.CharField(
         label="Confirmar contraseña",
-        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', 'class': 'form-control'}),
     )
 
     class Meta:
         model = Cliente
-        fields = ['usuario', 'nombre', 'apellidos', 'telefono', 'cif', 'email', 'provincia',
+        # ✅ QUITAMOS 'usuario' de la lista
+        fields = ['nombre', 'apellidos', 'telefono', 'cif', 'email', 'provincia',
                   'localidad', 'calle', 'numero_calle', 'portal', 'escalera', 'piso', 'puerta', 'codigo_postal']
         widgets = {
-            'usuario': forms.TextInput(attrs={'class': 'form-control'}),
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
             'apellidos': forms.TextInput(attrs={'class': 'form-control'}),
             'telefono': forms.TextInput(attrs={'class': 'form-control'}),
@@ -34,11 +34,6 @@ class ClienteForm(forms.ModelForm):
             'puerta': forms.TextInput(attrs={'class': 'form-control'}),
             'codigo_postal': forms.TextInput(attrs={'class': 'form-control'}),
         }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if self.instance and self.instance.pk:
-            self.fields['usuario'].disabled = True
 
     def clean(self):
         cleaned_data = super().clean()
@@ -58,27 +53,18 @@ class ClienteForm(forms.ModelForm):
 
         cif = cif.upper().strip()
 
-        # NIF: 6-8 números + letra
-        # NIE: X/Y/Z + 6-7 números + letra
-        # CIF empresa: letra + 6-8 números
         if not re.fullmatch(r'\d{6,8}[A-Z]', cif) and \
-        not re.fullmatch(r'[XYZ]\d{6,7}[A-Z]', cif) and \
-        not re.fullmatch(r'[A-HJUV]\d{6,8}', cif):
+           not re.fullmatch(r'[XYZ]\d{6,7}[A-Z]', cif) and \
+           not re.fullmatch(r'[A-HJUV]\d{6,8}', cif):
             raise forms.ValidationError("Formato de CIF/NIF/NIE no válido.")
 
         return cif
-            
+
     def clean_password1(self):
         password = self.cleaned_data.get("password1")
 
         if len(password) < 8:
             raise forms.ValidationError("La contraseña debe tener al menos 8 caracteres.")
-
-        if password.lower() in ["1234", "password", "contraseña", "admin", "qwerty", "abc123"]:
-            raise forms.ValidationError("La contraseña es demasiado común o predecible.")
-
-        if not any(c.islower() for c in password):
-            raise forms.ValidationError("La contraseña debe contener al menos una letra minúscula.")
 
         if not any(c.isupper() for c in password):
             raise forms.ValidationError("La contraseña debe contener al menos una letra mayúscula.")
@@ -91,22 +77,23 @@ class ClienteForm(forms.ModelForm):
 
         return password
 
+# ✅ CAMBIAMOS LoginForm para usar email
 class LoginForm(forms.Form):
-    usuario = forms.CharField(max_length=40)
-    password = forms.CharField(widget=forms.PasswordInput)
+    email = forms.EmailField(label="Email", widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(label="Contraseña", widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
 class ClienteEdicionForm(forms.ModelForm):
     class Meta:
         model = Cliente
-        fields = ['usuario', 'nombre', 'apellidos', 'telefono', 'cif', 'email', 'provincia',
+        # ✅ Quitamos 'usuario' también de edición
+        fields = ['nombre', 'apellidos', 'telefono', 'cif', 'email', 'provincia',
                   'localidad', 'calle', 'numero_calle', 'portal', 'escalera', 'piso', 'puerta', 'codigo_postal']
         widgets = {
-            'usuario': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
             'apellidos': forms.TextInput(attrs={'class': 'form-control'}),
             'telefono': forms.TextInput(attrs={'class': 'form-control'}),
             'cif': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'provincia': forms.TextInput(attrs={'class': 'form-control'}),
             'localidad': forms.TextInput(attrs={'class': 'form-control'}),
             'calle': forms.TextInput(attrs={'class': 'form-control'}),

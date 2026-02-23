@@ -62,9 +62,31 @@ class PedidoAdmin(admin.ModelAdmin):
         'codigo_respuesta',      
         'descripcion_error'      
     )
-    readonly_fields = ('fecha_envio',)
+    readonly_fields = ('fecha','fecha_envio',)
     date_hierarchy = 'fecha'
     ordering = ('-fecha',)
+    
+    # ✅ FIELDSETS AGREGADOS AQUÍ
+    fieldsets = (
+        ('📋 Información General', {
+            'fields': ('cliente', 'fecha', 'metodo_pago', 'pagado')
+        }),
+        ('📦 Dirección de Entrega', {
+            'fields': ('destinatario_nombre', 'destinatario_direccion', 'destinatario_cp', 
+                      'destinatario_localidad', 'destinatario_provincia', 'destinatario_telefono'),
+        }),
+        ('💌 Dedicatoria', {
+            'fields': ('mensaje_dedicatoria',),
+        }),
+        ('🚚 Envío', {
+            'fields': ('enviado', 'fecha_envio', 'gastos_envio', 'envio_gratis')
+        }),
+        ('💳 Pago', {
+            'fields': ('codigo_autorizacion', 'fecha_pago', 'hora_pago', 'pais_tarjeta', 
+                      'codigo_respuesta', 'descripcion_error'),
+        }),
+    )
+    
     inlines = [LineaPedidoInline]
     
     # ✅ PAGINACIÓN - 10 elementos por página
@@ -445,6 +467,7 @@ class DevolucionAdmin(admin.ModelAdmin):
             self.message_user(request, "Devolución no encontrada", level=messages.ERROR)
         
         return HttpResponseRedirect(reverse('admin:ventas_devolucion_changelist'))
+    
     def save_model(self, request, obj, form, change):
         """Se ejecuta cuando se guarda una devolución desde el admin"""
         

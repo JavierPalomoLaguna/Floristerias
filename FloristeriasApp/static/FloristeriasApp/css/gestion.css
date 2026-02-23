@@ -1,0 +1,352 @@
+/* ========================================
+   VARIABLES CSS - La Rosa Púrpura del Cairo
+======================================== */
+
+:root {
+    --rosa-principal: #E8A0BF;
+    --rosa-suave: #F4C8D8;
+    --rosa-claro: #FBE8F0;
+    --blanco: #FFFFFF;
+    --texto-oscuro: #2C2C2C;
+    --gris-suave: #F8F9FA;
+    --verde-natural: #7BA891;
+}
+
+/* ========================================
+   ESTILOS GENERALES
+======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--texto-oscuro);
+    background-color: var(--blanco);
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+}
+
+/* ========================================
+   BARRA SUPERIOR
+======================================== */
+
+.top-bar {
+    background: var(--rosa-claro);
+    padding: 10px 0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--rosa-suave);
+}
+
+.top-bar a {
+    color: var(--texto-oscuro);
+    text-decoration: none;
+    margin: 0 15px;
+    transition: color 0.3s ease;
+}
+
+.top-bar a:hover {
+    color: var(--rosa-principal);
+}
+
+/* ========================================
+   HEADER PRINCIPAL
+======================================== */
+
+.main-header {
+    background: var(--blanco);
+    padding: 20px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-icon {
+    font-size: 2.5rem;
+    color: var(--rosa-principal);
+}
+
+.logo-text h1 {
+    font-size: 1.8rem;
+    margin: 0;
+    color: var(--rosa-principal);
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+}
+
+.logo-text p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--texto-oscuro);
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+/* ========================================
+   NAVEGACIÓN
+======================================== */
+
+.main-nav {
+    background: var(--blanco);
+    padding: 0;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    margin: 0;
+    padding: 15px 0;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.nav-menu li a {
+    color: var(--texto-oscuro);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 8px 15px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    display: block;
+}
+
+.nav-menu li a:hover {
+    background: var(--rosa-claro);
+    color: var(--rosa-principal);
+}
+
+.nav-menu li a.active {
+    background: var(--rosa-principal);
+    color: var(--blanco);
+}
+
+/* ========================================
+   CARRITO EN HEADER
+======================================== */
+
+.cart-icon {
+    position: relative;
+    margin-left: 20px;
+}
+
+.cart-icon a {
+    color: var(--rosa-principal);
+    font-size: 1.5rem;
+    position: relative;
+    text-decoration: none;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--rosa-principal);
+    color: var(--blanco);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* ========================================
+   MENÚ MÓVIL
+======================================== */
+
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--rosa-principal);
+    cursor: pointer;
+}
+
+@media (max-width: 992px) {
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--blanco);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .nav-menu.active {
+        display: flex;
+    }
+    
+    .nav-menu li {
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid var(--rosa-claro);
+    }
+    
+    .nav-menu li a {
+        padding: 15px;
+        border-radius: 0;
+    }
+    
+    .mobile-menu-toggle {
+        display: block;
+    }
+}
+
+/* ========================================
+   CONTENIDO PRINCIPAL
+======================================== */
+
+.main-content {
+    min-height: 60vh;
+    padding: 40px 0;
+}
+
+/* ========================================
+   FOOTER
+======================================== */
+
+.main-footer {
+    background: linear-gradient(135deg, var(--rosa-claro) 0%, var(--rosa-suave) 100%);
+    padding: 60px 0 20px;
+    margin-top: 80px;
+}
+
+.footer-section h4 {
+    color: var(--rosa-principal);
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+    color: var(--texto-oscuro);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    color: var(--rosa-principal);
+}
+
+.footer-section p {
+    color: var(--texto-oscuro);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+    border-top: 1px solid var(--rosa-principal);
+    color: var(--texto-oscuro);
+    font-size: 0.9rem;
+}
+
+.footer-bottom a {
+    color: var(--texto-oscuro);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-bottom a:hover {
+    color: var(--rosa-principal);
+}
+
+/* ========================================
+   REDES SOCIALES
+======================================== */
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.social-icons a {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--blanco);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--rosa-principal);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+    background: var(--rosa-principal);
+    color: var(--blanco);
+    transform: translateY(-3px);
+}
+
+/* ========================================
+   BOTONES
+======================================== */
+
+.btn-rosa {
+    background: var(--rosa-principal);
+    color: var(--blanco);
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-rosa:hover {
+    background: #D88FA9;
+    color: var(--blanco);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(232, 160, 191, 0.3);
+}
+
+.btn-outline-rosa {
+    background: transparent;
+    color: var(--rosa-principal);
+    border: 2px solid var(--rosa-principal);
+    padding: 10px 28px;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-outline-rosa:hover {
+    background: var(--rosa-principal);
+    color: var(--blanco);
+}

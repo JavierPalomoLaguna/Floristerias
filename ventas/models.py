@@ -57,6 +57,15 @@ class Pedido(models.Model):
     descripcion_error = models.CharField(max_length=100, blank=True, null=True, verbose_name="Descripción Error")
     fecha_intento = models.DateTimeField(blank=True, null=True, verbose_name="Fecha Intento Pago")
 
+    # ✅ NUEVOS CAMPOS PARA FLORISTERÍA
+    destinatario_nombre = models.CharField(max_length=200, blank=True, default='')
+    destinatario_direccion = models.TextField(blank=True, default='')
+    destinatario_cp = models.CharField(max_length=10, blank=True, default='')
+    destinatario_localidad = models.CharField(max_length=100, blank=True, default='')
+    destinatario_provincia = models.CharField(max_length=100, blank=True, default='')
+    destinatario_telefono = models.CharField(max_length=20, blank=True, default='')
+    mensaje_dedicatoria = models.TextField(blank=True, default='')
+
     class Meta:
         verbose_name = 'pedido'
         verbose_name_plural = 'pedidos'
