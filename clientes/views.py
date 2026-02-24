@@ -46,7 +46,7 @@ def registro_cliente(request):
             request.session['cliente_persistent_id'] = nuevo_cliente.id
 
             messages.success(request, "Registro completado con éxito.")
-            return redirect('/tienda/checkout/')
+            return redirect('checkout')
 
     return render(request, 'clientes/clientes.html', {'form': form})
 
@@ -63,7 +63,7 @@ def tramitar_pedido(request):
                 if check_password(password, cliente.password):
                     request.session['cliente_persistent_id'] = cliente.id
                     messages.success(request, f"Bienvenido {cliente.nombre}")
-                    return redirect('/tienda/checkout/')
+                    return redirect('checkout')
                 else:
                     messages.error(request, "Contraseña incorrecta.")
             except Cliente.DoesNotExist:
@@ -133,7 +133,7 @@ def reset_password(request, token):
         cliente.save()
 
         messages.success(request, "Tu contraseña ha sido restablecida con éxito.")
-        return redirect('/tienda/checkout/')
+        return redirect('tienda')
 
     return render(request, 'clientes/reset_password.html', {'token': token})
 
@@ -141,7 +141,7 @@ def logout_cliente(request):
     # Solo eliminar la sesión del cliente, no toda la sesión
     if 'cliente_persistent_id' in request.session:
         del request.session['cliente_persistent_id']
-    return redirect('/tienda/')
+    return redirect('tienda')
 
 def zona_cliente(request):
     cliente_id = request.session.get('cliente_persistent_id')
