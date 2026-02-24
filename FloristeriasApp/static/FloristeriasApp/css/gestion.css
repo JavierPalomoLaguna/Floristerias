@@ -175,14 +175,28 @@ h1, h2, h3, h4, h5, h6 {
 
 .mobile-menu-toggle {
     display: none;
-    background: none;
-    border: none;
+    background: var(--rosa-claro);
+    border: 2px solid var(--rosa-principal);
+    border-radius: 8px;
     font-size: 1.8rem;
     color: var(--rosa-principal);
     cursor: pointer;
+    padding: 8px 12px;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-toggle:hover {
+    background: var(--rosa-principal);
+    color: var(--blanco);
 }
 
 @media (max-width: 992px) {
+    /* Hacer que el nav sea relativo para el menú absolute */
+    .main-nav {
+        position: relative;
+    }
+    
+    /* Menú desplegable */
     .nav-menu {
         display: none;
         flex-direction: column;
@@ -193,6 +207,8 @@ h1, h2, h3, h4, h5, h6 {
         right: 0;
         background: var(--blanco);
         box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        z-index: 999;
+        padding: 0;
     }
     
     .nav-menu.active {
@@ -208,13 +224,18 @@ h1, h2, h3, h4, h5, h6 {
     .nav-menu li a {
         padding: 15px;
         border-radius: 0;
+        width: 100%;
     }
     
     .mobile-menu-toggle {
         display: block;
     }
+    
+    /* Ocultar la barra superior en móvil */
+    .top-bar .col-md-6:last-child {
+        display: none;
+    }
 }
-
 /* ========================================
    CONTENIDO PRINCIPAL
 ======================================== */
