@@ -7,6 +7,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.utils import timezone
 from django.http import JsonResponse
+from django.urls import reverse
 
 
 def registro_cliente(request):
@@ -85,7 +86,7 @@ def solicitar_reset(request):
         try:
             cliente = Cliente.objects.get(usuario=usuario)
             token = cliente.generar_token()
-            reset_link = request.build_absolute_uri(f"/clientes/reset/{token}/")
+            reset_link = request.build_absolute_uri(reverse('reset_password', args=[token]))
 
             # Enviar email con el enlace
             send_mail(
