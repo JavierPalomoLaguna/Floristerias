@@ -389,9 +389,9 @@ def pago_redsys(request):
         "Ds_Merchant_Currency": "978",
         "Ds_Merchant_TransactionType": "0",
         "Ds_Merchant_Terminal": terminal,
-        "Ds_Merchant_MerchantURL": f"{base_url}/ventas/notificacion/",
-        "Ds_Merchant_UrlOK": f"{base_url}/ventas/exito/",
-        "Ds_Merchant_UrlKO": f"{base_url}/ventas/error/",
+        "Ds_Merchant_MerchantURL": f"{base_url}/floristerias/ventas/notificacion/",
+        "Ds_Merchant_UrlOK": f"{base_url}/floristerias/ventas/exito/",
+        "Ds_Merchant_UrlKO": f"{base_url}/floristerias/ventas/error/",
         "Ds_Merchant_ConsumerLanguage": "001"
     }
     
