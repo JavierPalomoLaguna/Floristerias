@@ -244,7 +244,9 @@ def notificacion_redsys(request):
     # Si la respuesta es menor a 100, el pago fue exitoso
     if codigo_pedido and respuesta and int(respuesta) < 100:
         try:
-            pedido = Pedido.objects.get(id=int(codigo_pedido))
+            # Extraer solo el ID del pedido (primeros dígitos antes del timestamp de 6 dígitos)
+            pedido_id_real = int(str(codigo_pedido)[:-6]) if len(str(codigo_pedido)) > 6 else int(codigo_pedido)
+            pedido = Pedido.objects.get(id=pedido_id_real)
             pedido.pagado = True
             pedido.codigo_autorizacion = decoded_datos.get('Ds_AuthorisationCode')
 
@@ -308,7 +310,9 @@ def notificacion_redsys(request):
         print(f"❌ Pago rechazado para pedido {codigo_pedido}. Respuesta: {respuesta}")
         
         try:
-            pedido = Pedido.objects.get(id=int(codigo_pedido))
+            # Extraer solo el ID del pedido
+            pedido_id_real = int(str(codigo_pedido)[:-6]) if len(str(codigo_pedido)) > 6 else int(codigo_pedido)
+            pedido = Pedido.objects.get(id=pedido_id_real)
             
             # ✅ GUARDAR INFORMACIÓN DEL ERROR EN LOS NUEVOS CAMPOS
             pedido.codigo_respuesta = respuesta
