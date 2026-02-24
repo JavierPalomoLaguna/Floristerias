@@ -384,7 +384,7 @@ def pago_redsys(request):
 
     merchant_params = {
         "Ds_Merchant_Amount": str(total_centimos),
-        "Ds_Merchant_Order": str(pedido.id).zfill(8),
+        "Ds_Merchant_Order": f"{pedido.id}{datetime.now().strftime('%H%M%S')}",
         "Ds_Merchant_MerchantCode": merchant_code,
         "Ds_Merchant_Currency": "978",
         "Ds_Merchant_TransactionType": "0",
