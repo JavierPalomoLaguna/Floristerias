@@ -11,9 +11,13 @@ SITE_ID = 1
 
 if ENV == 'production':
     DEBUG = False
-    ALLOWED_HOSTS = ['codigovivostudio.cloud', 'www.codigovivostudio.cloud', '72.61.94.146']
-    CSRF_TRUSTED_ORIGINS = ['https://codigovivostudio.cloud', 'https://www.codigovivostudio.cloud']
-    
+    ALLOWED_HOSTS = ['codigovivostudio.cloud', 'www.codigovivostudio.cloud', '72.61.94.146', 'localhost', '127.0.0.1']
+    CSRF_TRUSTED_ORIGINS = [
+        'https://codigovivostudio.cloud',
+        'https://www.codigovivostudio.cloud',
+        'https://codigovivostudio.cloud/floristerias',
+        'https://www.codigovivostudio.cloud/floristerias',
+    ]
     # Configuración automática del Site para producción
     try:
         from django.contrib.sites.models import Site
@@ -23,6 +27,9 @@ if ENV == 'production':
         site.save()
     except:
         pass  # Se creará con el comando de setup
+
+    FORCE_SCRIPT_NAME = '/floristerias'
+    USE_X_FORWARDED_HOST = True
     
 else:
     DEBUG = True
@@ -137,7 +144,7 @@ USE_L10N = True
 USE_TZ = True
 
 # Archivos estáticos
-STATIC_URL = '/static/'
+STATIC_URL = '/floristerias/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 if ENV == 'production':
@@ -151,7 +158,7 @@ else:
     ]
 
 # Archivos multimedia
-MEDIA_URL = '/media/'
+MEDIA_URL = '/floristerias/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Añadir barra final automáticamente a las URLs
 APPEND_SLASH = True
